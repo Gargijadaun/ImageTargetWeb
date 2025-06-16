@@ -40,13 +40,13 @@ function init() {
         arSystem.unpause();
     }
 
-    targetImage.addEventListener("targetFound", () => {
-        const aVideo = document.querySelector("#displayVideo");
-        const srcId = aVideo.getAttribute("src");
-        const video = document.querySelector(srcId);
-        video.play();
-        aVideo.setAttribute("visible", "true");
-    });
+ targetImage.addEventListener("targetFound", () => {
+    const aVideo = document.querySelector("#displayVideo");
+    const srcId = aVideo.getAttribute("src");
+    const video = document.querySelector(srcId);
+    video.play();
+    aVideo.setAttribute("visible", "true");
+});
 
     targetImage.addEventListener("targetLost", () => {
         const aVideo = document.querySelector("#displayVideo");
