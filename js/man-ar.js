@@ -737,32 +737,54 @@ function goBack() {
     // ✅ Mark camera as inactive
     sessionStorage.setItem("cameraActive", "false");
 }
-
 function goToAnimation(animationSeq) {
-    keepScreenAwake();
-    document.getElementById("mainScreen").style.display = "none";
+  keepScreenAwake();
+  document.getElementById("mainScreen").style.display = "none";
 
-    if (Number(animationSeq) === 3) {
-        // Directly start the animation for animationSeq 3
-        TIMELINE_DETAILS.currentAnimationSeq = 3;
-        init();
-        sessionStorage.setItem("cameraActive", "true"); // Mark camera as active
-    } else {
-        // Show the Scan Text message every time with a white background
-        const scanText = document.getElementById("scanText");
-        scanText.style.background = "white"; // Set white background
-        scanText.style.display = "flex"; // Make it visible
+  const scanText = document.getElementById("scanText");
+  scanText.style.background = "white";
+  scanText.style.display = "flex";
 
-        // Wait for 2 seconds, then hide scan text and start camera + animation
-        setTimeout(() => {
-            scanText.style.display = "none"; // Hide message
-            TIMELINE_DETAILS.currentAnimationSeq = Number(animationSeq);
-            init();
-            arSystem.resume(); // Start the camera
-            sessionStorage.setItem("cameraActive", "true"); // Mark camera as active
-        }, 2000);
+  // Track which animation is selected
+  TIMELINE_DETAILS.currentAnimationSeq = Number(animationSeq);
+
+  // Video ID map (assuming video elements with these IDs exist in <a-assets>)
+  const videoMap = {
+    1: "vid1",
+    2: "vid2",
+    3: "vid3",
+    4: "vid4"
+  };
+
+  const selectedVideoId = videoMap[animationSeq];
+  const aVideo = document.querySelector("#displayVideo");
+  const selectedVideo = document.querySelector(`#${selectedVideoId}`);
+
+  // Pause all videos before switching
+  document.querySelectorAll("video").forEach(video => video.pause());
+
+  // Set video source on <a-video>
+  aVideo.setAttribute("src", `#${selectedVideoId}`);
+
+  // Resume AR after delay
+  setTimeout(() => {
+    scanText.style.display = "none";
+
+    init(); // Your custom AR startup function
+    const scene = document.querySelector("a-scene");
+    const arSystem = scene.systems["mindar-image-system"];
+    arSystem.resume();
+
+    sessionStorage.setItem("cameraActive", "true");
+
+    // Play video if marker is already visible
+    const targetEntity = document.querySelector("#targetImage");
+    if (targetEntity.components["mindar-image-target"]?.markerVisible) {
+      selectedVideo.play();
     }
+  }, 2000);
 }
+
 
 // // Add this at the end of startAnimationCommonCauses
 // TIMEOUTS.push(setTimeout(() => {

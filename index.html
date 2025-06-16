@@ -23,23 +23,19 @@
         <div id="scanText">
             <img src="./assets/images/sample.png" alt="Scanning Image" />
           </div>
-          <!-- <button id="replayButton" class="hide">Replay</button> -->
-        <!-- <a href="./index.html" id="menuBtn" class="show">
-            <img src="./assets/icons/home-icon.png" alt="Home">
-        </a> -->
-
-     
-
       
 
-        <div id="mainScreen" class="man-bg">
-            <div class="btn-container">
-                <button class="btn" onclick="goToAnimation(1)">
-                    Start
-                </button>
-              
-            </div>
-        </div>
+       <!-- BUTTONS FOR 4 VIDEOS -->
+<div id="mainScreen" class="man-bg">
+  <div class="btn-container">
+<button class="btn" onclick="goToAnimation(1)">Start 1</button>
+<button class="btn" onclick="goToAnimation(2)">Start 2</button>
+<button class="btn" onclick="goToAnimation(3)">Start 3</button>
+<button class="btn" onclick="goToAnimation(4)">Start 4</button>
+
+  </div>
+</div>
+
         <div id="deviceError">
             <p>
                 AR Experience works best on mobile devices.<br>Please try the experience on a mobile device.
@@ -60,82 +56,7 @@
             </button>
         </div>
 
-        <div id="testimonial-container">
-            <div class="container">
-                <div id="info-container" class="show">
-                    <img src="./assets/images/man/testimonial/before-after-02.png" alt="">
-                    <p>
-                        To achieve best results in hair fall, your dermatologist can suggest one treatment at a time or
-                        combination of multiple treatments depending upon your hair issues. Let your dermatologist
-                        decide after examining your hair. To know more about hair treatments, ask your dermatologist.
-                    </p>
-                    <div class="single-btn-container">
-                        <button id="beforeAfterBtn" class="btn show-single" onclick="showBeforeAfterImages()">
-                            Show Before and After
-                        </button>
-                    </div>
-                </div>
-                <div id="testimonial-image-container">
-                    <div class="flex flex-col">
-                        <h2 style="text-align: center; margin-top: 20%;">Treatment Results</h2>
-                        <div class="image-container">
-                            <div class="comparison-slider-container show" id="template-num-1">
-                                <img-comparison-slider>
-                                    <img slot="first" src="./assets/images/man/testimonial/ajay-patel-before.jpg" />
-                                    <img slot="second" src="./assets/images/man/testimonial/ajay-patel-after.jpg" />
-                                </img-comparison-slider>
-                            </div>
-                            <!-- <div class="comparison-slider-container" id="template-num-2">
-                                <img-comparison-slider>
-                                    <img slot="first" src="./assets/images/young-lady/young-lady-base-face.png" />
-                                    <img slot="second" src="./assets/images/young-lady/pimples.png" />
-                                </img-comparison-slider>
-                            </div>
-                            <div class="comparison-slider-container" id="template-num-3">
-                                <img-comparison-slider>
-                                    <img slot="first" src="./assets/images/man/face-man-hair.png" />
-                                    <img slot="second" src="./assets/images/man/face-man.png" />
-                                </img-comparison-slider>
-                            </div>
-                            <div class="comparison-slider-container" id="template-num-4">
-                                <img-comparison-slider>
-                                    <img slot="first" src="./assets/images/young-lady/young-lady-base-face.png" />
-                                    <img slot="second" src="./assets/images/young-lady/pimples.png" />
-                                </img-comparison-slider>
-                            </div> -->
-                            <div class="testimonialInfoContainer">
-                                <p class="testimonialHeader">
-                                    Testimonial
-                                </p>
-                                <p class="testimonialText">
-                                    I noticed visible improvements after just 3 Sessions. The team was professional and
-                                    made me feel comfortable throughout the process. I was initially skeptical about GFC
-                                    therapy, but my dermatologist gave me a full walkthrough of the process and how it
-                                    works. I felt a bit tense on my first sitting, but the second and third sittings
-                                    went smoothly. The results are amazing.<br><strong>- Aditya Kumar.</strong>
-                                </p>
-                            </div>
-                            <div class="disclaimer">
-                                <h6>Disclaimer</h6>
-                                <p>
-                                    Your dermatologist will recommend treatment based on your acne condition and grade.
-                                    These results are from one or multiple acne treatments. Individual results may vary.
-                                </p>
-                            </div>
-                        </div>
-                        <!-- <div class="slider-container">
-                            <div id="slider-track">
-
-                                <div class="sliderBtn" id="slider-btn-1"></div>
-                                <div class="sliderBtn" id="slider-btn-2"></div>
-                                <div class="sliderBtn" id="slider-btn-3"></div>
-                                <div class="sliderBtn" id="slider-btn-4"></div>
-                            </div>
-                        </div> -->
-                    </div>
-                </div>
-            </div>
-        </div>
+     
 
         <div id="scanning-overlay" class="hidden">
             <div class="inner">
@@ -151,23 +72,20 @@
             renderer="colorManagement: true, physicallyCorrectLights:true;antialias: true;" vr-mode-ui="enabled: false"
             device-orientation-permission-ui="enabled: false">
 
-            <a-assets>
-                <video id="targetVideo" src="./assets/video/Video1.mp4" preload="auto" loop crossorigin="anonymous" webkit-playsinline playsinline></video>
+         <a-assets>
+  <video id="vid1" src="./assets/video/Video1.mp4" preload="auto" loop crossorigin="anonymous" webkit-playsinline playsinline></video>
+  <video id="vid2" src="./assets/video/Video2.mp4" preload="auto" loop crossorigin="anonymous" webkit-playsinline playsinline></video>
+  <video id="vid3" src="./assets/video/Video3.mp4" preload="auto" loop crossorigin="anonymous" webkit-playsinline playsinline></video>
+  <video id="vid4" src="./assets/video/Video4.mp4" preload="auto" loop crossorigin="anonymous" webkit-playsinline playsinline></video>
+</a-assets>
 
-            </a-assets>
 
             <a-camera position="0 0 0" look-controls="enabled: false" cursor="fuse: false; rayOrigin: mouse;"
                 raycaster="near: 10; far: 10000; objects: .clickable"></a-camera>
 
             <a-entity id="targetImage" mindar-image-target="targetIndex: 0">
 
-               <a-video
-        src="#targetVideo"
-        width="1.5"
-        height="0.9"
-        position="0 0 0"
-        rotation="0 0 0">
-    </a-video>
+            <a-video id="displayVideo" src="#vid1" width="1.5" height="0.9" position="0 0 0" rotation="0 0 0"></a-video>
 
 
             </a-entity>
@@ -182,29 +100,57 @@
 
  <script>
   document.addEventListener("DOMContentLoaded", () => {
-    const videoEl = document.querySelector("#targetVideo");
-
-    // 👆 Required to allow autoplay on mobile (after any user interaction)
-    const resumeVideo = () => {
-      videoEl.play().catch(e => {
-        console.warn("Autoplay failed:", e);
-      });
-      document.body.removeEventListener("click", resumeVideo);
+    const videoElements = {
+      "Video1.mp4": document.querySelector("#vid1"),
+      "Video2.mp4": document.querySelector("#vid2"),
+      "Video3.mp4": document.querySelector("#vid3"),
+      "Video4.mp4": document.querySelector("#vid4")
     };
-    document.body.addEventListener("click", resumeVideo);
 
-    // ▶️ When image target is found, play video
+    const aVideo = document.querySelector("#displayVideo");
     const targetEntity = document.querySelector("#targetImage");
+
+    // Resume playback on mobile user interaction
+    const resumeAllVideos = () => {
+      Object.values(videoElements).forEach(v => {
+        v.play().catch(() => {});
+      });
+      document.body.removeEventListener("click", resumeAllVideos);
+    };
+    document.body.addEventListener("click", resumeAllVideos);
+
+    // Auto-play when marker is found
     targetEntity.addEventListener("targetFound", () => {
-      videoEl.play();
+      const srcId = aVideo.getAttribute("src");
+      const video = document.querySelector(srcId);
+      video.play();
     });
 
-    // ⏸️ Optional: Pause video when target is lost
+    // Pause when marker is lost
     targetEntity.addEventListener("targetLost", () => {
-      videoEl.pause();
+      const srcId = aVideo.getAttribute("src");
+      const video = document.querySelector(srcId);
+      video.pause();
     });
+
+    // Switch video logic
+    window.playSelectedVideo = (videoName) => {
+      // Pause all videos first
+      Object.values(videoElements).forEach(v => v.pause());
+
+      // Switch source on <a-video>
+      const selectedVideoId = Object.keys(videoElements).find(key => key === videoName);
+      aVideo.setAttribute("src", `#${videoElements[selectedVideoId].id}`);
+
+      // Play it if marker is already visible
+      const isVisible = targetEntity.components['mindar-image-target']?.markerVisible;
+      if (isVisible) {
+        videoElements[videoName].play();
+      }
+    };
   });
 </script>
+
 
 </body>
 
