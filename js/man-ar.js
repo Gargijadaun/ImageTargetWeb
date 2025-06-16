@@ -17,6 +17,8 @@ let AR_READY = false
 // DOM Elements
 const mainScreen = document.querySelector('#mainScreen');
 const backBtn = document.querySelector('#backBtn');
+// const btnContainer = document.querySelector('.btn-container');
+
 
 
 
@@ -669,7 +671,7 @@ function init() {
         } else {
             arSystem.unpause()
         }
-        targetImage.addEventListener("targetFound", startAnimation);
+        // targetImage.addEventListener("targetFound", startAnimation);
         targetImage.addEventListener("targetLost", resetAnimation);
         // arError event triggered when something went wrong. Mostly browser compatbility issue
         sceneEl.addEventListener("arError", (event) => {
@@ -696,47 +698,37 @@ async function keepScreenAwake() {
     }
 }
 function goBack() {
-    resetAnimation();
-
-    // ✅ Check if AR is active before pausing
-    const sceneEl = document.querySelector('a-scene');
-    const arSystem = sceneEl ? sceneEl.systems['mindar-system'] : null;
-
-    if (sessionStorage.getItem("cameraActive") === "true" && arSystem) {
-        arSystem.pause(); // Stop the camera only if AR is active
-        console.log("AR system paused.");
-    } else {
-        console.log("AR was not active, skipping pause.");
-    }
-
-    TIMELINE_DETAILS.isStopAnimation = true;
-
-    // ✅ Ensure mainScreen exists before modifying
-    const mainScreen = document.getElementById("mainScreen");
-    if (mainScreen) {
-        mainScreen.style.display = "block";
-        mainScreen.classList.remove('hide');
-    } else {
-        console.error("mainScreen element not found.");
-    }
-
-    // ✅ Hide other elements safely
-    if (infoTextBottom) infoTextBottom.classList.remove('show');
-    if (backBtn) backBtn.classList.remove('show');
-    if (testimonialContainer) testimonialContainer.classList.remove('show');
-
-    const btnContainer = document.querySelector('#mainScreen .btn-container');
-    if (btnContainer) btnContainer.classList.add('show');
-
-    // ✅ Hide the replay button
-    const replayButton = document.getElementById('replayButton');
-    if (replayButton) {
-        replayButton.classList.add('hide'); 
-    }
-
-    // ✅ Mark camera as inactive
+  // Stop the camera system
+  const scene = document.querySelector("a-scene");
+  const arSystem = scene.systems["mindar-image-system"];
+  if (arSystem && arSystem.running) {
+    arSystem.stop();
     sessionStorage.setItem("cameraActive", "false");
+  }
+
+  // Pause all videos
+  const allVideos = document.querySelectorAll("video");
+  allVideos.forEach(video => video.pause());
+      
+  // Show main screen again
+    mainScreen.classList.remove('hide')
+    backBtn.classList.add('hide')
+    backBtn.classList.remove('show')
+  const btnContainer = document.querySelector("#mainScreen .btn-container");
+  btnContainer.classList.add("show");
+
+  if (mainScreen) mainScreen.style.display = "flex";
+  if (btnContainer) btnContainer.style.display = "flex";
+
+  // ✅ Remove any .hide class if applied
+//   mainScreen.classList.remove("hide");
+  btnContainer.classList.remove("hide");
+
+  // Optional: Hide scan text or overlays
+  document.getElementById("scanText").style.display = "none";
+  document.getElementById("scanning-overlay").classList.add("hidden");
 }
+
 function goToAnimation(animationSeq) {
   keepScreenAwake();
   document.getElementById("mainScreen").style.display = "none";
@@ -821,9 +813,9 @@ document.addEventListener('DOMContentLoaded', function () {
 
         setTimeout(() => {
             if (TIMELINE_DETAILS.currentAnimationSeq === 1) {
-                startAnimationCommonCauses();
+                // startAnimationCommonCauses();
             } else if (TIMELINE_DETAILS.currentAnimationSeq === 2) {
-                startAnimationTreatments();
+                // startAnimationTreatments();
             }
         }, 100);
     });
@@ -848,8 +840,8 @@ document.addEventListener('visibilitychange', function () {
 }, false);
 
 window.resetAnimation = resetAnimation
-window.startAnimationCommonCauses = startAnimationCommonCauses
-window.startAnimationTreatments = startAnimationTreatments
+// window.startAnimationCommonCauses = startAnimationCommonCauses
+// window.startAnimationTreatments = startAnimationTreatments
 window.showTestimonials = showTestimonials
 window.showBeforeAfterImages = showBeforeAfterImages
 window.goToAnimation = goToAnimation
