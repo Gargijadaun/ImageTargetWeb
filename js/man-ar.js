@@ -13,7 +13,7 @@ const mainScreen = document.querySelector('#mainScreen');
 const backBtn = document.querySelector('#backBtn');
 const replayButton = document.querySelector('#replayButton');
 
-// Wake Lock for Mobile
+// Wake Lock
 let wakeLock = null;
 async function keepScreenAwake() {
     try {
@@ -40,20 +40,24 @@ function init() {
         arSystem.unpause();
     }
 
- targetImage.addEventListener("targetFound", () => {
-    const aVideo = document.querySelector("#displayVideo");
-    const srcId = aVideo.getAttribute("src");
-    const video = document.querySelector(srcId);
-    video.play();
-    aVideo.setAttribute("visible", "true");
-});
+    targetImage.addEventListener("targetFound", () => {
+        const aVideo = document.querySelector("#displayVideo");
+        const srcId = aVideo.getAttribute("src");
+        const video = document.querySelector(srcId);
+        if (video) {
+            video.play();
+            aVideo.setAttribute("visible", "true");
+        }
+    });
 
     targetImage.addEventListener("targetLost", () => {
         const aVideo = document.querySelector("#displayVideo");
         const srcId = aVideo.getAttribute("src");
         const video = document.querySelector(srcId);
-        video.pause();
-        aVideo.setAttribute("visible", "false");
+        if (video) {
+            video.pause();
+            aVideo.setAttribute("visible", "false");
+        }
     });
 
     sceneEl.addEventListener("arError", () => {
@@ -111,8 +115,8 @@ function goToAnimation(animationSeq) {
 
     const selectedVideoId = videoMap[animationSeq];
     const aVideo = document.querySelector("#displayVideo");
-    const selectedVideo = document.querySelector(`#${selectedVideoId}`);
 
+    // Stop and reset all videos
     document.querySelectorAll("video").forEach(video => {
         video.pause();
         video.currentTime = 0;
@@ -121,18 +125,14 @@ function goToAnimation(animationSeq) {
     aVideo.setAttribute("visible", "false");
     aVideo.setAttribute("src", `#${selectedVideoId}`);
 
+    // Restart AR system after a short delay to switch video
     if (arSystem && arSystem.running) arSystem.stop();
 
     setTimeout(() => {
         scanText.style.display = "none";
         init();
-        arSystem.start();
         sessionStorage.setItem("cameraActive", "true");
-
-        if (targetImage.components["mindar-image-target"]?.markerVisible) {
-            selectedVideo.play();
-            aVideo.setAttribute("visible", "true");
-        }
+        // NO video.play() here. Wait for targetFound!
     }, 2000);
 }
 
