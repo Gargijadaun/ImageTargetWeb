@@ -69,26 +69,15 @@
 
 
         <a-scene
-          mindar-image="uiScanning: #scanning-overlay; imageTargetSrc: ./assets/target/targets.mind; filterMinCF:0.001; filterBeta: 0.05; missTolerance: 5; warmupTolerance: 5; autoStart: false;"
-
+            mindar-image="uiScanning: #scanning-overlay; imageTargetSrc: ./assets/target/targets.mind; filterMinCF:0.001; filterBeta: 0.05; missTolerance: 5; warmupTolerance: 5; autoStart: false;"
             renderer="colorManagement: true, physicallyCorrectLights:true;antialias: true;" vr-mode-ui="enabled: false"
             device-orientation-permission-ui="enabled: false">
 
             <a-assets>
-<<<<<<< HEAD
                 <video id="vid1" src="assets/video/Video1.mp4" preload="auto" crossorigin="anonymous"></video>
                 <video id="vid2" src="assets/video/Video2.mp4" preload="auto" crossorigin="anonymous"></video>
                 <video id="vid3" src="assets/video/Video3.mp4" preload="auto" crossorigin="anonymous"></video>
                 <video id="vid4" src="assets/video/Video4.mp4" preload="auto" crossorigin="anonymous"></video>
-=======
-                <a-assets>
-                    <video id="vid1" src="assets/video/Video1.mp4" preload="auto" crossorigin="anonymous"></video>
-                    <video id="vid2" src="assets/video/Video2.mp4" preload="auto" crossorigin="anonymous"></video>
-                    <video id="vid3" src="assets/video/Video3.mp4" preload="auto" crossorigin="anonymous"></video>
-                    <video id="vid4" src="assets/video/Video4.mp4" preload="auto" crossorigin="anonymous"></video>
-                </a-assets>
-
->>>>>>> 2415065b0820bc7d208f456259ea092a87b33d0b
             </a-assets>
 
 
@@ -98,15 +87,9 @@
 
 
             <a-entity id="targetImage" mindar-image-target="targetIndex: 0">
-              <a-video
-  id="displayVideo"
-  src="#vid1"
-  width="1.6"
-  height="0.909"
-  position="0 0 0.01"
-  rotation="-90 0 0"
-  visible="false">
-</a-video>
+                <a-video id="displayVideo" src="#vid1" width="1.6" height="0.909" position="0 0 0.01" rotation="-90 0 0"
+                    visible="false">
+                </a-video>
 
 
             </a-entity>
@@ -116,7 +99,7 @@
     </main>
     <script src="./js/gsap.min.js"></script>
     <script src="./js/man-ar.js"></script>
-   
+
     <script src="https://code.jquery.com/jquery-3.7.1.js"></script>
     <script src="https://code.jquery.com/ui/1.14.1/jquery-ui.js"></script>
 
