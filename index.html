@@ -99,58 +99,7 @@
     <script src="https://code.jquery.com/jquery-3.7.1.js"></script>
     <script src="https://code.jquery.com/ui/1.14.1/jquery-ui.js"></script>
 
- <script>
-  document.addEventListener("DOMContentLoaded", () => {
-    const videoElements = {
-      "Video1.mp4": document.querySelector("#vid1"),
-      "Video2.mp4": document.querySelector("#vid2"),
-      "Video3.mp4": document.querySelector("#vid3"),
-      "Video4.mp4": document.querySelector("#vid4")
-    };
-
-    const aVideo = document.querySelector("#displayVideo");
-    const targetEntity = document.querySelector("#targetImage");
-
-    // Resume playback on mobile user interaction
-    const resumeAllVideos = () => {
-      Object.values(videoElements).forEach(v => {
-        v.play().catch(() => {});
-      });
-      document.body.removeEventListener("click", resumeAllVideos);
-    };
-    document.body.addEventListener("click", resumeAllVideos);
-
-    // Auto-play when marker is found
-    targetEntity.addEventListener("targetFound", () => {
-      const srcId = aVideo.getAttribute("src");
-      const video = document.querySelector(srcId);
-      video.play();
-    });
-
-    // Pause when marker is lost
-    targetEntity.addEventListener("targetLost", () => {
-      const srcId = aVideo.getAttribute("src");
-      const video = document.querySelector(srcId);
-      video.pause();
-    });
-
-    // Switch video logic
-    window.playSelectedVideo = (videoName) => {
-      // Pause all videos first
-      Object.values(videoElements).forEach(v => v.pause());
-
-      // Switch source on <a-video>
-      const selectedVideoId = Object.keys(videoElements).find(key => key === videoName);
-      aVideo.setAttribute("src", `#${videoElements[selectedVideoId].id}`);
-
-      // Play it if marker is already visible
-      const isVisible = targetEntity.components['mindar-image-target']?.markerVisible;
-      if (isVisible) {
-        videoElements[videoName].play();
-      }
-    };
-  });
-</script>
+ 
 
 
 </body>
