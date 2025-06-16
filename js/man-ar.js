@@ -698,33 +698,42 @@ async function keepScreenAwake() {
     }
 }
 function goBack() {
-  // Stop the camera system
   const scene = document.querySelector("a-scene");
   const arSystem = scene.systems["mindar-image-system"];
+
+  // 🔴 Stop AR if running
   if (arSystem && arSystem.running) {
     arSystem.stop();
     sessionStorage.setItem("cameraActive", "false");
   }
 
-  // Pause all videos
-  const allVideos = document.querySelectorAll("video");
-  allVideos.forEach(video => video.pause());
-      
-  // Show main screen again
-    mainScreen.classList.remove('hide')
-    backBtn.classList.add('hide')
-    backBtn.classList.remove('show')
+  // 🔴 Pause and reset all videos
+  document.querySelectorAll("video").forEach(video => {
+    video.pause();
+    video.currentTime = 0;
+  });
+
+  // 🔴 Hide <a-video> (wait for marker next time)
+  const aVideo = document.querySelector("#displayVideo");
+  if (aVideo) {
+    aVideo.setAttribute("visible", "false");
+  }
+
+  // ✅ Restore main screen and button UI
+  mainScreen.classList.remove("hide");
+  mainScreen.style.display = "flex";
+
+  backBtn.classList.add("hide");
+  backBtn.classList.remove("show");
+
   const btnContainer = document.querySelector("#mainScreen .btn-container");
-  btnContainer.classList.add("show");
+  if (btnContainer) {
+    btnContainer.classList.add("show");
+    btnContainer.classList.remove("hide");
+    btnContainer.style.display = "flex";
+  }
 
-  if (mainScreen) mainScreen.style.display = "flex";
-  if (btnContainer) btnContainer.style.display = "flex";
-
-  // ✅ Remove any .hide class if applied
-//   mainScreen.classList.remove("hide");
-  btnContainer.classList.remove("hide");
-
-  // Optional: Hide scan text or overlays
+  // ✅ Hide scanning overlay
   document.getElementById("scanText").style.display = "none";
   document.getElementById("scanning-overlay").classList.add("hidden");
 }
@@ -737,10 +746,9 @@ function goToAnimation(animationSeq) {
   scanText.style.background = "white";
   scanText.style.display = "flex";
 
-  // Track which animation is selected
+  // Store current sequence
   TIMELINE_DETAILS.currentAnimationSeq = Number(animationSeq);
 
-  // Video ID map (assuming video elements with these IDs exist in <a-assets>)
   const videoMap = {
     1: "vid1",
     2: "vid2",
@@ -752,56 +760,45 @@ function goToAnimation(animationSeq) {
   const aVideo = document.querySelector("#displayVideo");
   const selectedVideo = document.querySelector(`#${selectedVideoId}`);
 
-  // Pause all videos before switching
-  document.querySelectorAll("video").forEach(video => video.pause());
+  // 🔴 Pause/reset all videos
+  document.querySelectorAll("video").forEach(video => {
+    video.pause();
+    video.currentTime = 0;
+  });
 
-  // Set video source on <a-video>
+  // 🔴 Set video and hide it until marker is seen
+  aVideo.setAttribute("visible", "false");
   aVideo.setAttribute("src", `#${selectedVideoId}`);
 
-  // Resume AR after delay
+  // 🔁 Restart AR cleanly
+  const scene = document.querySelector("a-scene");
+  const arSystem = scene.systems["mindar-image-system"];
+  if (arSystem && arSystem.running) {
+    arSystem.stop();
+  }
+
   setTimeout(() => {
     scanText.style.display = "none";
 
-    init(); // Your custom AR startup function
-    const scene = document.querySelector("a-scene");
-    const arSystem = scene.systems["mindar-image-system"];
-    arSystem.resume();
+    init(); // starts the AR scene (your existing function)
+    arSystem.start();
 
     sessionStorage.setItem("cameraActive", "true");
 
-    // Play video if marker is already visible
+    // If marker already visible (quick comeback), play immediately
     const targetEntity = document.querySelector("#targetImage");
     if (targetEntity.components["mindar-image-target"]?.markerVisible) {
       selectedVideo.play();
+      aVideo.setAttribute("visible", "true");
     }
   }, 2000);
 }
 
-
-// // Add this at the end of startAnimationCommonCauses
-// TIMEOUTS.push(setTimeout(() => {
-//     if (TIMELINE_DETAILS.isStopAnimation)
-//         return
-
-//     document.querySelector('#replayButton').classList.remove('hide');
-//     document.querySelector('#replayButton').classList.add('show');
-// }, 22 * ANIMATION_DELAY_CONSTANT));
-
-// // Add this at the end of startAnimationTreatments
-// TIMEOUTS.push(setTimeout(() => {
-//     if (TIMELINE_DETAILS.isStopAnimation)
-//         return
-
-//     document.querySelector('#replayButton').classList.remove('hide');
-//     document.querySelector('#replayButton').classList.add('show');
-// }, 49 * ANIMATION_DELAY_CONSTANT));
-
-// Add this event listener for the replay button
 document.addEventListener("DOMContentLoaded", () => {
   const aVideo = document.querySelector("#displayVideo");
   const targetEntity = document.querySelector("#targetImage");
 
-  // When marker is found → show and play video
+  // ▶️ When marker is found → show and play video
   targetEntity.addEventListener("targetFound", () => {
     const srcId = aVideo.getAttribute("src");
     const video = document.querySelector(srcId);
@@ -809,7 +806,7 @@ document.addEventListener("DOMContentLoaded", () => {
     aVideo.setAttribute("visible", "true");
   });
 
-  // When marker is lost → pause and hide video
+  // ⏸️ When marker is lost → pause and hide video
   targetEntity.addEventListener("targetLost", () => {
     const srcId = aVideo.getAttribute("src");
     const video = document.querySelector(srcId);
@@ -817,6 +814,7 @@ document.addEventListener("DOMContentLoaded", () => {
     aVideo.setAttribute("visible", "false");
   });
 });
+
 
     // Ensure the replay button is shown after the animation ends
     function showReplayButton() {
