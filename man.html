@@ -1,0 +1,426 @@
+<html>
+
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <script src="https://aframe.io/releases/1.5.0/aframe.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/mind-ar@1.2.5/dist/mindar-image-aframe.prod.js"></script>
+    <script src="https://cdn.jsdelivr.net/gh/c-frame/aframe-extras@7.2.0/dist/aframe-extras.min.js"></script>
+    <script src="./js/aframe-spritesheet-component.min.js"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/img-comparison-slider@8/dist/index.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/img-comparison-slider@8/dist/styles.css" />
+    <link rel="stylesheet" href="https://code.jquery.com/ui/1.14.1/themes/base/jquery-ui.css">
+    <link rel="stylesheet" href="./styles/main.css">
+</head>
+
+<body>
+    <main>
+        <div id="backBtn" onclick="goBack()">
+            <img src="./assets/icons/back-icon.png" alt="Back">
+        </div>
+        <div id="replayButton" class="hide">
+            <img src="./assets/images/replay.png" alt="Back">
+        </div>
+        <div id="scanText">
+            <img src="./assets/images/Marker poster.png" alt="Scanning Image" />
+          </div>
+          <!-- <button id="replayButton" class="hide">Replay</button> -->
+        <!-- <a href="./index.html" id="menuBtn" class="show">
+            <img src="./assets/icons/home-icon.png" alt="Home">
+        </a> -->
+
+        <div id="menuIcon">
+            <div class=""></div>
+            <div class=""></div>
+            <div class=""></div>
+        </div>
+
+        <div id="menuContainer">
+            <div class="container">
+                <div class="menu-logo">
+                    <img src="./assets/images/main-logo.png" alt="" class="w-100">
+                </div>
+                <ul>
+                    <li>
+                        <a href="./index.html">
+                            HOME
+                        </a>
+                    </li>
+                    <li>
+                        <a href="./young-lady.html">
+                            SKIN SOLUTIONS
+                        </a>
+                    </li>
+                    <li>
+                        <a class="active" href="./man.html">
+                            HAIRLOSS SOLUTIONS
+                        </a>
+                    </li>
+                    <li>
+                        <a href="./old-lady.html">
+                            AGEING SOLUTIONS
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+
+        <div id="mainScreen" class="man-bg">
+            <div class="btn-container">
+                <button class="btn" onclick="goToAnimation(1)">
+                    Common Causes
+                </button>
+                <button class="btn" onclick="goToAnimation(2)">
+                    Treatments Available
+                </button>
+                <button class="btn" onclick="goToAnimation(3)">
+                    Before & After Pictures
+                </button>
+            </div>
+        </div>
+        <div id="deviceError">
+            <p>
+                AR Experience works best on mobile devices.<br>Please try the experience on a mobile device.
+            </p>
+        </div>
+
+        <div id="infoText">
+            <p>
+            </p>
+        </div>
+
+        <div class="single-btn-container">
+            <button id="treatmentsBtn" class="btn" onclick="startAnimationTreatments()">
+                Treatments Available
+            </button>
+            <button id="testimonialsBtn" class="btn" onclick="showTestimonials()">
+                Before & After Treatment
+            </button>
+        </div>
+
+        <div id="testimonial-container">
+            <div class="container">
+                <div id="info-container" class="show">
+                    <img src="./assets/images/man/testimonial/before-after-02.png" alt="">
+                    <p>
+                        To achieve best results in hair fall, your dermatologist can suggest one treatment at a time or
+                        combination of multiple treatments depending upon your hair issues. Let your dermatologist
+                        decide after examining your hair. To know more about hair treatments, ask your dermatologist.
+                    </p>
+                    <div class="single-btn-container">
+                        <button id="beforeAfterBtn" class="btn show-single" onclick="showBeforeAfterImages()">
+                            Show Before and After
+                        </button>
+                    </div>
+                </div>
+                <div id="testimonial-image-container">
+                    <div class="flex flex-col">
+                        <h2 style="text-align: center; margin-top: 20%;">Treatment Results</h2>
+                        <div class="image-container">
+                            <div class="comparison-slider-container show" id="template-num-1">
+                                <img-comparison-slider>
+                                    <img slot="first" src="./assets/images/man/testimonial/ajay-patel-before.jpg" />
+                                    <img slot="second" src="./assets/images/man/testimonial/ajay-patel-after.jpg" />
+                                </img-comparison-slider>
+                            </div>
+                            <!-- <div class="comparison-slider-container" id="template-num-2">
+                                <img-comparison-slider>
+                                    <img slot="first" src="./assets/images/young-lady/young-lady-base-face.png" />
+                                    <img slot="second" src="./assets/images/young-lady/pimples.png" />
+                                </img-comparison-slider>
+                            </div>
+                            <div class="comparison-slider-container" id="template-num-3">
+                                <img-comparison-slider>
+                                    <img slot="first" src="./assets/images/man/face-man-hair.png" />
+                                    <img slot="second" src="./assets/images/man/face-man.png" />
+                                </img-comparison-slider>
+                            </div>
+                            <div class="comparison-slider-container" id="template-num-4">
+                                <img-comparison-slider>
+                                    <img slot="first" src="./assets/images/young-lady/young-lady-base-face.png" />
+                                    <img slot="second" src="./assets/images/young-lady/pimples.png" />
+                                </img-comparison-slider>
+                            </div> -->
+                            <div class="testimonialInfoContainer">
+                                <p class="testimonialHeader">
+                                    Testimonial
+                                </p>
+                                <p class="testimonialText">
+                                    I noticed visible improvements after just 3 Sessions. The team was professional and
+                                    made me feel comfortable throughout the process. I was initially skeptical about GFC
+                                    therapy, but my dermatologist gave me a full walkthrough of the process and how it
+                                    works. I felt a bit tense on my first sitting, but the second and third sittings
+                                    went smoothly. The results are amazing.<br><strong>- Aditya Kumar.</strong>
+                                </p>
+                            </div>
+                            <div class="disclaimer">
+                                <h6>Disclaimer</h6>
+                                <p>
+                                    Your dermatologist will recommend treatment based on your acne condition and grade.
+                                    These results are from one or multiple acne treatments. Individual results may vary.
+                                </p>
+                            </div>
+                        </div>
+                        <!-- <div class="slider-container">
+                            <div id="slider-track">
+
+                                <div class="sliderBtn" id="slider-btn-1"></div>
+                                <div class="sliderBtn" id="slider-btn-2"></div>
+                                <div class="sliderBtn" id="slider-btn-3"></div>
+                                <div class="sliderBtn" id="slider-btn-4"></div>
+                            </div>
+                        </div> -->
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="scanning-overlay" class="hidden">
+            <div class="inner">
+                <img src="./assets/target/marker.jpg" alt="Marker Overlay">
+                <div class="scanline"></div>
+            </div>
+        </div>
+
+        <!-- Voice Overs -->
+
+        <audio id="audioElement" preload="auto">
+            <source id="audioSource" src="./assets/audio/man/common-causes/maleVO_Man_CommonCauses_Part1_v1.mp3"
+                type="audio/mpeg">
+        </audio>
+
+        <!-- Voice Overs -->
+
+        <a-scene
+            mindar-image="uiScanning: #scanning-overlay; imageTargetSrc: ./assets/target/targets.mind;filterMinCF:0.0001; filterBeta: 0.001;missTolerance: 5;warmupTolerance: 5;autoStart: false;"
+            renderer="colorManagement: true, physicallyCorrectLights:true;antialias: true;" vr-mode-ui="enabled: false"
+            device-orientation-permission-ui="enabled: false">
+
+            <a-assets>
+                <!-- Base Blur Layer -->
+                <img id="baseBlurLayerSrc" src="./assets/images/bg-blur-layer.png">
+
+                <!-- Base face -->
+                <img id="baseFaceWithHairSrc" src="./assets/images/man/face-man-hair_v02.png">
+
+                <!-- Base face -->
+                <img id="baseFaceSrc" src="./assets/images/man/face-man_v02.png">
+
+                <!-- DNA Spritesheet -->
+                <img id="dnaSrc" src="./assets/images/man/spritesheet_DNA_4.png">
+
+                <!-- Notepad -->
+                <img id="notepadSrc" src="./assets/images/man/note-pad.png">
+
+                <!-- Medicine strip -->
+                <img id="medicineStripSrc" src="./assets/images/man/medicine-strip.png">
+
+                <!-- Stress spritesheet -->
+                <img id="stressSrc" src="./assets/images/man/stress_spritesheet-v5.png">
+
+                <!-- Capsule group -->
+                <img id="capsuleGroupSpriteSheetSrc" src="./assets/images/man/capsules-spritesheet-v3.png">
+
+                <!-- Fastfood -->
+                <img id="fastFoodSrc" src="./assets/images/man/food-tray-01.png">
+                <img id="burgerSrc" src="./assets/images/man/burgur-taco-02.png">
+                <img id="pizzaSrc" src="./assets/images/man/pizza-slice-03.png">
+
+                <!-- Syringe spritesheet -->
+                <img id="syringeSrc" src="./assets/images/man/spritesheet-syringe-02.png">
+
+                <!-- Medicine Bottle -->
+                <img id="medicineBottleSrc" src="./assets/images/man/medicine-bottle-v2.png">
+
+                <!-- Hair Transplant -->
+                <img id="hairTransplantSrc" src="./assets/images/man/hair-transplant/transplant-base_image-01.png">
+
+                <!-- Patch line -->
+                <img id="patchLineSrc" src="./assets/images/man/hair-transplant/patch-line-03.png">
+
+                <!-- Patch -->
+                <img id="patchSrc" src="./assets/images/man/hair-transplant/hair-patch-03.png">
+
+                <!-- Grafting -->
+                <img id="graftingSrc" src="./assets/images/man/hair-transplant/grafting-05.png">
+
+                <!-- Plucking -->
+                <img id="pluckingSrc" src="./assets/images/man/hair-transplant/plucked-06.png">
+
+                <!-- Single Hair -->
+                <img id="singleHairSrc" src="./assets/images/man/hair-transplant/single-hairs-06.png">
+
+                <!-- Hair growth -->
+                <img id="hairGrowthSrc" src="./assets/images/man/hair-transplant/hair-growth-08.png">
+
+
+            </a-assets>
+
+            <a-camera position="0 0 0" look-controls="enabled: false" cursor="fuse: false; rayOrigin: mouse;"
+                raycaster="near: 10; far: 10000; objects: .clickable"></a-camera>
+
+            <a-entity id="targetImage" mindar-image-target="targetIndex: 0">
+
+                <!-- 
+                Causes
+                 -->
+
+                <!-- Base Blur layer -->
+                <a-entity id="baseBlurLayer" geometry="primitive: plane; width: 1.8; height: 1.8;"
+                    material="shader: flat;src: #baseBlurLayerSrc;transparent:true;opacity:0;alphaTest:false;depthTest:false;"
+                    position="0 0 -0.05" scale="1 1 1"></a-entity>
+
+                <!-- Base face -->
+                <a-entity id="baseFace" geometry="primitive: plane; width: 1; height: 1.8;"
+                    material="shader: flat;src: #baseFaceSrc;transparent:true;opacity:0;alphaTest:false;depthTest:false;"
+                    position="0 0 0" scale="0 0 0"></a-entity>
+
+                <!-- Base face -->
+                <a-entity id="baseFaceWithHair" geometry="primitive: plane; width: 1; height: 1.8;"
+                    material="shader: flat;src: #baseFaceWithHairSrc;transparent:true;opacity:0;alphaTest:false;depthTest:false;"
+                    position="0 0 0" scale="0 0 0"></a-entity>
+
+                <!-- DNA -->
+                <a-entity id="dna" geometry="primitive: plane; width: 0.5; height: 1.05;" rotation="0 0 0"
+                    material="shader: flat;src: #dnaSrc; transparent:true; opacity: 0;" position="-0.3 -0.6 0.2"
+                    sprite-sheet="cols:1; rows: 24; progress: 0;" scale=".6 .6 1"></a-entity>
+
+                <!-- Notepad -->
+                <a-entity id="notepad" geometry="primitive: plane; width: .8; height: 1.1;"
+                    material="shader: flat;src: #notepadSrc; transparent:true; opacity: 0;" position=".35 -0.55 0.225"
+                    scale="0.55 0.55 1"></a-entity>
+
+                <!-- Medicine strip -->
+                <a-entity id="medicineStrip" geometry="primitive: plane; width: .2; height: .4;"
+                    material="opacity:0; shader: flat;src: #medicineStripSrc; transparent:true" position=".45 -0.4 0.85"
+                    rotation="0 0 -15" scale=".8 .8 1"></a-entity>
+
+                <!-- Stress -->
+                <a-entity id="stress" geometry="primitive: plane; width: .6; height: .3;" rotation="0 0 0"
+                    material="shader: flat;src: #stressSrc; transparent:true; opacity: 0;alphaTest:false;depthTest:false;"
+                    position="0 0.7 0.25" sprite-sheet="cols:1; rows: 24; progress: 0;" scale="3.5 3.5 1"></a-entity>
+
+                <!-- Capsule group -->
+                <a-entity id="capsuleGroup" geometry="primitive: plane; width: 1.02; height: .82;"
+                    material="shader: flat;src: #capsuleGroupSpriteSheetSrc; transparent:true;opacity:0;alphaTest:false;depthTest:false"
+                    sprite-sheet="cols:1; rows: 23; progress: 0;" position="-0.35 -.5 .5" scale=".4 .4 1"
+                    animation=""></a-entity>
+
+                <!-- Fast food -->
+                <a-entity id="fastFood" geometry="primitive: plane; width: .845; height: .65;"
+                    material="shader: flat;src: #fastFoodSrc; transparent:true;opacity:0;alphaTest:false;depthTest:false"
+                    position="0.225 -.6 .2" scale="0 0 0" animation=""></a-entity>
+
+                <!-- Burger -->
+                <a-entity id="burger" geometry="primitive: plane; width: .845; height: .65;"
+                    material="shader: flat;src: #burgerSrc; transparent:true;opacity:0;alphaTest:false;depthTest:false"
+                    position="0.245 -.6 .25" scale="0 0 0" animation=""></a-entity>
+
+                <!-- Pizza -->
+                <a-entity id="pizza" geometry="primitive: plane; width: .845; height: .65;"
+                    material="shader: flat;src: #pizzaSrc; transparent:true;opacity:0;alphaTest:false;depthTest:false"
+                    position="0.225 -.6 .3" scale="0 0 0" animation=""></a-entity>
+
+                <!-- 
+                Treatments 
+                 -->
+
+                <!-- Medicine Bottle -->
+                <a-entity id="medicineBottle" geometry="primitive: plane; width: .5; height: .5;" rotation="0 0 0"
+                    material="shader: flat;src: #medicineBottleSrc; transparent:true; opacity: 0;alphaTest:false;depthTest:false;"
+                    position=".25 -0.25 1" scale=".65 .65 1"></a-entity>
+
+                <!-- Syringe  -->
+                <a-entity id="syringe" geometry="primitive: plane; width: .2; height: .7;" rotation="0 0 180"
+                    material="shader: flat;src: #syringeSrc; transparent:true; opacity: 0;alphaTest:false;depthTest:false;"
+                    position=".3 0.1 0.9" sprite-sheet="cols:16; rows: 1; progress: 0;" scale=".8 .8 1"></a-entity>
+
+                <!-- Hair transplant -->
+                <a-entity id="hairTransplant" geometry="primitive: plane; width: .65; height: .65;" rotation="0 0 0"
+                    material="shader: flat;src: #hairTransplantSrc; transparent:true; opacity: 0;alphaTest:false;depthTest:false;"
+                    position=".2 -0.325 1" scale="1 1 1"></a-entity>
+
+                <!-- Patch line -->
+                <a-entity id="patchLine" geometry="primitive: plane; width: .65; height: .65;" rotation="0 0 0"
+                    material="shader: flat;src: #patchLineSrc; transparent:true; opacity: 0;alphaTest:false;depthTest:false;"
+                    sprite-sheet="cols:1; rows: 24; progress: 0;" position=".2 -0.325 1" scale="1 1 1"></a-entity>
+
+                <!-- Patch -->
+                <a-entity id="patch" geometry="primitive: plane; width: .65; height: .65;" rotation="0 0 0"
+                    material="shader: flat;src: #patchSrc; transparent:true; opacity: 0;alphaTest:false;depthTest:false;"
+                    sprite-sheet="cols:1; rows: 44; progress: 0;" position=".2 -0.325 1" scale="1 1 1"></a-entity>
+
+                <!-- Grafting -->
+                <a-entity id="grafting" geometry="primitive: plane; width: .65; height: .65;" rotation="0 0 0"
+                    material="shader: flat;src: #graftingSrc; transparent:true; opacity: 0;alphaTest:false;depthTest:false;"
+                    sprite-sheet="cols:1; rows: 24; progress: 0;" position=".2 -0.325 1" scale="1 1 1"></a-entity>
+
+                <!-- Plucking -->
+                <a-entity id="plucking" geometry="primitive: plane; width: .65; height: .65;" rotation="0 0 0"
+                    material="shader: flat;src: #pluckingSrc; transparent:true; opacity: 0;alphaTest:false;depthTest:false;"
+                    sprite-sheet="cols:1; rows: 24; progress: 0;" position=".2 -0.325 1" scale="1 1 1"></a-entity>
+
+                <!-- Single hair -->
+                <a-entity id="singleHair" geometry="primitive: plane; width: .65; height: .65;" rotation="0 0 0"
+                    material="shader: flat;src: #singleHairSrc; transparent:true; opacity: 0;alphaTest:false;depthTest:false;"
+                    sprite-sheet="cols:1; rows: 24; progress: 0;" position=".2 -0.325 1" scale="1 1 1"></a-entity>
+
+                <!-- Hair growth -->
+                <a-entity id="hairGrowth" geometry="primitive: plane; width: .65; height: .65;" rotation="0 0 0"
+                    material="shader: flat;src: #hairGrowthSrc; transparent:true; opacity: 0;alphaTest:false;depthTest:false;"
+                    sprite-sheet="cols:1; rows: 24; progress: 0;" position=".195 -0.325 1"
+                    scale="1.01 1.01 1"></a-entity>
+
+
+            </a-entity>
+
+        </a-scene>
+    </main>
+    <script src="./js/gsap.min.js"></script>
+    <script src="./js/man-ar.js"></script>
+    <script src="./js/menu.js"></script>
+    <script src="https://code.jquery.com/jquery-3.7.1.js"></script>
+    <script src="https://code.jquery.com/ui/1.14.1/jquery-ui.js"></script>
+
+    <script>
+        // const NUMBER_OF_SLIDES = 4
+        // const STEP = 100 / (NUMBER_OF_SLIDES + 1)
+        // $(function () {
+        //     $("#slider-track").slider({
+        //         value: STEP,
+        //         min: 0,
+        //         max: 100,
+        //         step: STEP,
+        //         slide: function (event, ui) {
+
+        //             if (ui.value < 20) {
+        //                 $("#slider").slider("option", "value", 20);
+        //                 return false
+        //             }
+
+        //             if (ui.value > 80) {
+        //                 $("#slider").slider("option", "value", 80);
+        //                 return false
+        //             }
+
+        //             $(".background-div").css('width', `${ui.value}%`)
+        //             showComparisonTemplate(ui.value)
+        //         }
+        //     });
+
+        // });
+
+        // function showComparisonTemplate(sliderVal) {
+        //     const templateNum = sliderVal / STEP
+        //     const eleToShow = document.querySelector(`#template-num-${templateNum}`)
+
+        //     $(".comparison-slider-container").removeClass('show')
+        //     eleToShow.classList.add('show')
+        // }
+
+        // const backgroundDiv = document.createElement('div')
+        // backgroundDiv.className = 'background-div'
+        // document.querySelector("#slider-track").appendChild(backgroundDiv)
+    </script>
+</body>
+
+</html>

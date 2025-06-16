@@ -1,0 +1,485 @@
+<html>
+
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <script src="https://aframe.io/releases/1.5.0/aframe.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/mind-ar@1.2.5/dist/mindar-image-aframe.prod.js"></script>
+    <script src="https://cdn.jsdelivr.net/gh/c-frame/aframe-extras@7.2.0/dist/aframe-extras.min.js"></script>
+    <script src="./js/aframe-spritesheet-component.min.js"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/img-comparison-slider@8/dist/index.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/img-comparison-slider@8/dist/styles.css" />
+    <link rel="stylesheet" href="https://code.jquery.com/ui/1.14.1/themes/base/jquery-ui.css">
+    <link rel="stylesheet" href="./styles/main.css">
+</head>
+
+<body>
+  
+  
+      
+      <!-- //  <button id="startButton" >Start</button>  -->
+      
+    
+<!-- 🔹 Intro Screen -->
+<!-- 🔹 Intro Screen -->
+<div id="introOverlay">
+    <img src="./assets/images/BGDark.png" alt="Background" id="bgImage">
+    <div id="introText">
+        <p>We understand how having acne can be stressful and affect your beauty.<br>
+            Worry not... With a dermatologist’s intervention, it can be cured.<br>
+            Let us explore how...
+        </p>
+    </div>
+</div>
+
+
+    <audio id="myAudio" autoplay>
+        <source src="./assets//audio/young-lady/intro.mp3" type="audio/mpeg">
+    </audio>
+    <main id="mainContent">
+        <div id="backBtn" onclick="goBack()">
+            <img src="./assets/icons/back-icon.png" alt="Back">
+        </div>
+        <div id="replayButton" class="hide">
+            <img src="./assets/images/replay.png" alt="Back">
+        </div>
+        <div id="scanText">
+            <img src="./assets/images/Marker poster.png" alt="Scanning Image" />
+          </div>
+          <div id="fullScreenText">
+            <img src="./assets/images/BGDark.png" alt="Acne Treatment Background" id="bgImage01">
+            <p>
+                To achieve the best results in acne treatment, your dermatologist can suggest one treatment at a time or a 
+                combination of multiple treatments, depending upon your acne grade or condition. Let your dermatologist decide 
+                after examining your skin and grade of acne.
+                <br><br>
+                To know more about acne treatments, ask your dermatologist.
+            </p>
+        </div>
+        
+<audio id="animationAudio" src="./assets/audio/young-lady/acne.mp3"></audio> <!-- Replace with actual file -->
+
+        <div id="menuIcon">
+            <div class=""></div>
+            <div class=""></div>
+            <div class=""></div>
+        </div>
+
+        <div id="menuContainer">
+            <div class="container">
+                <div class="menu-logo">
+                    <img src="./assets/images/main-logo.png" alt="" class="w-100">
+                </div>
+                <ul>
+                    <li>
+                        <a href="./index.html">
+                            HOME
+                        </a>
+                    </li>
+                    <li>
+                        <a class="active" href="./young-lady.html">
+                            SKIN SOLUTIONS
+                        </a>
+                    </li>
+                    <li>
+                        <a href="./man.html">
+                            HAIRLOSS SOLUTIONS
+                        </a>
+                    </li>
+                    <li>
+                        <a href="./old-lady.html">
+                            AGEING SOLUTIONS
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+
+        <div id="mainScreen" class="young-bg">
+            <div class="btn-container">
+                <button class="btn" onclick="goToAnimation(1)">
+                    Common Causes
+                </button>
+                <button class="btn" onclick="goToAnimation(2)">
+                    Treatments Available
+                </button>
+                <button class="btn" onclick="goToAnimation(3)">
+                    Before & After Pictures
+                </button>
+            </div>
+        </div>
+        <div id="deviceError">
+            <p>
+                AR Experience works best on mobile devices.<br>Please try the experience on a mobile device.
+            </p>
+        </div>
+
+        <!-- <div id="loader">
+            <div class="loader-icon">
+                <img src="./assets/icons/icons8-loader-96.png" alt="Loader">
+            </div>
+            <button class="btn btn-main" id="hideLoaderBtn" onclick="hideLoader()"
+                style="opacity: 0; pointer-events: none;">CONTINUE</button>
+        </div> -->
+
+        <!-- <div id="resetBtn" onclick="resetAnimation()">
+            <img src="./assets/icons/reset-icon.png" alt="">
+        </div> -->
+
+        <div id="infoText">
+            <p>
+
+            </p>
+        </div>
+
+        <div class="single-btn-container">
+            <button id="treatmentsBtn" class="btn" onclick="startAnimationTreatments()">
+                Treatments Available
+            </button>
+            <button id="testimonialsBtn" class="btn" onclick="showTestimonials()">
+                Before & After Treatment
+            </button>
+        </div>
+
+        <div id="testimonial-container">
+            <div class="container">
+                <div id="info-container" class="show">
+                    <img src="./assets/images/young-lady/testimonial/young-lady-before-after.png" alt="">
+                    <p>
+                        To achieve best results in Acne treatment, your dermatologist can suggest one treatment at a
+                        time or combination of multiple treatments depending upon your acne grade or condition. Let your
+                        dermatologist decide after examining your skin and grade of acne. To know more about Acne
+                        treatments, ask your dermatologist.
+                    </p>
+                    <div class="single-btn-container">
+                        <button id="beforeAfterBtn" class="btn show-single" onclick="showBeforeAfterImages()">
+                            Show Before and After
+                        </button>
+                    </div>
+                </div>
+                <div id="testimonial-image-container">
+                    <div class="flex flex-col">
+                        <h2 style="text-align: center; margin-top: 20%;">Treatment Results</h2>
+                        <div class="image-container">
+                            <div class="comparison-slider-container show" id="template-num-1">
+                                <img-comparison-slider>
+                                    <img slot="first"
+                                        src="./assets/images/young-lady/testimonial/kiranben-Makwana-before.jpg" />
+                                    <img slot="second"
+                                        src="./assets/images/young-lady/testimonial/kiranben-Makwana-after.jpg" />
+                                </img-comparison-slider>
+                            </div>
+                        </div>
+                        <!-- <div class="slider-container">
+                            <div id="slider-track">
+
+                                <div class="sliderBtn" id="slider-btn-1"></div>
+                                <div class="sliderBtn" id="slider-btn-2"></div>
+                                <div class="sliderBtn" id="slider-btn-3"></div>
+                                <div class="sliderBtn" id="slider-btn-4"></div>
+                            </div>
+                        </div> -->
+                        <div class="testimonialInfoContainer">
+                            <p class="testimonialHeader">
+                                Testimonials
+                            </p>
+                            <p class="testimonialText">
+                                I visited Epicorium for my severe acne problem, and the results have been remarkable. The
+                                treatment plan recommended by Dr. Priya was tailored to my skin type and has cleared my acne
+                                significantly.<br><strong>- Ridhima S.</strong>
+                                <br><br>
+                                I highly recommend Epicorium Skin Clinic for anyone dealing with acne. The personalized care
+                                and advanced treatments have worked wonders for my skin.<br><strong>- Nihal K</strong>
+                            </p>
+                        </div>
+                        <div class="disclaimer">
+                            <h6>Disclaimer</h6>
+                            <p>
+                                Your dermatologist will recommend treatment based on your acne condition and grade.
+                                These results are from one or multiple acne treatments. Individual results may vary.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="scanning-overlay" class="hidden">
+            <div class="inner">
+                <img src="./assets/target/marker.jpg" alt="Marker Overlay">
+                <div class="scanline"></div>
+            </div>
+        </div>
+
+        <!-- Voice Overs -->
+
+        <audio id="audioElement" preload="auto">
+            <source id="audioSource"
+                src="./assets/audio/young-lady/common-causes/femaleVO_YoungLady_CommonCauses_Part1_v1.mp3"
+                type="audio/mpeg">
+        </audio>
+
+        <!-- Voice Overs -->
+
+        <a-scene
+            mindar-image="uiScanning: #scanning-overlay; imageTargetSrc: ./assets/target/marker-final-derma.mind;filterMinCF:0.0001; filterBeta: 0.001;missTolerance: 5;warmupTolerance: 5;autoStart: false;"
+            color-space="sRGB" renderer="colorManagement: true, physicallyCorrectLights" vr-mode-ui="enabled: false"
+            device-orientation-permission-ui="enabled: false">
+            <a-assets>
+                <!-- Base Blur Layer -->
+                <img id="baseBlurLayerSrc" src="./assets/images/bg-blur-layer.png">
+
+                <!-- Base face -->
+                <img id="baseFaceSrc" src="./assets/images/young-lady/young-lady-base-face-v2.png">
+
+                <!-- Pimples -->
+                <img id="pimplesSrc" src="./assets/images/young-lady/pimples.png">
+
+                <!-- Sad Emoji -->
+                <img id="emojiSprite_1_Src" src="./assets/images/young-lady/causes/emoji-01-v5.png">
+
+                <!-- Angry Emoji -->
+                <img id="emojiSprite_2_Src" src="./assets/images/young-lady/causes/emoji-02-v5.png">
+
+                <!-- Happy Emoji -->
+                <img id="emojiSprite_3_Src" src="./assets/images/young-lady/causes/emoji-03-v5.png">
+
+                <!-- Capsule group -->
+                <img id="capsuleGroupSrc" src="./assets/images/young-lady/causes/capsules-part1-v5.png">
+                <img id="capsuleGroupSrc1" src="./assets/images/young-lady/causes/capsules-part2-v5.png">
+
+                <!-- Brush -->
+                <img id="brushSrc" src="./assets/images/young-lady/causes/brush01.png">
+
+                <img id="blushSrc" src="./assets/images/young-lady/causes/blush-cheek-color.png">
+
+                <!-- Eye liner -->
+                <img id="eyelinerSrc" src="./assets/images/young-lady/causes/eye-liner.png">
+
+                <img id="eyebrowSrc" src="./assets/images/young-lady/causes/eyebrow-color.png">
+
+                <!-- Lipstick -->
+                <img id="lipstickSrc" src="./assets/images/young-lady/causes/lipstick.png">
+
+                <img id="lipsSrc" src="./assets/images/young-lady/causes/lips-color.png">
+
+                <!-- Capsule spritesheet -->
+                <img id="capsuleSrc" src="./assets/images/young-lady/capsule-spritesheet-v3.png">
+
+                <img id="capsuleParticlesSrc" src="./assets/images/young-lady/particles-part1-v5.png">
+                <img id="capsuleParticlesSrc2" src="./assets/images/young-lady/particles-part2-v5.png">
+
+                <!-- Dirt spritesheet -->
+                <img id="dirtSrc" src="./assets/images/young-lady/causes/dirt.png">
+
+                <!-- Smoke spritesheet -->
+                <img id="smokeSrc" src="./assets/images/young-lady/causes/smoke_sprite_v4.png">
+
+                <!-- Laser spritesheet -->
+                <img id="laserSrc" src="./assets/images/young-lady/laser-spritesheet-v2.png">
+
+                <!-- Face Mask Brush -->
+                <img id="faceMaskBrushSrc" src="./assets/images/young-lady/fask-mask-brush.png">
+
+                <!-- Face Peel -->
+                <img id="facePeelSrc" src="./assets/images/young-lady/face-peel.png">
+
+                <!-- Face mask -->
+                <img id="faceMaskSrc" src="./assets/images/young-lady/face-mask_02-v2.png">
+
+                <!-- Face lotion -->
+                <img id="faceLotionSrc" src="./assets/images/young-lady/face-lotion-spritesheet-v4.png">
+
+            </a-assets>
+
+            <a-camera position="0 0 0" look-controls="enabled: false" cursor="fuse: false; rayOrigin: mouse;"
+                raycaster="near: 10; far: 10000; objects: .clickable"></a-camera>
+
+            <a-entity id="targetImage" mindar-image-target="targetIndex: 0">
+
+                <!-- 
+                Causes
+                 -->
+
+                <!-- Base Blur layer -->
+                <a-entity id="baseBlurLayer" geometry="primitive: plane; width: 1.8; height: 1.8;"
+                    material="shader: flat;src: #baseBlurLayerSrc;transparent:true;opacity:0;alphaTest:false;depthTest:false;"
+                    position="0 0 -0.05" scale="1 1 1"></a-entity>
+
+                <!-- Base face -->
+                <a-entity id="baseFace" geometry="primitive: plane; width: 1; height: 1.8;"
+                    material="shader: flat;src: #baseFaceSrc;transparent:true;opacity:0" position="0 0 0"
+                    scale="0 0 0"></a-entity>
+
+                <!-- Pimples -->
+                <a-entity id="pimples" geometry="primitive: plane; width: 1; height: 1.8;"
+                    material="shader: flat;src: #pimplesSrc; transparent:true; opacity: 0;alphaTest:false;depthTest:false"
+                    position="0 0 0.01" scale="1 1 1"></a-entity>
+
+                <!-- Dust -->
+                <a-entity id="dirt" geometry="primitive: plane; width: .8; height: .8;" rotation="0 0 0"
+                    material="shader: flat;src: #dirtSrc; transparent:true; opacity: 0;alphaTest:false;depthTest:false"
+                    position="0 0.1 0.02" scale="1 1 1"></a-entity>
+
+                <!-- Smoke -->
+                <a-entity id="smoke" geometry="primitive: plane; width: 1.5; height: 1.5;" rotation="0 0 0"
+                    material="shader: flat;src: #smokeSrc; transparent:true; opacity: 0;alphaTest:false;depthTest:false;"
+                    position="0 0 0.15" sprite-sheet="cols:1; rows: 43; progress: 0;" scale="1 1 1"></a-entity>
+
+                <!-- Emojis -->
+
+                <!-- Emoji 1 -->
+                <a-entity id="emojiSprite_1" geometry="primitive: plane; width: 1; height: 1;"
+                    material="opacity:0; shader: flat;src: #emojiSprite_1_Src; transparent:true; alphaTest:false;depthTest:false;"
+                    position="-.25 0 0.5" sprite-sheet="cols:1; rows: 20; progress: 0;" scale="1 1 1"></a-entity>
+
+                <!-- Emoji 2 -->
+                <a-entity id="emojiSprite_2" geometry="primitive: plane; width: 1; height: 1;"
+                    material="opacity:0; shader: flat;src: #emojiSprite_2_Src; transparent:true; alphaTest:false;depthTest:false;"
+                    position=".25 .6 0.25" sprite-sheet="cols:1; rows: 20; progress: 0;" scale="1 1 1"></a-entity>
+
+                <!-- Emoji 3 -->
+                <a-entity id="emojiSprite_3" geometry="primitive: plane; width: 1; height: 1;"
+                    material="opacity:0; shader: flat;src: #emojiSprite_3_Src; transparent:true; alphaTest:false;depthTest:false;"
+                    position="0 -.15 0.75" sprite-sheet="cols:1; rows: 20; progress: 0;" scale="1 1 1"></a-entity>
+
+                <!-- Emojis End -->
+
+                <!-- Cosmetics -->
+
+                <!-- Brush -->
+                <a-entity id="brush" geometry="primitive: plane; width: .13; height: .5;"
+                    material="opacity:0; shader: flat;src: #brushSrc; transparent:true;alphaTest:false;depthTest:false"
+                    position="-0.25 -0.03 0.2" scale="0.8 0.8 0.6" rotation="0 0 -45"></a-entity>
+
+                <!-- Eye liner -->
+                <a-entity id="eyeliner" geometry="primitive: plane; width: .1; height: .8;"
+                    material="opacity:0; shader: flat;src: #eyelinerSrc; transparent:true;alphaTest:false;depthTest:false"
+                    position="0.315 .325 .225" scale="0.55 0.55 0.55" rotation="0 0 100"></a-entity>
+
+                <!-- Lipstick -->
+                <a-entity id="lipstick" geometry="primitive: plane; width: .1; height: .5;"
+                    material="opacity:0; shader: flat;src: #lipstickSrc; transparent:true;alphaTest:false;depthTest:false"
+                    position="0 -.2 0.25" scale="0.6 0.6 0.6" rotation="0 0 -25"></a-entity>
+
+                <a-entity id="blush" geometry="primitive: plane; width: 1; height: 1.8;"
+                    material="opacity:0; shader: flat;src: #blushSrc; transparent:true;alphaTest:false;depthTest:false"
+                    position="0 0 0.02" scale="1 1 1" rotation="0 0 0"></a-entity>
+
+                <a-entity id="eyebrow" geometry="primitive: plane; width: 1; height: 1.8;"
+                    material="opacity:0; shader: flat;src: #eyebrowSrc; transparent:true;alphaTest:false;depthTest:false"
+                    position="0 0 0.02" scale="1 1 1" rotation="0 0 0"></a-entity>
+
+                <a-entity id="lips" geometry="primitive: plane; width: 1; height: 1.8;"
+                    material="opacity:0; shader: flat;src: #lipsSrc; transparent:true;alphaTest:false;depthTest:false"
+                    position="0 0 0.02" scale="1 1 1" rotation="0 0 0"></a-entity>
+
+                <!-- Cosmetics End -->
+
+                <!-- Capsule group -->
+                <a-entity id="capsuleGroup" geometry="primitive: plane; width: .65; height: .65;"
+                    material="shader: flat;src: #capsuleGroupSrc; transparent:true;opacity:0; alphaTest:false;depthTest:false;"
+                    sprite-sheet="cols:1; rows: 24; progress: 0;" position="0 .2 1" scale="0.2 0.2 1"
+                    animation=""></a-entity>
+
+                <a-entity id="capsuleGroup1" geometry="primitive: plane; width: .6; height: .6;"
+                    material="shader: flat;src: #capsuleGroupSrc1; transparent:true;opacity:0; alphaTest:false;depthTest:false;"
+                    sprite-sheet="cols:1; rows: 24; progress: 0;" position="0 -.1 1.01" scale="0.9 0.9 1"
+                    animation=""></a-entity>
+
+                <!-- 
+                Treatments 
+                 -->
+
+                <!-- Capsule -->
+                <a-entity id="capsule" geometry="primitive: plane; width: 1; height: .537;" rotation="0 0 0"
+                    material="shader: flat;src: #capsuleSrc; transparent:true; opacity: 0;alphaTest:false;depthTest:false;"
+                    sprite-sheet="cols:1; rows: 24; progress: 0;" position="0 0.3 .2" scale=".3 .3 1"></a-entity>
+
+                <!-- Capsule Partcles W 750 H 1200 -->
+                <a-entity id="capsuleParticles" geometry="primitive: plane; width: 1; height: 1;" rotation="0 0 0"
+                    material="shader: flat;src: #capsuleParticlesSrc; transparent:true; opacity: 0;alphaTest:false;depthTest:false;"
+                    position="0 0.2 .2" sprite-sheet="cols:1;rows:20;progress: 0;" scale="1 1 1"></a-entity>
+
+                <a-entity id="capsuleParticles2" geometry="primitive: plane; width: 1; height: 1;" rotation="0 0 0"
+                    material="shader: flat;src: #capsuleParticlesSrc2; transparent:true; opacity: 0;alphaTest:false;depthTest:false;"
+                    position="0 0.2 .2" sprite-sheet="cols:1;rows:20;progress: 0;" scale="1 1 1"></a-entity>
+
+                <!-- Face Lotion -->
+                <a-entity id="faceLotion" geometry="primitive: plane; width: 1; height: .355;"
+                    material="shader: flat;src: #faceLotionSrc;transparent:true;opacity:0;alphaTest:false;depthTest:false;"
+                    sprite-sheet="cols:1; rows:31; progress: 0;" position="0 0.075 0.01" scale="0.55 0.55 1"></a-entity>
+
+                <!-- Face Peel -->
+                <a-entity id="facePeel" geometry="primitive: plane; width: 1; height: 1.8;"
+                    material="shader: flat;src: #facePeelSrc;transparent:true;opacity:0;alphaTest:false;depthTest:false;"
+                    position="0 0 0.01" scale="1 1 1"></a-entity>
+
+                <!-- Face Mask -->
+                <a-entity id="faceMask" geometry="primitive: plane; width: 1; height: 1.8;"
+                    material="shader: flat;src: #faceMaskSrc;transparent:true;opacity:0;alphaTest:false;depthTest:false;"
+                    position="0 0 0.05" scale="1 1 1"></a-entity>
+
+                <!-- Face Mask Brush -->
+                <a-entity id="faceMaskBrush" geometry="primitive: plane; width: .15; height: 1;" rotation="0 0 90"
+                    material="shader: flat;src: #faceMaskBrushSrc;transparent:true;opacity:0;alphaTest:false;depthTest:false;"
+                    position="-0.05 0.4 0.01" scale="0.7 0.7 1"></a-entity>
+
+                <!-- Laser -->
+                <a-entity id="laser" geometry="primitive: plane; width: .7; height: .7;" rotation="0 0 0"
+                    material="shader: flat;src: #laserSrc; transparent:true; opacity: 0;alphaTest:false;depthTest:false;"
+                    position=".25 0.05 0.16" sprite-sheet="cols:1; rows: 24; progress: 0;" scale=".8 .8 1"></a-entity>
+
+
+            </a-entity>
+
+        </a-scene>
+    </main>
+    <script src="./js/gsap.min.js"></script>
+    <script src="./js/main.js"></script>
+    <script src="./js/menu.js"></script>
+    <script src="https://code.jquery.com/jquery-3.7.1.js"></script>
+    <script src="https://code.jquery.com/ui/1.14.1/jquery-ui.js"></script>
+
+    <script>
+        const NUMBER_OF_SLIDES = 4
+        const STEP = 100 / (NUMBER_OF_SLIDES + 1)
+        $(function () {
+            // $("#slider-track").slider({
+            //     value: STEP,
+            //     min: 0,
+            //     max: 100,
+            //     step: STEP,
+            //     slide: function (event, ui) {
+
+            //         if (ui.value < 20) {
+            //             $("#slider").slider("option", "value", 20);
+            //             return false
+            //         }
+
+            //         if (ui.value > 80) {
+            //             $("#slider").slider("option", "value", 80);
+            //             return false
+            //         }
+
+            //         $(".background-div").css('width', `${ui.value}%`)
+            //         showComparisonTemplate(ui.value)
+            //     }
+            // });
+
+        });
+
+        // function showComparisonTemplate(sliderVal) {
+        //     const templateNum = sliderVal / STEP
+        //     const eleToShow = document.querySelector(`#template-num-${templateNum}`)
+
+        //     $(".comparison-slider-container").removeClass('show')
+        //     eleToShow.classList.add('show')
+        // }
+
+        // const backgroundDiv = document.createElement('div')
+        // backgroundDiv.className = 'background-div'
+        // document.querySelector("#slider-track").appendChild(backgroundDiv)
+    </script>
+</body>
+
+</html>

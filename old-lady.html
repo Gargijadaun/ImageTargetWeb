@@ -1,0 +1,432 @@
+<html>
+
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <script src="https://aframe.io/releases/1.5.0/aframe.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/mind-ar@1.2.5/dist/mindar-image-aframe.prod.js"></script>
+    <script src="https://cdn.jsdelivr.net/gh/c-frame/aframe-extras@7.2.0/dist/aframe-extras.min.js"></script>
+    <script src="./js/aframe-spritesheet-component.min.js"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/img-comparison-slider@8/dist/index.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/img-comparison-slider@8/dist/styles.css" />
+    <link rel="stylesheet" href="https://code.jquery.com/ui/1.14.1/themes/base/jquery-ui.css">
+    <link rel="stylesheet" href="./styles/main.css">
+</head>
+
+<body>
+    <main>
+
+        <div id="backBtn" onclick="goBack()">
+            <img src="./assets/icons/back-icon.png" alt="Back">
+        </div>
+        <div id="replayButton" class="hide">
+            <img src="./assets/images/replay.png" alt="Back">
+        </div>
+        <div id="reloadButton" onclick="reloadPage()">
+            <img src="./assets/images/home.png" alt="Reload">
+        </div>
+        
+        <div id="scanText">
+            <img src="./assets/images/Marker poster.png" alt="Scanning Image" />
+          </div>
+          
+        <div id="menuIcon">
+            <div class=""></div>
+            <div class=""></div>
+            <div class=""></div>
+        </div>
+
+        <div id="menuContainer">
+            <div class="container">
+                <div class="menu-logo">
+                    <img src="./assets/images/main-logo.png" alt="" class="w-100">
+                </div>
+                <ul>
+                    <li>
+                        <a href="./index.html">
+                            HOME
+                        </a>
+                    </li>
+                    <li>
+                        <a href="./young-lady.html">
+                            SKIN SOLUTIONS
+                        </a>
+                    </li>
+                    <li>
+                        <a href="./man.html">
+                            HAIRLOSS SOLUTIONS
+                        </a>
+                    </li>
+                    <li>
+                        <a class="active" href="./old-lady.html">
+                            AGEING SOLUTIONS
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+
+
+        <div id="mainScreen" class="old-lady-bg">
+            <div class="btn-container">
+                <button class="btn" onclick="goToAnimation(1)">
+                    Botox and Filler Treatment
+                </button>
+                <button class="btn" onclick="goToAnimation(2)">
+                    Face Lift Treatment
+                </button>
+                <button class="btn" onclick="goToAnimation(3)">
+                    Thread Lift Treatment
+                </button>
+            </div>
+        </div>
+        <div id="deviceError">
+            <p>
+                AR Experience works best on mobile devices.<br>Please try the experience on a mobile device.
+            </p>
+        </div>
+
+        <!-- <div id="loader">
+            <div class="loader-icon">
+                <img src="./assets/icons/icons8-loader-96.png" alt="Loader">
+            </div>
+            <button class="btn btn-main" id="hideLoaderBtn" onclick="hideLoader()"
+                style="opacity: 0; pointer-events: none;">CONTINUE</button>
+        </div> -->
+
+        <!-- <div id="resetBtn" onclick="resetAnimation()">
+            <img src="./assets/icons/reset-icon.png" alt="">
+        </div> -->
+
+        <div id="infoText">
+            <p>
+            </p>
+        </div>
+
+        <div class="single-btn-container">
+            <button id="treatmentsBtn" class="btn" onclick="startAnimationTreatments()">
+                Show Face Lift Treatment
+            </button>
+            <button id="testimonialsBtn" class="btn" onclick="showTestimonials()">
+                Show Thread Lift Treatment
+            </button>
+        </div>
+
+        <div id="scanning-overlay" class="hidden">
+            <div class="inner">
+                <img src="./assets/target/marker.jpg" alt="Marker Overlay">
+                <div class="scanline"></div>
+            </div>
+        </div>
+
+        <!-- Voice Overs -->
+
+        <audio id="audioElement" preload="auto">
+            <source id="audioSource"
+                src="./assets/audio/young-lady/common-causes/femaleVO_YoungLady_CommonCauses_Part1_v1.mp3"
+                type="audio/mpeg">
+        </audio>
+
+        <!-- Voice Overs -->
+
+        <a-scene
+            mindar-image="uiScanning: #scanning-overlay; imageTargetSrc: ./assets/target/marker-final-derma.mind;filterMinCF:0.0001; filterBeta: 0.001;missTolerance: 5;warmupTolerance: 5;autoStart: false;"
+            renderer="colorManagement: true, physicallyCorrectLights:true;antialias: true;" vr-mode-ui="enabled: false"
+            device-orientation-permission-ui="enabled: false">
+            <a-assets>
+                <!-- Base Blur Layer -->
+                <img id="baseBlurLayerSrc" src="./assets/images/bg-blur-layer.png">
+
+                <!-- Base face -->
+                <img id="baseFaceWithFillerSrc" src="./assets/images/old-lady/old-lady-filler.png">
+
+                <!-- Base face -->
+                <img id="baseFaceWithBotoxSrc" src="./assets/images/old-lady/old-lady-botox.png">
+
+                <!-- Base face -->
+                <img id="baseFaceSrc" src="./assets/images/old-lady/old-lady.png ">
+
+                <!-- BOTOX -->
+                <!-- Chin -->
+                <img id="chinSrc" src="./assets/images/old-lady/botox/chin.png">
+
+                <!-- Forehead -->
+                <img id="foreheadSrc" src="./assets/images/old-lady/botox/forehead.png">
+
+                <!-- Lips -->
+                <img id="lipsSrc" src="./assets/images/old-lady/botox/lips-filler.png">
+
+                <!-- Left cheek -->
+                <img id="leftCheekSrc" src="./assets/images/old-lady/botox/left-cheek.png">
+
+                <!-- Left cheek Botox -->
+                <img id="leftCheekBotoxSrc" src="./assets/images/old-lady/botox/left-cheek-filler.png">
+
+                <!-- Right cheek -->
+                <img id="rightCheekSrc" src="./assets/images/old-lady/botox/right-cheek.png">
+
+                <!-- Right cheek Botox -->
+                <img id="rightCheekBotoxSrc" src="./assets/images/old-lady/botox/right-cheek-filler.png">
+
+                <!-- Face Line Spritesheet -->
+                <img id="faceLineSpriteSrc" src="./assets/images/old-lady/botox/spritesheet_line.png">
+
+                <!-- Face Line Spritesheet -->
+                <img id="syringeSpritesheetSrc" src="./assets/images/old-lady/spritesheet_syringe-v3.png">
+                <img id="syringeSpritesheetSrc01" src="./assets/images/old-lady/botox/1-ExpressionLines.png">
+                <img id="syringeSpritesheetSrc02" src="./assets/images/old-lady/botox/3-crowsfeet.png">
+                <img id="syringeSpritesheetSrc03" src="./assets/images/old-lady/botox/2-Foreheadlines.png">
+
+                <!-- BOTOX -->
+
+                <!-- Thread Lift -->
+
+                <!-- Skin lift spritesheet -->
+                <img id="skinLiftSpriteSheetSrc" src="./assets/images/old-lady/thread-lift/skin-spritsheet.png">
+
+                <!-- Needle with thread -->
+                <img id="needleThreadSrc" src="./assets/images/old-lady/thread-lift/needle-lg.png">
+
+                <!-- Needle -->
+                <img id="needleSrc" src="./assets/images/old-lady/thread-lift/needle.png">
+
+                <!-- Purple Mask -->
+                <img id="purpleMaskSrc" src="./assets/images/old-lady/thread-lift/purple-mask_02.png">
+
+                <!-- Methods Spritesheet -->
+                <img id="methodsSpritesheetSrc" src="./assets/images/old-lady/methods-center-v5.png">
+                <img id="botoxMethodsSpritesheetSrc" src="./assets/images/old-lady/methods-top-v5.png">
+                <img id="fillerMethodsSpritesheetSrc" src="./assets/images/old-lady/methods-fillers-v5.png">
+                <img id="threadMethodsSpritesheetSrc" src="./assets/images/old-lady/methods-thread-v5.png">
+                <img id="lineMethodsSpritesheetSrc" src="./assets/images/old-lady/methods-line-sprite.png">
+
+                <!-- Mask Line Spritesheet -->
+                <img id="maskLineSpriteSrc" src="./assets/images/old-lady/thread-lift/purple-outline.png">
+
+                <!-- Thread line Spritesheet -->
+                <img id="threadLineSpriteSrc" src="./assets/images/old-lady/thread-lift/thread-line.png">
+
+                <!-- White circle Spritesheet -->
+                <img id="whiteCircleSrc" src="./assets/images/old-lady/thread-lift/white-circle-spritesheet.png">
+
+                <!-- White circle Right 1 Spritesheet -->
+                <img id="whiteCircleRight1Src" src="./assets/images/old-lady/thread-lift/treatment-01.png">
+
+                <!-- White circle Right 2 Spritesheet -->
+                <img id="whiteCircleRight2Src" src="./assets/images/old-lady/thread-lift/treatment-03.png">
+
+            </a-assets>
+
+            <a-camera position="0 0 0" look-controls="enabled: false" cursor="fuse: false; rayOrigin: mouse;"
+                raycaster="near: 10; far: 10000; objects: .clickable"></a-camera>
+
+            <a-entity id="targetImage" mindar-image-target="targetIndex: 0">
+
+                <!-- 
+                Causes
+                 -->
+
+                <!-- Base Blur layer -->
+                <a-entity id="baseBlurLayer" geometry="primitive: plane; width: 1.8; height: 1.8;"
+                    material="shader: flat;src: #baseBlurLayerSrc;transparent:true;opacity:0;alphaTest:false;depthTest:false;"
+                    position="0 0 -0.05" scale="1 1 1"></a-entity>
+
+                <!-- Base face with filler -->
+                <a-entity id="baseFaceWithFiller" geometry="primitive: plane; width: 1; height: 1.8;"
+                    material="shader: flat;src: #baseFaceWithFillerSrc;transparent:true;opacity:0;alphaTest:false;depthTest:false;"
+                    position="0 0 0" scale="0 0 0"></a-entity>
+
+                <!-- Base face with botox -->
+                <a-entity id="baseFaceWithBotox" geometry="primitive: plane; width: 1; height: 1.8;"
+                    material="shader: flat;src: #baseFaceWithBotoxSrc;transparent:true;opacity:0;alphaTest:false;depthTest:false;"
+                    position="0 0 0" scale="0 0 0"></a-entity>
+
+                <!-- Base face -->
+                <a-entity id="baseFace" geometry="primitive: plane; width: 1; height: 1.8;"
+                    material="shader: flat;src: #baseFaceSrc;transparent:true;opacity:0;alphaTest:false;depthTest:false;"
+                    position="0 0 0" scale="0 0 0"></a-entity>
+
+                <!-- Chin -->
+                <a-entity id="chin" geometry="primitive: plane; width: 1; height: 1.8;"
+                    material="shader: flat;src: #chinSrc; transparent:true; opacity: 0;alphaTest:false;depthTest:false"
+                    position="0 0 0" scale="1 1 1"></a-entity>
+
+                <!-- Forehead -->
+                <a-entity id="forehead" geometry="primitive: plane; width: 1; height: 1.8;"
+                    material="opacity:0; shader: flat;src: #foreheadSrc; transparent:true; alphaTest:false;depthTest:false;"
+                    position="0 0 0" rotation="0 0 0" scale="1 1 1"></a-entity>
+
+                <!-- lips -->
+                <a-entity id="lips" geometry="primitive: plane; width: 1; height: 1.8;"
+                    material="opacity:0; shader: flat;src: #lipsSrc; transparent:true; alphaTest:false;depthTest:false"
+                    position="0 0 0" rotation="0 0 0.05" scale="1 1 1"></a-entity>
+
+                <!-- Left Cheek -->
+                <a-entity id="leftCheek" geometry="primitive: plane; width: 1; height: 1.8;" rotation="0 0 0"
+                    material="shader: flat;src: #leftCheekSrc; transparent:true; opacity: 0; alphaTest:false; depthTest:false;"
+                    position="0 0 0" scale="1 1 1"></a-entity>
+
+                <!-- Left cheek botox -->
+                <a-entity id="leftCheekBotox" geometry="primitive: plane; width: 1; height: 1.8;"
+                    material="opacity:0; shader: flat;src: #leftCheekBotoxSrc; transparent:true; opacity:0; alphaTest:false;depthTest:false"
+                    position="0 0 0.05" scale="1 1 1"></a-entity>
+
+                <!-- Right Cheek -->
+                <a-entity id="rightCheek" geometry="primitive: plane; width: 1; height: 1.8;" rotation="0 0 0"
+                    material="shader: flat;src: #rightCheekSrc; transparent:true; opacity: 0; alphaTest:false; depthTest:false;"
+                    position="0 0 0" scale="1 1 1"></a-entity>
+
+                <!-- Right cheek botox -->
+                <a-entity id="rightCheekBotox" geometry="primitive: plane; width: 1; height: 1.8;"
+                    material="opacity:0; shader: flat;src: #rightCheekBotoxSrc; transparent:true; opacity:0; alphaTest:false;depthTest:false"
+                    position="0 0 0.05" scale="1 1 1"></a-entity>
+
+                <!-- Face line -->
+                <a-entity id="faceLine" geometry="primitive: plane; width: .85; height: 0.5;" rotation="0 0 0"
+                    material="shader: flat;src: #faceLineSpriteSrc; transparent:true; opacity: 0;" position="0 0 0.1"
+                    sprite-sheet="cols:1; rows: 24; progress: 0;" scale=".85 .85 1.1"></a-entity>
+
+                <!-- Syringe Spritesheet -->
+                <a-entity id="syringeSpritesheet" geometry="primitive: plane; width: 0.75; height: 1.625;"
+                    rotation="0 0 90"
+                    material="shader: flat;src: #syringeSpritesheetSrc; transparent:true; opacity: 0; alphaTest:false; depthTest:false;"
+                    position="0.5 0 0.15" sprite-sheet="rows: 17; progress: 0;" scale=".35 .35 1"></a-entity>
+
+                    <a-entity id="syringeSpritesheet01" geometry="primitive: plane; width: 0.642; height: 0.24;"
+                    material="shader: flat; src: #syringeSpritesheetSrc01; transparent: true; opacity: 0; alphaTest: true; depthTest: true;"
+                    position=".18 -0.33 0.15" scale="1 1 1">
+                </a-entity>
+                
+                <a-entity id="syringeSpritesheet02" geometry="primitive: plane; width: 0.642; height: 0.24;"
+                    material="shader: flat; src: #syringeSpritesheetSrc02; transparent: true; opacity: 0; alphaTest: true; depthTest: true;"
+                    position="0.6 0 0.15" scale="1 1 1">
+                </a-entity>
+             <!-- //   position="-0.15 -0.5 1" -->
+                <a-entity id="syringeSpritesheet03" geometry="primitive: plane; width: 0.642; height: 0.24;"
+                    material="shader: flat; src: #syringeSpritesheetSrc03; transparent: true; opacity: 0; alphaTest: true; depthTest: true;"
+                    position="-.02 0.5 0.15" scale="1 1 1">
+                </a-entity>
+                
+                
+                
+                
+                <!-- 
+                        Methods
+                    -->
+
+                <!-- Methods Spritesheet -->
+
+                <a-entity id="botoxLineMethodsSpritesheet" geometry="primitive: plane; width: .9; height: .9;"
+                    rotation="0 0 0"
+                    material="shader: flat;src: #lineMethodsSpritesheetSrc; transparent:true; opacity: 0; alphaTest:false; depthTest:false;"
+                    position="0 -0.425 .39" sprite-sheet="cols:1;rows:14; progress: 0;" scale="1 1 1"></a-entity>
+
+                <a-entity id="methodsSpritesheet" geometry="primitive: plane; width: .5; height: .5;" rotation="0 0 0"
+                    material="shader: flat;src: #methodsSpritesheetSrc; transparent:true; opacity: 0; alphaTest:false; depthTest:false;"
+                    position="0 -0.8 .4" sprite-sheet="cols:1;rows:14; progress: 0;" scale="1 1 1"></a-entity>
+
+                <a-entity id="fillerMethodsSpritesheet" geometry="primitive: plane; width: .5; height: .5;"
+                    rotation="0 0 0"
+                    material="shader: flat;src: #fillerMethodsSpritesheetSrc; transparent:true; opacity: 0; alphaTest:false; depthTest:false;"
+                    position="-0.4 -0.82 .4" sprite-sheet="cols:1;rows:14; progress: 0;" scale="1 1 1"></a-entity>
+
+                <a-entity id="botoxMethodsSpritesheet" geometry="primitive: plane; width: .5; height: .5;"
+                    rotation="0 0 0"
+                    material="shader: flat;src: #botoxMethodsSpritesheetSrc; transparent:true; opacity: 0; alphaTest:false; depthTest:false;"
+                    position="0 -0.4 .4" sprite-sheet="cols:1;rows:14; progress: 0;" scale="1 1 1"></a-entity>
+
+                <a-entity id="threadMethodsSpritesheet" geometry="primitive: plane; width: .5; height: .5;"
+                    rotation="0 0 0"
+                    material="shader: flat;src: #threadMethodsSpritesheetSrc; transparent:true; opacity: 0; alphaTest:false; depthTest:false;"
+                    position="0.4 -0.82 .4" sprite-sheet="cols:1;rows:14; progress: 0;" scale="1 1 1"></a-entity>
+
+
+                <!-- Purple mask -->
+                <a-entity id="purpleMask" geometry="primitive: plane; width: 1; height: .64;" rotation="0 0 0"
+                    material="shader: flat;src: #purpleMaskSrc; transparent:true; opacity: 0;alphaTest:false;depthTest:false;"
+                    position="0 0.025 0.06" scale="0.4 0.4 1"></a-entity>
+
+                <!-- Needle -->
+                <a-entity id="needle" geometry="primitive: plane; width: .11; height: 1;" rotation="0 0 -35"
+                    material="shader: flat;src: #needleSrc; transparent:true; opacity: 0;alphaTest:false;depthTest:false;"
+                    position="-0.5 -0.25 0.15 " scale="0.5 0.5 1"></a-entity>
+                <!-- -0.5 -0.25 0.15 -->
+
+                <!-- Mask Line -->
+                <a-entity id="maskLineSprite" geometry="primitive: plane; width: .33; height: .216;" rotation="0 0 0"
+                    material="shader: flat;src: #maskLineSpriteSrc; transparent:true; opacity: 0;alphaTest:false;depthTest:false;"
+                    sprite-sheet="cols:13;rows:19; progress: 0;" position="0 0.025 0.165"
+                    scale="1.225 1.225 1"></a-entity>
+
+                <!-- Thread line -->
+                <a-entity id="threadLineSprite" geometry="primitive: plane; width: .14; height: .14;" rotation="0 0 0"
+                    material="shader: flat;src: #threadLineSpriteSrc; transparent:true; opacity: 0;alphaTest:false;depthTest:false;"
+                    sprite-sheet="cols:1;rows:82; progress: 0;" position="-.12 -0.03 0.17" scale="1 1 1"></a-entity>
+
+                <!-- White Circle -->
+                <a-entity id="whiteCircle" geometry="primitive: plane; width: .4; height: .4;" rotation="0 0 0"
+                    material="shader: flat;src: #whiteCircleSrc; transparent:true; opacity: 0;alphaTest:false;depthTest:false;"
+                    sprite-sheet="cols:1;rows:43; progress: 0;" position="-0.3 -0.6 0.15" scale="1 1 1"></a-entity>
+
+                <!-- White Circle Right 1-->
+                <a-entity id="whiteCircleRight1" geometry="primitive: plane; width: .4; height: .4;" rotation="0 0 0"
+                    material="shader: flat;src: #whiteCircleRight1Src; transparent:true; opacity: 0;alphaTest:false;depthTest:false;"
+                    sprite-sheet="cols:8;rows:8; progress: 0;" position="0.3 -0.6 0.15" scale="1 1 1"></a-entity>
+
+                <!-- White Circle Right 1-->
+                <a-entity id="whiteCircleRight2" geometry="primitive: plane; width: .4; height: .4;" rotation="0 0 0"
+                    material="shader: flat;src: #whiteCircleRight2Src; transparent:true; opacity: 0;alphaTest:false;depthTest:false;"
+                    sprite-sheet="cols:6;rows:6; progress: 0;" position="0.3 -0.6 0.15" scale="1 1 1"></a-entity>
+
+            </a-entity>
+
+        </a-scene>
+    </main>
+    <script src="./js/gsap.min.js"></script>
+    <script src="./js/old-woman-ar.js"></script>
+    <script src="./js/menu.js"></script>
+    <script src="https://code.jquery.com/jquery-3.7.1.js"></script>
+    <script src="https://code.jquery.com/ui/1.14.1/jquery-ui.js"></script>
+
+    <script>
+        // const NUMBER_OF_SLIDES = 4
+        // const STEP = 100 / (NUMBER_OF_SLIDES + 1)
+        // $(function () {
+        //     $("#slider-track").slider({
+        //         value: STEP,
+        //         min: 0,
+        //         max: 100,
+        //         step: STEP,
+        //         slide: function (event, ui) {
+
+        //             if (ui.value < 20) {
+        //                 $("#slider").slider("option", "value", 20);
+        //                 return false
+        //             }
+
+        //             if (ui.value > 80) {
+        //                 $("#slider").slider("option", "value", 80);
+        //                 return false
+        //             }
+
+        //             $(".background-div").css('width', `${ui.value}%`)
+        //             showComparisonTemplate(ui.value)
+        //         }
+        //     });
+
+        // });
+
+        // function showComparisonTemplate(sliderVal) {
+        //     const templateNum = sliderVal / STEP
+        //     const eleToShow = document.querySelector(`#template-num-${templateNum}`)
+
+        //     $(".comparison-slider-container").removeClass('show')
+        //     eleToShow.classList.add('show')
+        // }
+
+        // const backgroundDiv = document.createElement('div')
+        // backgroundDiv.className = 'background-div'
+        // document.querySelector("#slider-track").appendChild(backgroundDiv)
+    </script>
+</body>
+
+</html>
