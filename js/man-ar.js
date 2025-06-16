@@ -797,30 +797,26 @@ function goToAnimation(animationSeq) {
 // }, 49 * ANIMATION_DELAY_CONSTANT));
 
 // Add this event listener for the replay button
-document.addEventListener('DOMContentLoaded', function () {
-    const replayButton = document.querySelector('#replayButton');
-    
-    // ✅ Ensure the button is initially hidden
-    replayButton.classList.add('hide'); 
-   
-    replayButton.addEventListener('click', function () {
-        console.log('Replay button clicked!'); // Debugging log
+document.addEventListener("DOMContentLoaded", () => {
+  const aVideo = document.querySelector("#displayVideo");
+  const targetEntity = document.querySelector("#targetImage");
 
-        // ✅ Hide the replay button after clicking
-       // replayButton.style.display = "none"; 
-       replayButton.classList.add('hide'); 
-        resetAnimation(); // Reset the animation before restarting
+  // When marker is found → show and play video
+  targetEntity.addEventListener("targetFound", () => {
+    const srcId = aVideo.getAttribute("src");
+    const video = document.querySelector(srcId);
+    video.play();
+    aVideo.setAttribute("visible", "true");
+  });
 
-        setTimeout(() => {
-            if (TIMELINE_DETAILS.currentAnimationSeq === 1) {
-                // startAnimationCommonCauses();
-            } else if (TIMELINE_DETAILS.currentAnimationSeq === 2) {
-                // startAnimationTreatments();
-            }
-        }, 100);
-    });
+  // When marker is lost → pause and hide video
+  targetEntity.addEventListener("targetLost", () => {
+    const srcId = aVideo.getAttribute("src");
+    const video = document.querySelector(srcId);
+    video.pause();
+    aVideo.setAttribute("visible", "false");
+  });
 });
-
 
     // Ensure the replay button is shown after the animation ends
     function showReplayButton() {
