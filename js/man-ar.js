@@ -12,66 +12,13 @@ const TIMELINE_DETAILS = {
 const TIMEOUTS = []
 let AR_READY = false
 
-// AR Elements
 
-let baseFaceWithHair = document.querySelector('#baseFaceWithHair');
-const baseFace = document.querySelector('#baseFace');
-const dna = document.querySelector('#dna');
-const notepad = document.querySelector('#notepad');
-const medicineStrip = document.querySelector('#medicineStrip');
-const stress = document.querySelector('#stress');
-const capsuleGroup = document.querySelector('#capsuleGroup');
-const fastFood = document.querySelector('#fastFood');
-const burger = document.querySelector('#burger');
-const pizza = document.querySelector('#pizza');
-const syringe = document.querySelector('#syringe');
-const medicineBottle = document.querySelector('#medicineBottle');
-const hairTransplant = document.querySelector('#hairTransplant');
-const patchLine = document.querySelector('#patchLine');
-const patch = document.querySelector('#patch');
-const grafting = document.querySelector('#grafting');
-const plucking = document.querySelector('#plucking');
-const singleHair = document.querySelector('#singleHair');
-const hairGrowth = document.querySelector('#hairGrowth');
-
-// Audio Elements
-const audioElement = document.querySelector('#audioElement');
-const audioSource = document.querySelector('#audioSource');
 
 // DOM Elements
 const mainScreen = document.querySelector('#mainScreen');
 const backBtn = document.querySelector('#backBtn');
-const testimonialContainer = document.querySelector('#testimonial-container');
-const treatmentsBtn = document.querySelector('#treatmentsBtn');
-const testimonialsBtn = document.querySelector('#testimonialsBtn');
-const infoTextBottom = document.querySelector('#infoText');
-const infoTextParaBottom = document.querySelector('#infoText p');
-const replayButton = document.querySelector('#replayButton');
 
-const ALL_ELEMENTS = [
- 
-    baseFace,
-    dna,
-    notepad,
-    medicineStrip,
-    stress,
-    capsuleGroup,
-    fastFood,
-    burger,
-    pizza,
-    syringe,
-    medicineBottle,
-    hairTransplant,
-    patchLine,
-    patch,
-    grafting,
-    plucking,
-    singleHair,
-    hairGrowth,
-    treatmentsBtn,
-    testimonialsBtn,
-    infoTextBottom
-]
+
 
 function startAnimationCommonCauses() {
 
@@ -323,11 +270,11 @@ function startAnimationTreatments() {
     treatmentsBtn.classList.remove('show-single')
     replayButton.classList.add('hide')
    
-    audioSource.setAttribute('src', './assets/audio/man/treatments/maleVo_Man_Treatments_Context_v1.mp3')
-    audioElement.load()
-    audioElement.play()
-    infoTextParaBottom.innerHTML = 'While it is true that half of population suffers from hair loss, still it affects the self-confidence and beauty. Dermatologists understand your hair better.'
-    infoTextBottom.classList.add('show')
+    // audioSource.setAttribute('src', './assets/audio/man/treatments/maleVo_Man_Treatments_Context_v1.mp3')
+    // audioElement.load()
+    // audioElement.play()
+    // infoTextParaBottom.innerHTML = 'While it is true that half of population suffers from hair loss, still it affects the self-confidence and beauty. Dermatologists understand your hair better.'
+    // infoTextBottom.classList.add('show')
 
     // Animate Syringe for PRP
     TIMEOUTS.push(setTimeout(() => {
@@ -335,15 +282,15 @@ function startAnimationTreatments() {
         if (TIMELINE_DETAILS.isStopAnimation)
             return
 
-        audioSource.setAttribute('src', './assets/audio/man/treatments/maleVO_Man_Treatments_PRP_v1.mp3')
-        audioElement.load()
-        audioElement.play()
-        infoTextParaBottom.innerHTML = 'Platelet-rich plasma therapy uses your own blood rich in platelets, to naturally rejuvenate hair follicles and promote healthier, thicker hair growth.'
-        syringe.setAttribute('animation', 'property: material.opacity; to: 1; dur: 250')
-        medicineBottle.setAttribute('animation', 'property: material.opacity; to: 1; dur: 250')
-        syringe.setAttribute('animation__1', 'property: position; to: -.15 0.75 0.05; dur: 1500')
-        syringe.setAttribute('animation__2', 'property: rotation; to: 0 0 165; dur: 1500')
-        syringe.setAttribute('animation__3', 'property: scale; to: 0.65 0.65 1; dur: 1500')
+        // audioSource.setAttribute('src', './assets/audio/man/treatments/maleVO_Man_Treatments_PRP_v1.mp3')
+        // audioElement.load()
+        // audioElement.play()
+        // infoTextParaBottom.innerHTML = 'Platelet-rich plasma therapy uses your own blood rich in platelets, to naturally rejuvenate hair follicles and promote healthier, thicker hair growth.'
+        // syringe.setAttribute('animation', 'property: material.opacity; to: 1; dur: 250')
+        // medicineBottle.setAttribute('animation', 'property: material.opacity; to: 1; dur: 250')
+        // syringe.setAttribute('animation__1', 'property: position; to: -.15 0.75 0.05; dur: 1500')
+        // syringe.setAttribute('animation__2', 'property: rotation; to: 0 0 165; dur: 1500')
+        // syringe.setAttribute('animation__3', 'property: scale; to: 0.65 0.65 1; dur: 1500')
 
         let animation = { progress: 0 };
 
@@ -646,27 +593,6 @@ function showBeforeAfterImages() {
     document.querySelector('#testimonial-image-container').classList.add('show')
 }
 
-function startAnimation() {
-    AR_READY = true
-    console.log('start animation');
-    if (testimonialContainer.classList.contains('show'))
-        testimonialContainer.classList.remove('show')
-
-    switch (TIMELINE_DETAILS.currentAnimationSeq) {
-        case 1:
-            startAnimationCommonCauses()
-            break;
-        case 2:
-            startAnimationTreatments()
-            break;
-        case 3:
-            showTestimonials()
-            break;
-
-        default:
-            break;
-    }
-}
 
 function resetAnimation() {
 
