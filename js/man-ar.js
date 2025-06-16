@@ -13,7 +13,7 @@ const TIMEOUTS = []
 let AR_READY = false
 
 // AR Elements
-const baseBlurLayer = document.querySelector('#baseBlurLayer');
+
 let baseFaceWithHair = document.querySelector('#baseFaceWithHair');
 const baseFace = document.querySelector('#baseFace');
 const dna = document.querySelector('#dna');
@@ -49,7 +49,7 @@ const infoTextParaBottom = document.querySelector('#infoText p');
 const replayButton = document.querySelector('#replayButton');
 
 const ALL_ELEMENTS = [
-    baseBlurLayer,
+ 
     baseFace,
     dna,
     notepad,
@@ -90,7 +90,7 @@ function startAnimationCommonCauses() {
     TIMELINE_DETAILS.isAnimationPlaying = true
     TIMELINE_DETAILS.currentAnimationSeq = 1
     audioElement.play()
-    baseBlurLayer.setAttribute('animation', 'property: material.opacity; to: .85; dur: 600')
+ 
     baseFaceWithHair.setAttribute('animation', 'property: material.opacity; to: 1; dur: 500')
     baseFaceWithHair.setAttribute('animation__1', 'property: scale; to: 1 1 1; dur: 1000')
     baseFace.setAttribute('animation', 'property: material.opacity; to: 1; dur: 500')
@@ -317,7 +317,6 @@ function startAnimationTreatments() {
     TIMELINE_DETAILS.isAnimationPlaying = true
     TIMELINE_DETAILS.currentAnimationSeq = 2
 
-    baseBlurLayer.setAttribute('animation', 'property: material.opacity; to: .85; dur: 600')
     baseFaceWithHair.setAttribute('animation__1', 'property: scale; to: 1 1 1; dur: 500')
     baseFace.setAttribute('animation', 'property: material.opacity; to: 1; dur: 500')
     baseFace.setAttribute('animation__1', 'property: scale; to: 1 1 1; dur: 1000')

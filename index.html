@@ -1,84 +1,218 @@
-<!DOCTYPE html>
-<html lang="en">
+<html>
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>HOME | IMMERSIVE EXPERIENCE | EPICORIUM</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
-        integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <script src="https://aframe.io/releases/1.5.0/aframe.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/mind-ar@1.2.5/dist/mindar-image-aframe.prod.js"></script>
+    <script src="https://cdn.jsdelivr.net/gh/c-frame/aframe-extras@7.2.0/dist/aframe-extras.min.js"></script>
+    <script src="./js/aframe-spritesheet-component.min.js"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/img-comparison-slider@8/dist/index.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/img-comparison-slider@8/dist/styles.css" />
+    <link rel="stylesheet" href="https://code.jquery.com/ui/1.14.1/themes/base/jquery-ui.css">
     <link rel="stylesheet" href="./styles/main.css">
 </head>
 
 <body>
-
-    <div id="backBtn" onclick="goBack()">
-        <img src="./assets/icons/back-icon.png" alt="Back">
-    </div>
-
-    <div class="row m-0 align-items-start" id="landing-section">
-        <div class="col-md-6" id="bottom-blur">
-            <img src="./assets/images/young-lady-thumbnail.png" alt="" class="w-100">
+    <main>
+        <div id="backBtn" onclick="goBack()">
+            <img src="./assets/icons/back-icon.png" alt="Back">
         </div>
-        <div class="col-md-6">
-            <div class="row">
-                <div class="col-md-auto px-5 text-center mb-5">
-                    <img src="./assets/images/main-logo.png" alt="" class="home-logo" class="w-100">
-                </div>
-                <div class="col-md-auto text-center mb-5">
-                    <h3>Welcome to AUGMENTED REALITY</h3>
+        <div id="replayButton" class="hide">
+            <img src="./assets/images/replay.png" alt="Back">
+        </div>
+        <div id="scanText">
+            <img src="./assets/images/sample.png" alt="Scanning Image" />
+          </div>
+          <!-- <button id="replayButton" class="hide">Replay</button> -->
+        <!-- <a href="./index.html" id="menuBtn" class="show">
+            <img src="./assets/icons/home-icon.png" alt="Home">
+        </a> -->
+
+     
+
+      
+
+        <div id="mainScreen" class="man-bg">
+            <div class="btn-container">
+                <button class="btn" onclick="goToAnimation(1)">
+                    Start
+                </button>
+              
+            </div>
+        </div>
+        <div id="deviceError">
+            <p>
+                AR Experience works best on mobile devices.<br>Please try the experience on a mobile device.
+            </p>
+        </div>
+
+        <div id="infoText">
+            <p>
+            </p>
+        </div>
+
+        <div class="single-btn-container">
+            <button id="treatmentsBtn" class="btn" onclick="startAnimationTreatments()">
+                Treatments Available
+            </button>
+            <button id="testimonialsBtn" class="btn" onclick="showTestimonials()">
+                Before & After Treatment
+            </button>
+        </div>
+
+        <div id="testimonial-container">
+            <div class="container">
+                <div id="info-container" class="show">
+                    <img src="./assets/images/man/testimonial/before-after-02.png" alt="">
                     <p>
-                        An Immersive Experience, that lets you understand more about your Skin, hair & ageing
+                        To achieve best results in hair fall, your dermatologist can suggest one treatment at a time or
+                        combination of multiple treatments depending upon your hair issues. Let your dermatologist
+                        decide after examining your hair. To know more about hair treatments, ask your dermatologist.
                     </p>
-                    <button class="btn" onclick="startExperience()">
-                        <strong>Start Experience</strong>
-                    </button>
+                    <div class="single-btn-container">
+                        <button id="beforeAfterBtn" class="btn show-single" onclick="showBeforeAfterImages()">
+                            Show Before and After
+                        </button>
+                    </div>
+                </div>
+                <div id="testimonial-image-container">
+                    <div class="flex flex-col">
+                        <h2 style="text-align: center; margin-top: 20%;">Treatment Results</h2>
+                        <div class="image-container">
+                            <div class="comparison-slider-container show" id="template-num-1">
+                                <img-comparison-slider>
+                                    <img slot="first" src="./assets/images/man/testimonial/ajay-patel-before.jpg" />
+                                    <img slot="second" src="./assets/images/man/testimonial/ajay-patel-after.jpg" />
+                                </img-comparison-slider>
+                            </div>
+                            <!-- <div class="comparison-slider-container" id="template-num-2">
+                                <img-comparison-slider>
+                                    <img slot="first" src="./assets/images/young-lady/young-lady-base-face.png" />
+                                    <img slot="second" src="./assets/images/young-lady/pimples.png" />
+                                </img-comparison-slider>
+                            </div>
+                            <div class="comparison-slider-container" id="template-num-3">
+                                <img-comparison-slider>
+                                    <img slot="first" src="./assets/images/man/face-man-hair.png" />
+                                    <img slot="second" src="./assets/images/man/face-man.png" />
+                                </img-comparison-slider>
+                            </div>
+                            <div class="comparison-slider-container" id="template-num-4">
+                                <img-comparison-slider>
+                                    <img slot="first" src="./assets/images/young-lady/young-lady-base-face.png" />
+                                    <img slot="second" src="./assets/images/young-lady/pimples.png" />
+                                </img-comparison-slider>
+                            </div> -->
+                            <div class="testimonialInfoContainer">
+                                <p class="testimonialHeader">
+                                    Testimonial
+                                </p>
+                                <p class="testimonialText">
+                                    I noticed visible improvements after just 3 Sessions. The team was professional and
+                                    made me feel comfortable throughout the process. I was initially skeptical about GFC
+                                    therapy, but my dermatologist gave me a full walkthrough of the process and how it
+                                    works. I felt a bit tense on my first sitting, but the second and third sittings
+                                    went smoothly. The results are amazing.<br><strong>- Aditya Kumar.</strong>
+                                </p>
+                            </div>
+                            <div class="disclaimer">
+                                <h6>Disclaimer</h6>
+                                <p>
+                                    Your dermatologist will recommend treatment based on your acne condition and grade.
+                                    These results are from one or multiple acne treatments. Individual results may vary.
+                                </p>
+                            </div>
+                        </div>
+                        <!-- <div class="slider-container">
+                            <div id="slider-track">
+
+                                <div class="sliderBtn" id="slider-btn-1"></div>
+                                <div class="sliderBtn" id="slider-btn-2"></div>
+                                <div class="sliderBtn" id="slider-btn-3"></div>
+                                <div class="sliderBtn" id="slider-btn-4"></div>
+                            </div>
+                        </div> -->
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
 
-    <div class="row m-0 align-items-start pt-4" id="selection-section">
-        <div class="col-md-auto px-5 text-center mb-2 mt-5">
-            <img src="./assets/images/main-logo.png" alt="" class="home-logo" class="w-100">
-        </div>
-        <div class="col-md-auto text-center py-5">
-            <h3>
-                Please select the Experiences from the below
-            </h3>
-            <div class="row">
-                <div class="col-md-6">
-                    <div class="card border rounded-4 border-0 my-2" onclick="goToExperience(1)">
-                        <img src="./assets/images/young-lady-thumbnail.png" class="card-img-top" alt="...">
-                        <div class="card-body">
-                            <h5 class="card-title text-white">Know Commonly caused skin issues at young age</h5>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-6">
-                    <div class="card border rounded-4 border-0 my-2" onclick="goToExperience(2)">
-                        <img src="./assets/images/man-thumbnail.png" class="card-img-top" alt="...">
-                        <div class="card-body">
-                            <h5 class="card-title text-white">Struggling with Hair Loss? Find solution</h5>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-6">
-                    <div class="card border rounded-4 border-0 my-2" onclick="goToExperience(3)">
-                        <img src="./assets/images/old-lady-thumbnail.png" class="card-img-top" alt="...">
-                        <div class="card-body">
-                            <h5 class="card-title text-white">Concerned about Ageing? Find Solutions</h5>
-                        </div>
-                    </div>
-                </div>
+        <div id="scanning-overlay" class="hidden">
+            <div class="inner">
+                <img src="./assets/target/marker.jpg" alt="Marker Overlay">
+                <div class="scanline"></div>
             </div>
         </div>
-    </div>
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
-        integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
-        crossorigin="anonymous"></script>
-    <script src="./js/home.js"></script>
+        <!-- Voice Overs -->
+
+        <audio id="audioElement" preload="auto">
+            <source id="audioSource" src="./assets/audio/man/common-causes/maleVO_Man_CommonCauses_Part1_v1.mp3"
+                type="audio/mpeg">
+        </audio>
+
+        <!-- Voice Overs -->
+
+        <a-scene
+            mindar-image="uiScanning: #scanning-overlay; imageTargetSrc: ./assets/target/targets.mind;filterMinCF:0.0001; filterBeta: 0.001;missTolerance: 5;warmupTolerance: 5;autoStart: false;"
+            renderer="colorManagement: true, physicallyCorrectLights:true;antialias: true;" vr-mode-ui="enabled: false"
+            device-orientation-permission-ui="enabled: false">
+
+            <a-assets>
+                <video id="targetVideo" src="./assets/video/Video1.mp4" preload="auto" loop crossorigin="anonymous" webkit-playsinline playsinline></video>
+
+            </a-assets>
+
+            <a-camera position="0 0 0" look-controls="enabled: false" cursor="fuse: false; rayOrigin: mouse;"
+                raycaster="near: 10; far: 10000; objects: .clickable"></a-camera>
+
+            <a-entity id="targetImage" mindar-image-target="targetIndex: 0">
+
+               <a-video
+        src="#targetVideo"
+        width="1.5"
+        height="0.9"
+        position="0 0 0"
+        rotation="0 0 0">
+    </a-video>
+
+
+            </a-entity>
+
+        </a-scene>
+    </main>
+    <script src="./js/gsap.min.js"></script>
+    <script src="./js/man-ar.js"></script>
+    <script src="./js/menu.js"></script>
+    <script src="https://code.jquery.com/jquery-3.7.1.js"></script>
+    <script src="https://code.jquery.com/ui/1.14.1/jquery-ui.js"></script>
+
+ <script>
+  document.addEventListener("DOMContentLoaded", () => {
+    const videoEl = document.querySelector("#targetVideo");
+
+    // 👆 Required to allow autoplay on mobile (after any user interaction)
+    const resumeVideo = () => {
+      videoEl.play().catch(e => {
+        console.warn("Autoplay failed:", e);
+      });
+      document.body.removeEventListener("click", resumeVideo);
+    };
+    document.body.addEventListener("click", resumeVideo);
+
+    // ▶️ When image target is found, play video
+    const targetEntity = document.querySelector("#targetImage");
+    targetEntity.addEventListener("targetFound", () => {
+      videoEl.play();
+    });
+
+    // ⏸️ Optional: Pause video when target is lost
+    targetEntity.addEventListener("targetLost", () => {
+      videoEl.pause();
+    });
+  });
+</script>
+
 </body>
 
 </html>

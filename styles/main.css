@@ -1053,20 +1053,22 @@ AR Page html
   z-index: 9;
 }
 #mainScreen::before {
-  content: "";
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 75%;
+    content: "";
+    position: absolute;
+    top: 50px; /* Move it slightly down */
+    left: 50%;
+    transform: translateX(-50%);
+    width: 50%;
+    height: 75%;
 }
+
 #mainScreen.old-lady-bg::before {
   background: url("../assets/images/old-lady/old-lady.png") no-repeat;
   background-size: contain;
   background-position: center top;
 }
 #mainScreen.man-bg::before {
-  background: url("../assets/images/man/face-man_v02.png") no-repeat;
+  background: url("../assets/images/man/Metaverselogo.png") no-repeat;
   background-size: contain;
   background-position: center top;
 }
