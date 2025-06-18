@@ -70,10 +70,12 @@ function goBack() {
         video.pause();
         video.currentTime = 0;
     });
-const btnContainer1 = document.querySelector(".btn-container1");
-        btnContainer1.classList.add("hide");
-        btnContainer1.classList.remove("show");
-          btnContainer1.style.display = "flex";
+
+    const btnContainer1 = document.querySelector(".btn-container1");
+    btnContainer1.classList.add("hide");
+    btnContainer1.classList.remove("show");
+    btnContainer1.style.display = "none";
+
     const aVideo = document.querySelector("#displayVideo");
     if (aVideo) aVideo.setAttribute("visible", "false");
 
@@ -98,11 +100,11 @@ const btnContainer1 = document.querySelector(".btn-container1");
     document.getElementById("scanText").style.display = "none";
     document.getElementById("scanning-overlay").classList.add("hidden");
 }
+
 function goToAnimation() {
     keepScreenAwake();
 
     // Hide the welcome screen
-    const mainScreen = document.getElementById("mainScreen");
     if (mainScreen) mainScreen.style.display = "none";
 
     // Hide inner btn container in mainScreen (if any)
@@ -128,7 +130,7 @@ function goToAnimation() {
     // Stop AR system if running
     if (arSystem && arSystem.running) arSystem.stop();
 
-    // Load default video (first one)
+    // Load default video
     changeVideoSource("assets/video/Test-01.mp4");
 
     // Re-initialize AR system
@@ -139,21 +141,41 @@ function goToAnimation() {
 function changeVideo(videoPath) {
     changeVideoSource(videoPath);
 }
+
 function changeVideoSource(videoPath) {
-      const mainVideoEl = document.querySelector('#mainVideo');
-      const aVideo = document.querySelector('#displayVideo');
+    const aVideo = document.querySelector('#displayVideo');
+    const oldVideoEl = document.querySelector('#mainVideo');
+    const assets = document.querySelector('a-assets');
 
-      if (!mainVideoEl || !aVideo) return;
+    if (!aVideo || !oldVideoEl || !assets) return;
 
-      mainVideoEl.pause();
-      mainVideoEl.currentTime = 0;
+    // Pause and remove old video
+    oldVideoEl.pause();
+    oldVideoEl.currentTime = 0;
 
-      mainVideoEl.src = videoPath;
-      mainVideoEl.load();
+    // Create new video element
+    const newVideoEl = document.createElement('video');
+    newVideoEl.setAttribute('id', 'mainVideo');
+    newVideoEl.setAttribute('preload', 'auto');
+    newVideoEl.setAttribute('crossorigin', 'anonymous');
+    newVideoEl.setAttribute('playsinline', 'true');
+    newVideoEl.setAttribute('webkit-playsinline', 'true');
+    newVideoEl.src = videoPath;
 
-      aVideo.setAttribute("visible", "false");
-      aVideo.setAttribute("src", "#mainVideo");
-  }
+    // Replace old video in a-assets
+    assets.replaceChild(newVideoEl, oldVideoEl);
+
+    // Re-bind the new video to a-video
+    aVideo.setAttribute('src', '#mainVideo');
+
+    // Optional: Start playing if marker is already visible
+    const isMarkerVisible = targetImage.object3D.visible;
+    if (isMarkerVisible) {
+        newVideoEl.play();
+        aVideo.setAttribute('visible', 'true');
+    }
+}
+
 document.addEventListener("DOMContentLoaded", () => {
     sceneEl = document.querySelector("a-scene");
     targetImage = document.querySelector("#targetImage");
@@ -166,3 +188,4 @@ document.addEventListener("DOMContentLoaded", () => {
 
 window.goToAnimation = goToAnimation;
 window.goBack = goBack;
+window.changeVideo = changeVideo;

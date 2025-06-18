@@ -30,17 +30,17 @@
         <div id="mainScreen" class="man-bg">
             <div class="btn-container">
                 <button class="btn" onclick="goToAnimation()">Start AR</button>
-             
+
 
             </div>
-            
+
         </div>
-<div class="btn-container1 hide" style="display: none;">
-  <button class="btn" onclick="changeVideo('assets/video/Test-01.mp4')">Start 1</button>
-  <button class="btn" onclick="changeVideo('assets/video/Video2.mp4')">Start 2</button>
-  <button class="btn" onclick="changeVideo('assets/video/Video3.mp4')">Start 3</button>
-  <button class="btn" onclick="changeVideo('assets/video/Video4.mp4')">Start 4</button>
-</div>
+        <div class="btn-container1 hide" style="display: none;">
+            <button class="btn" onclick="changeVideo('assets/video/Test-01.mp4')">Start 1</button>
+            <button class="btn" onclick="changeVideo('assets/video/Video2.mp4')">Start 2</button>
+            <button class="btn" onclick="changeVideo('assets/video/Video3.mp4')">Start 3</button>
+            <button class="btn" onclick="changeVideo('assets/video/Video4.mp4')">Start 4</button>
+        </div>
         <div id="deviceError">
             <p>
                 AR Experience works best on mobile devices.<br>Please try the experience on a mobile device.
@@ -84,9 +84,9 @@
                 <video id="vid4" src="assets/video/Video4.mp4" preload="auto" crossorigin="anonymous"></video>
             </a-assets> -->
 
-<a-assets>
-  <video id="mainVideo" preload="auto" crossorigin="anonymous"></video>
-</a-assets>
+            <a-assets>
+                <video id="mainVideo" preload="auto" crossorigin="anonymous"></video>
+            </a-assets>
 
             <a-camera position="0 0 0" look-controls="enabled: false" cursor="fuse: false; rayOrigin: mouse;"
                 raycaster="near: 10; far: 10000; objects: .clickable"></a-camera>
