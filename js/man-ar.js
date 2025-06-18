@@ -2,19 +2,20 @@ let sceneEl = null,
     targetImage = null,
     arSystem = null;
 
+let AR_READY = false;
+
 const TIMELINE_DETAILS = {
     currentAnimationSeq: 1
 };
-
-let AR_READY = false;
 
 // DOM Elements
 const mainScreen = document.querySelector('#mainScreen');
 const backBtn = document.querySelector('#backBtn');
 const replayButton = document.querySelector('#replayButton');
 
-// Wake Lock
 let wakeLock = null;
+
+// ✅ Keep Screen Awake
 async function keepScreenAwake() {
     try {
         if ('wakeLock' in navigator) {
@@ -28,6 +29,7 @@ async function keepScreenAwake() {
     }
 }
 
+// ✅ Initialize AR and set up video logic
 function init() {
     mainScreen.classList.add('hide');
     backBtn.classList.add('show');
@@ -40,24 +42,28 @@ function init() {
         arSystem.unpause();
     }
 
-   targetImage.addEventListener("targetFound", () => {
-    const mainVideoEl = document.querySelector("#mainVideo");
-    const aVideo = document.querySelector("#displayVideo");
-
-    if (mainVideoEl) {
-        mainVideoEl.play().catch(err => console.warn("Autoplay blocked", err));
-    }
-    if (aVideo) {
-        aVideo.setAttribute("visible", "true");
-    }
-});
-
-    targetImage.addEventListener("targetLost", () => {
+    // 📌 Target Found
+    targetImage.addEventListener("targetFound", () => {
+        const mainVideoEl = document.querySelector("#mainVideo");
         const aVideo = document.querySelector("#displayVideo");
-        const srcId = aVideo.getAttribute("src");
-        const video = document.querySelector(srcId);
-        if (video) {
-            video.pause();
+
+        if (mainVideoEl) {
+            mainVideoEl.play().catch(err => console.warn("Autoplay blocked", err));
+        }
+        if (aVideo) {
+            aVideo.setAttribute("visible", "true");
+        }
+    });
+
+    // 📌 Target Lost
+    targetImage.addEventListener("targetLost", () => {
+        const mainVideoEl = document.querySelector("#mainVideo");
+        const aVideo = document.querySelector("#displayVideo");
+
+        if (mainVideoEl) {
+            mainVideoEl.pause();
+        }
+        if (aVideo) {
             aVideo.setAttribute("visible", "false");
         }
     });
@@ -67,6 +73,7 @@ function init() {
     });
 }
 
+// ✅ Go Back Button Handler
 function goBack() {
     document.querySelectorAll("video").forEach(video => {
         video.pause();
@@ -103,13 +110,12 @@ function goBack() {
     document.getElementById("scanning-overlay").classList.add("hidden");
 }
 
+// ✅ Go to Animation with Default Video Load
 function goToAnimation() {
     keepScreenAwake();
 
-    // Hide the welcome screen
     if (mainScreen) mainScreen.style.display = "none";
 
-    // Hide inner btn container in mainScreen (if any)
     const btnContainer = mainScreen.querySelector(".btn-container");
     if (btnContainer) {
         btnContainer.classList.add("hide");
@@ -117,7 +123,6 @@ function goToAnimation() {
         btnContainer.style.display = "none";
     }
 
-    // Show video selection button container
     const btnContainer1 = document.querySelector(".btn-container1");
     if (btnContainer1) {
         btnContainer1.classList.remove("hide");
@@ -125,50 +130,44 @@ function goToAnimation() {
         btnContainer1.style.display = "flex";
     }
 
-    // Hide scan text if shown
     const scanText = document.getElementById("scanText");
     if (scanText) scanText.style.display = "none";
 
-    // Stop AR system if running
     if (arSystem && arSystem.running) arSystem.stop();
 
-    // Load default video
     changeVideoSource("assets/video/Test-01.mp4");
-
-    // Re-initialize AR system
     init();
+
     sessionStorage.setItem("cameraActive", "true");
 }
 
+// ✅ Change Video Path Dynamically
 function changeVideo(videoPath) {
     changeVideoSource(videoPath);
 }
 
+// ✅ Core Function to Change and Reload Video Source
 function changeVideoSource(videoPath) {
     const mainVideoEl = document.querySelector('#mainVideo');
     const aVideo = document.querySelector('#displayVideo');
 
     if (!mainVideoEl || !aVideo) return;
 
-    // Pause the current video
     mainVideoEl.pause();
     mainVideoEl.setAttribute("src", videoPath);
     mainVideoEl.load();
 
-    // Rebind a-video texture to this same video
     aVideo.setAttribute("src", "#mainVideo");
-
-    // Ensure visibility is off (it will be turned on in targetFound)
     aVideo.setAttribute("visible", "false");
 
-    // Optional: Autoplay if target is visible already
-    if (targetImage.object3D.visible) {
-        mainVideoEl.play();
+    // Auto-play if target is already visible
+    if (targetImage && targetImage.object3D.visible) {
+        mainVideoEl.play().catch(e => console.warn("Autoplay blocked", e));
         aVideo.setAttribute("visible", "true");
     }
 }
 
-
+// ✅ DOM Ready Setup
 document.addEventListener("DOMContentLoaded", () => {
     sceneEl = document.querySelector("a-scene");
     targetImage = document.querySelector("#targetImage");
@@ -179,6 +178,7 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 });
 
+// ✅ Global Access
 window.goToAnimation = goToAnimation;
 window.goBack = goBack;
 window.changeVideo = changeVideo;
