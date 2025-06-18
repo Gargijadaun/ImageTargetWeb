@@ -70,7 +70,10 @@ function goBack() {
         video.pause();
         video.currentTime = 0;
     });
-
+const btnContainer1 = document.querySelector(".btn-container1");
+        btnContainer1.classList.add("hide");
+        btnContainer1.classList.remove("show");
+          btnContainer1.style.display = "flex";
     const aVideo = document.querySelector("#displayVideo");
     if (aVideo) aVideo.setAttribute("visible", "false");
 
@@ -99,7 +102,19 @@ function goBack() {
 function goToAnimation(animationSeq) {
     keepScreenAwake();
     document.getElementById("mainScreen").style.display = "none";
-
+    //   mainScreen.classList.remove("hide");
+    //       mainScreen.style.display = "flex";
+    //           mainScreen.classList.add("show");
+       const btnContainer = document.querySelector("#mainScreen .btn-container");
+    if (btnContainer) {
+        btnContainer.classList.add("hide");
+        btnContainer.classList.remove("show");
+        btnContainer.style.display = "flex";
+    }
+const btnContainer1 = document.querySelector(".btn-container1");
+        btnContainer1.classList.add("show");
+        btnContainer1.classList.remove("hide");
+          btnContainer1.style.display = "flex";
     // const scanText = document.getElementById("scanText");
     // scanText.style.background = "white";
     // scanText.style.display = "flex";
