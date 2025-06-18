@@ -29,19 +29,18 @@
         <!-- BUTTONS FOR 4 VIDEOS -->
         <div id="mainScreen" class="man-bg">
             <div class="btn-container">
-                <button class="btn" onclick="goToAnimation(1)">Start 1</button>
+                <button class="btn" onclick="goToAnimation()">Start AR</button>
              
 
             </div>
             
         </div>
- <div class="btn-container1 hide" style="display: none;">
-                <button class="btn" onclick="goToAnimation(1)">Start 1</button>
-                <button class="btn" onclick="goToAnimation(2)">Start 2</button>
-                <button class="btn" onclick="goToAnimation(3)">Start 3</button>
-                <button class="btn" onclick="goToAnimation(4)">Start 4</button>
-
-            </div>
+<div class="btn-container1 hide" style="display: none;">
+  <button class="btn" onclick="changeVideo('assets/video/Test-01.mp4')">Start 1</button>
+  <button class="btn" onclick="changeVideo('assets/video/Video2.mp4')">Start 2</button>
+  <button class="btn" onclick="changeVideo('assets/video/Video3.mp4')">Start 3</button>
+  <button class="btn" onclick="changeVideo('assets/video/Video4.mp4')">Start 4</button>
+</div>
         <div id="deviceError">
             <p>
                 AR Experience works best on mobile devices.<br>Please try the experience on a mobile device.

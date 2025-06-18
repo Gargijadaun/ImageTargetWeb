@@ -98,61 +98,62 @@ const btnContainer1 = document.querySelector(".btn-container1");
     document.getElementById("scanText").style.display = "none";
     document.getElementById("scanning-overlay").classList.add("hidden");
 }
-
-function goToAnimation(animationSeq) {
+function goToAnimation() {
     keepScreenAwake();
-    document.getElementById("mainScreen").style.display = "none";
 
-    const btnContainer = document.querySelector("#mainScreen .btn-container");
+    // Hide the welcome screen
+    const mainScreen = document.getElementById("mainScreen");
+    if (mainScreen) mainScreen.style.display = "none";
+
+    // Hide inner btn container in mainScreen (if any)
+    const btnContainer = mainScreen.querySelector(".btn-container");
     if (btnContainer) {
         btnContainer.classList.add("hide");
         btnContainer.classList.remove("show");
-        btnContainer.style.display = "flex";
+        btnContainer.style.display = "none";
     }
 
+    // Show video selection button container
     const btnContainer1 = document.querySelector(".btn-container1");
-    btnContainer1.classList.add("show");
-    btnContainer1.classList.remove("hide");
-    btnContainer1.style.display = "flex";
+    if (btnContainer1) {
+        btnContainer1.classList.remove("hide");
+        btnContainer1.classList.add("show");
+        btnContainer1.style.display = "flex";
+    }
 
-    TIMELINE_DETAILS.currentAnimationSeq = Number(animationSeq);
+    // Hide scan text if shown
+    const scanText = document.getElementById("scanText");
+    if (scanText) scanText.style.display = "none";
 
-    const videoMap = {
-        1: "assets/video/Test-01.mp4",
-        2: "assets/video/Video2.mp4",
-        3: "assets/video/Video3.mp4",
-        4: "assets/video/Video4.mp4"
-    };
-
-    const selectedVideoSrc = videoMap[animationSeq];
-
+    // Stop AR system if running
     if (arSystem && arSystem.running) arSystem.stop();
 
-    scanText.style.display = "none";
-    
-    // ✅ Call the new function to switch the video
-    changeVideoSource(selectedVideoSrc);
+    // Load default video (first one)
+    changeVideoSource("assets/video/Test-01.mp4");
 
+    // Re-initialize AR system
     init();
     sessionStorage.setItem("cameraActive", "true");
 }
 
-function changeVideoSource(videoPath) {
-    const mainVideoEl = document.querySelector('#mainVideo');
-    const aVideo = document.querySelector('#displayVideo');
-
-    // Stop and reset video
-    mainVideoEl.pause();
-    mainVideoEl.currentTime = 0;
-
-    // Change the video source
-    mainVideoEl.src = videoPath;
-    mainVideoEl.load();
-
-    // Reassign source to a-video (in case it's already playing something)
-    aVideo.setAttribute("visible", "false");
-    aVideo.setAttribute("src", "#mainVideo");
+function changeVideo(videoPath) {
+    changeVideoSource(videoPath);
 }
+function changeVideoSource(videoPath) {
+      const mainVideoEl = document.querySelector('#mainVideo');
+      const aVideo = document.querySelector('#displayVideo');
+
+      if (!mainVideoEl || !aVideo) return;
+
+      mainVideoEl.pause();
+      mainVideoEl.currentTime = 0;
+
+      mainVideoEl.src = videoPath;
+      mainVideoEl.load();
+
+      aVideo.setAttribute("visible", "false");
+      aVideo.setAttribute("src", "#mainVideo");
+  }
 document.addEventListener("DOMContentLoaded", () => {
     sceneEl = document.querySelector("a-scene");
     targetImage = document.querySelector("#targetImage");
