@@ -102,55 +102,57 @@ const btnContainer1 = document.querySelector(".btn-container1");
 function goToAnimation(animationSeq) {
     keepScreenAwake();
     document.getElementById("mainScreen").style.display = "none";
-    //   mainScreen.classList.remove("hide");
-    //       mainScreen.style.display = "flex";
-    //           mainScreen.classList.add("show");
-       const btnContainer = document.querySelector("#mainScreen .btn-container");
+
+    const btnContainer = document.querySelector("#mainScreen .btn-container");
     if (btnContainer) {
         btnContainer.classList.add("hide");
         btnContainer.classList.remove("show");
         btnContainer.style.display = "flex";
     }
-const btnContainer1 = document.querySelector(".btn-container1");
-        btnContainer1.classList.add("show");
-        btnContainer1.classList.remove("hide");
-          btnContainer1.style.display = "flex";
-    // const scanText = document.getElementById("scanText");
-    // scanText.style.background = "white";
-    // scanText.style.display = "flex";
+
+    const btnContainer1 = document.querySelector(".btn-container1");
+    btnContainer1.classList.add("show");
+    btnContainer1.classList.remove("hide");
+    btnContainer1.style.display = "flex";
 
     TIMELINE_DETAILS.currentAnimationSeq = Number(animationSeq);
 
     const videoMap = {
-        1: "vid1",
-        2: "vid2",
-        3: "vid3",
-        4: "vid4"
+        1: "assets/video/Test-01.mp4",
+        2: "assets/video/Video2.mp4",
+        3: "assets/video/Video3.mp4",
+        4: "assets/video/Video4.mp4"
     };
 
-    const selectedVideoId = videoMap[animationSeq];
-    const aVideo = document.querySelector("#displayVideo");
+    const selectedVideoSrc = videoMap[animationSeq];
 
-    // Stop and reset all videos
-    document.querySelectorAll("video").forEach(video => {
-        video.pause();
-        video.currentTime = 0;
-    });
-
-    aVideo.setAttribute("visible", "false");
-    aVideo.setAttribute("src", `#${selectedVideoId}`);
-
-    // Restart AR system after a short delay to switch video
     if (arSystem && arSystem.running) arSystem.stop();
- scanText.style.display = "none";
-        init();
-        sessionStorage.setItem("cameraActive", "true");
-        // NO video.play() here. Wait for targetFound!
-    // setTimeout(() => {
-       
-    // }, 2000);
+
+    scanText.style.display = "none";
+    
+    // ✅ Call the new function to switch the video
+    changeVideoSource(selectedVideoSrc);
+
+    init();
+    sessionStorage.setItem("cameraActive", "true");
 }
 
+function changeVideoSource(videoPath) {
+    const mainVideoEl = document.querySelector('#mainVideo');
+    const aVideo = document.querySelector('#displayVideo');
+
+    // Stop and reset video
+    mainVideoEl.pause();
+    mainVideoEl.currentTime = 0;
+
+    // Change the video source
+    mainVideoEl.src = videoPath;
+    mainVideoEl.load();
+
+    // Reassign source to a-video (in case it's already playing something)
+    aVideo.setAttribute("visible", "false");
+    aVideo.setAttribute("src", "#mainVideo");
+}
 document.addEventListener("DOMContentLoaded", () => {
     sceneEl = document.querySelector("a-scene");
     targetImage = document.querySelector("#targetImage");
