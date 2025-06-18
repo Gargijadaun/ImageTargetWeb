@@ -127,12 +127,12 @@ function goToAnimation(animationSeq) {
 
     // Restart AR system after a short delay to switch video
     if (arSystem && arSystem.running) arSystem.stop();
-  init();
+ scanText.style.display = "none";
+        init();
         sessionStorage.setItem("cameraActive", "true");
+        // NO video.play() here. Wait for targetFound!
     // setTimeout(() => {
-    //     scanText.style.display = "none";
-      
-    //     // NO video.play() here. Wait for targetFound!
+       
     // }, 2000);
 }
 
