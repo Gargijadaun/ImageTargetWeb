@@ -1,5 +1,4 @@
 <html>
-
 <head>
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <script src="https://aframe.io/releases/1.5.0/aframe.min.js"></script>
@@ -11,44 +10,46 @@
     <link rel="stylesheet" href="https://code.jquery.com/ui/1.14.1/themes/base/jquery-ui.css">
     <link rel="stylesheet" href="./styles/main.css">
 </head>
-
 <body>
     <main>
-        <div id="backBtn" onclick="goBack()">
+        <div id="backBtn" onclick="goBack()" class="hide">
             <img src="./assets/icons/back-icon.png" alt="Back">
         </div>
 
         <div id="replayButton" class="hide">
-            <img src="./assets/images/replay.png" alt="Back">
+            <img src="./assets/images/replay.png" alt="Replay">
         </div>
-        <div id="scanText">
+        
+        <div id="scanText" class="hide">
             <img src="./assets/images/sample.png" alt="Scanning Image" />
         </div>
 
-
-        <!-- BUTTONS FOR 4 VIDEOS -->
         <div id="mainScreen" class="man-bg">
+            <div class="btn-container">
+                <button class="btn" onclick="showMainScreen1()">Start 1</button>
+            </div>
+        </div>
+        
+        <div id="mainScreen1" class="man-bg hide">
             <div class="btn-container">
                 <button class="btn" onclick="goToAnimation(1)">Start 1</button>
                 <button class="btn" onclick="goToAnimation(2)">Start 2</button>
                 <button class="btn" onclick="goToAnimation(3)">Start 3</button>
                 <button class="btn" onclick="goToAnimation(4)">Start 4</button>
-
             </div>
         </div>
 
-        <div id="deviceError">
+        <div id="deviceError" class="hide">
             <p>
                 AR Experience works best on mobile devices.<br>Please try the experience on a mobile device.
             </p>
         </div>
 
-        <div id="infoText">
-            <p>
-            </p>
+        <div id="infoText" class="hide">
+            <p></p>
         </div>
 
-        <div class="single-btn-container">
+        <div class="single-btn-container hide">
             <button id="treatmentsBtn" class="btn" onclick="startAnimationTreatments()">
                 Treatments Available
             </button>
@@ -57,8 +58,6 @@
             </button>
         </div>
 
-
-
         <div id="scanning-overlay" class="hidden">
             <div class="inner">
                 <img src="./assets/target/marker.jpg" alt="Marker Overlay">
@@ -66,46 +65,32 @@
             </div>
         </div>
 
-
-
         <a-scene
             mindar-image="uiScanning: #scanning-overlay; imageTargetSrc: ./assets/target/targets.mind; filterMinCF:0.001; filterBeta: 0.05; missTolerance: 5; warmupTolerance: 5; autoStart: false;"
-            renderer="colorManagement: true, physicallyCorrectLights:true;antialias: true;" vr-mode-ui="enabled: false"
+            renderer="colorManagement: true, physicallyCorrectLights:true;antialias: true;" 
+            vr-mode-ui="enabled: false"
             device-orientation-permission-ui="enabled: false">
 
             <a-assets>
-                <video id="vid1" src="assets/video/Test-01.mp4" preload="auto" crossorigin="anonymous"></video>
-                <video id="vid2" src="assets/video/Video2.mp4" preload="auto" crossorigin="anonymous"></video>
-                <video id="vid3" src="assets/video/Video3.mp4" preload="auto" crossorigin="anonymous"></video>
-                <video id="vid4" src="assets/video/Video4.mp4" preload="auto" crossorigin="anonymous"></video>
+                <video id="vid1" src="assets/video/Test-01.mp4" preload="auto" crossorigin="anonymous" playsinline webkit-playsinline muted></video>
+                <video id="vid2" src="assets/video/Video2.mp4" preload="auto" crossorigin="anonymous" playsinline webkit-playsinline muted></video>
+                <video id="vid3" src="assets/video/Video3.mp4" preload="auto" crossorigin="anonymous" playsinline webkit-playsinline muted></video>
+                <video id="vid4" src="assets/video/Video4.mp4" preload="auto" crossorigin="anonymous" playsinline webkit-playsinline muted></video>
             </a-assets>
-
-
 
             <a-camera position="0 0 0" look-controls="enabled: false" cursor="fuse: false; rayOrigin: mouse;"
                 raycaster="near: 10; far: 10000; objects: .clickable"></a-camera>
-
 
             <a-entity id="targetImage" mindar-image-target="targetIndex: 0">
                 <a-video id="displayVideo" src="#vid1" width="1.6" height="0.9" position="0 0 0" rotation="0 0 0"
                     visible="false">
                 </a-video>
-
-
             </a-entity>
-
-
         </a-scene>
     </main>
     <script src="./js/gsap.min.js"></script>
     <script src="./js/man-ar.js"></script>
-
     <script src="https://code.jquery.com/jquery-3.7.1.js"></script>
     <script src="https://code.jquery.com/ui/1.14.1/jquery-ui.js"></script>
-
-
-
-
 </body>
-
 </html>
