@@ -40,15 +40,17 @@ function init() {
         arSystem.unpause();
     }
 
-    targetImage.addEventListener("targetFound", () => {
-        const aVideo = document.querySelector("#displayVideo");
-        const srcId = aVideo.getAttribute("src");
-        const video = document.querySelector(srcId);
-        if (video) {
-            video.play();
-            aVideo.setAttribute("visible", "true");
-        }
-    });
+   targetImage.addEventListener("targetFound", () => {
+    const mainVideoEl = document.querySelector("#mainVideo");
+    const aVideo = document.querySelector("#displayVideo");
+
+    if (mainVideoEl) {
+        mainVideoEl.play().catch(err => console.warn("Autoplay blocked", err));
+    }
+    if (aVideo) {
+        aVideo.setAttribute("visible", "true");
+    }
+});
 
     targetImage.addEventListener("targetLost", () => {
         const aVideo = document.querySelector("#displayVideo");
@@ -143,38 +145,29 @@ function changeVideo(videoPath) {
 }
 
 function changeVideoSource(videoPath) {
+    const mainVideoEl = document.querySelector('#mainVideo');
     const aVideo = document.querySelector('#displayVideo');
-    const oldVideoEl = document.querySelector('#mainVideo');
-    const assets = document.querySelector('a-assets');
 
-    if (!aVideo || !oldVideoEl || !assets) return;
+    if (!mainVideoEl || !aVideo) return;
 
-    // Pause and remove old video
-    oldVideoEl.pause();
-    oldVideoEl.currentTime = 0;
+    // Pause the current video
+    mainVideoEl.pause();
+    mainVideoEl.setAttribute("src", videoPath);
+    mainVideoEl.load();
 
-    // Create new video element
-    const newVideoEl = document.createElement('video');
-    newVideoEl.setAttribute('id', 'mainVideo');
-    newVideoEl.setAttribute('preload', 'auto');
-    newVideoEl.setAttribute('crossorigin', 'anonymous');
-    newVideoEl.setAttribute('playsinline', 'true');
-    newVideoEl.setAttribute('webkit-playsinline', 'true');
-    newVideoEl.src = videoPath;
+    // Rebind a-video texture to this same video
+    aVideo.setAttribute("src", "#mainVideo");
 
-    // Replace old video in a-assets
-    assets.replaceChild(newVideoEl, oldVideoEl);
+    // Ensure visibility is off (it will be turned on in targetFound)
+    aVideo.setAttribute("visible", "false");
 
-    // Re-bind the new video to a-video
-    aVideo.setAttribute('src', '#mainVideo');
-
-    // Optional: Start playing if marker is already visible
-    const isMarkerVisible = targetImage.object3D.visible;
-    if (isMarkerVisible) {
-        newVideoEl.play();
-        aVideo.setAttribute('visible', 'true');
+    // Optional: Autoplay if target is visible already
+    if (targetImage.object3D.visible) {
+        mainVideoEl.play();
+        aVideo.setAttribute("visible", "true");
     }
 }
+
 
 document.addEventListener("DOMContentLoaded", () => {
     sceneEl = document.querySelector("a-scene");
