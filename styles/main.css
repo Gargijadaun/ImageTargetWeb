@@ -560,19 +560,37 @@ main {
 }
 
 .btn {
-  background: url("../assets/images/btn-bg-lg.png") no-repeat;
+  background: url("../assets/images/Button04.png") no-repeat;
   background-size: contain;
   background-position: center center;
   padding: 20px 40px;
   font-size: 15px;
-  color: #ffffff;
+  color: #000000;
   text-align: center;
   z-index: 9;
   border: 0;
   outline: none;
   transition: 0.3s ease-in-out;
 }
-
+.btn1 {
+  background: url("../assets/images/Button-02.png") no-repeat;
+  background-size: contain;
+  background-position: center center;
+  padding: 20px 40px;
+  font-size: 15px;
+  color: #000000;
+  text-align: center;
+  z-index: 9;
+  border: 0;
+  outline: none;
+  transition: 0.3s ease-in-out;
+}
+.image-above-button {
+  display: block;
+  margin: 15 auto 0 auto; /* center image and give space below */
+  max-width: 60%;            /* adjust size as needed */
+  height: auto;
+}
 #menuBtn {
   position: fixed;
   top: 10px;
@@ -640,7 +658,7 @@ main {
   height: 40px;
   padding: 5px;
   box-sizing: border-box;
-  background: #1C1C1C;
+  background: #797eca;
   border: 2px solid #CC8B42;
   border-radius: 20px;
   z-index: 999;
@@ -698,7 +716,7 @@ main {
   bottom: 100px;
   left: 50%;
   transform: translate(-50%, 50%);
-  background: url("../assets/images/btn-bg-lg.png") no-repeat;
+  background: url("../assets/images/small.png") no-repeat;
   background-size: contain;
   background-position: center center;
   padding: 20px 15px;
@@ -1043,8 +1061,7 @@ AR Page html
   right: 0;
   bottom: 0;
   height: 100%;
-  background: rgb(255, 217, 154);
-  background: linear-gradient(180deg, rgb(255, 217, 154) 0%, rgb(218, 178, 111) 100%);
+  background: linear-gradient(180deg, #cccccc 0%, #666666 100%);
   opacity: 1;
   pointer-events: all;
   transition: 0.4s ease-in-out;
@@ -1052,13 +1069,14 @@ AR Page html
   color: #252525;
   z-index: 9;
 }
+
 #mainScreen::before {
     content: "";
     position: absolute;
     top: 50px; /* Move it slightly down */
     left: 50%;
     transform: translateX(-50%);
-    width: 50%;
+    width: 35%;
     height: 75%;
 }
 
@@ -1068,7 +1086,12 @@ AR Page html
   background-position: center top;
 }
 #mainScreen.man-bg::before {
-  background: url("../assets/images/man/Metaverselogo.png") no-repeat;
+  background: url("../assets/images/01.png") no-repeat;
+  background-size: contain;
+  background-position: center top;
+}
+#mainScreen.man-bg::after {
+  background: url("../assets/images/02.png") no-repeat;
   background-size: contain;
   background-position: center top;
 }
@@ -1101,7 +1124,7 @@ AR Page html
 #mainScreen .btn-container .btn {
   border: 0;
   outline: 0;
-  width: 210px;
+  width:150px;
   height: 80px;
   font-weight: 700;
   font-size: 15px;
@@ -1128,7 +1151,7 @@ AR Page html
   width: 210px;
   height: 80px;
   font-weight: 700;
-  font-size: 15px;
+  font-size: 8px;
   padding: 10px;
 }
 /* 
