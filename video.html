@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" id="viewport-meta" content="width=device-width, initial-scale=1.0">
+    <title>Video Gallery</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+            overflow: hidden;
+            background: black; /* Fallback background to avoid white screen */
+        }
+        #main-screen, #video-screen {
+            width: 100vw;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-end;
+            align-items: center;
+            position: relative;
+        }
+        #main-screen {
+            background-image: url('assets/target/marker.png');
+            background-size: contain; /* Ensure full image is visible */
+            background-position: center;
+            background-repeat: no-repeat;
+        }
+        #rotate-message {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background: rgba(0, 0, 0, 0.95); /* Slightly more opaque */
+            color: white;
+            font-size: 5vw; /* Larger font for visibility */
+            line-height: 1.5; /* Better readability */
+            text-align: center;
+            justify-content: center;
+            align-items: center;
+            z-index: 2000; /* High z-index */
+        }
+        .button-container {
+            display: flex;
+            justify-content: space-around;
+            width: 100%;
+            padding: 2vw; /* Responsive padding */
+            background: rgba(0, 0, 0, 0.5);
+            box-sizing: border-box;
+            z-index: 100; /* Above background */
+        }
+        .button-container button {
+            padding: 0;
+            border: none;
+            background: none;
+            cursor: pointer;
+        }
+        .button-container img {
+            width: 10vw; /* Responsive width */
+            height: auto; /* Preserve aspect ratio */
+            max-width: 80px; /* Cap for larger screens */
+            object-fit: contain; /* Ensure image fits without distortion */
+            border-radius: 5px;
+            transition: transform 0.2s;
+        }
+        .button-container img:hover {
+            transform: scale(1.1);
+        }
+        #video-screen {
+            display: none;
+            background: black;
+        }
+        #video-player {
+            width: 100vw;
+            height: 100vh;
+            object-fit: contain; /* Ensure video fits without cropping */
+        }
+        #back-button {
+            position: absolute;
+            top: 2vw; /* Responsive positioning */
+            left: 2vw;
+            padding: 1vw 2vw;
+            font-size: min(2vw, 16px); /* Responsive font size */
+            cursor: pointer;
+            background-color: #2c6a6d;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            z-index: 10; /* Above video */
+        }
+        #back-button:hover {
+            background-color: #d32f2f;
+        }
+    </style>
+</head>
+<body>
+    <div id="main-screen">
+        <div id="rotate-message">Please rotate your phone to landscape mode</div>
+        <button id="back-button" onclick="Home()">Home</button>
+        <div class="button-container">
+            <button onclick="playVideo('assets/video/Video1.mp4')"><img src="assets/images/Button-01.png" alt="Video 1"></button>
+            <button onclick="playVideo('assets/video/Video2.mp4')"><img src="assets/images/Button-01.png" alt="Video 2"></button>
+            <button onclick="playVideo('assets/video/Video3.mp4')"><img src="assets/images/Button-01.png" alt="Video 3"></button>
+            <button onclick="playVideo('assets/video/Video4.mp4')"><img src="assets/images/Button-01.png" alt="Video 4"></button>
+            <button onclick="playVideo('assets/video/Test-01.mp4')"><img src="assets/images/Button-01.png" alt="Video 5"></button>
+        </div>
+    </div>
+    <div id="video-screen">
+        <button id="back-button" onclick="goBack()">Back</button>
+        <video id="video-player" autoplay></video>
+    </div>
+
+    <script>
+        const mainScreen = document.getElementById('main-screen');
+        const videoScreen = document.getElementById('video-screen');
+        const videoPlayer = document.getElementById('video-player');
+        const rotateMessage = document.getElementById('rotate-message');
+        const viewportMeta = document.getElementById('viewport-meta');
+
+        function checkOrientation() {
+            if (window.innerWidth < window.innerHeight) {
+                rotateMessage.style.display = 'flex';
+                mainScreen.style.display = 'none';
+                mainScreen.style.pointerEvents = 'none';
+                rotateMessage.style.visibility = 'visible'; /* Force visibility */
+            } else {
+                rotateMessage.style.display = 'none';
+                mainScreen.style.display = 'flex';
+                mainScreen.style.pointerEvents = 'auto';
+            }
+        }
+
+        window.addEventListener('resize', checkOrientation);
+        window.addEventListener('orientationchange', () => {
+            setTimeout(checkOrientation, 100); /* Delay to ensure orientation change is detected */
+        });
+        checkOrientation();
+
+        function playVideo(videoUrl) {
+            videoPlayer.src = videoUrl;
+            viewportMeta.content = 'width=device-width, initial-scale=1.0'; /* Allow pinch-to-zoom */
+            mainScreen.style.display = 'none';
+            videoScreen.style.display = 'flex';
+            videoPlayer.play();
+        }
+
+        function Home() {
+            window.location.href = "index.html"; // Replace with actual home page if different
+        }
+
+        function goBack() {
+            videoPlayer.pause();
+            videoPlayer.src = ''; /* Clear video source */
+            videoScreen.style.display = 'none';
+            mainScreen.style.display = 'flex';
+            // Reset zoom
+            viewportMeta.content = 'width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no';
+            setTimeout(() => {
+                viewportMeta.content = 'width=device-width, initial-scale=1.0'; /* Restore pinch-to-zoom */
+            }, 100); /* Short delay for zoom reset */
+            checkOrientation();
+        }
+    </script>
+</body>
+</html>

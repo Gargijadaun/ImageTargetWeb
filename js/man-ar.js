@@ -177,6 +177,9 @@ document.addEventListener("DOMContentLoaded", () => {
         document.querySelector('#mainScreen .btn-container').classList.add('show');
     });
 });
+function continueWithoutAR() {
+    window.location.href = "video.html"; // Replace with your actual file name
+}
 
 // ✅ Global Access
 window.goToAnimation = goToAnimation;

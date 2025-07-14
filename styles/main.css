@@ -572,19 +572,28 @@ main {
   outline: none;
   transition: 0.3s ease-in-out;
 }
+
 .btn1 {
   background: url("../assets/images/Button-02.png") no-repeat;
   background-size: contain;
   background-position: center center;
-  padding: 20px 40px;
-  font-size: 15px;
+  width: 170px;           /* fixed width */
+  height: 70px;           /* fixed height */
+  font-size: 14px;
   color: #000000;
   text-align: center;
   z-index: 9;
   border: 0;
   outline: none;
   transition: 0.3s ease-in-out;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  white-space: normal;     /* allow multi-line text */
+  line-height: 1.2;
+  text-shadow: 0 0 2px #fff;
 }
+
 .image-above-button {
   display: block;
   margin: 15 auto 0 auto; /* center image and give space below */
