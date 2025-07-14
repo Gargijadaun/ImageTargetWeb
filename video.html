@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" id="viewport-meta" content="width=device-width, initial-scale=1.0">
-    <title>Video Gallery</title>
+    <title>Motherson</title>
     <style>
         body {
             margin: 0;
@@ -132,79 +132,89 @@
         <video id="video-player" autoplay></video>
     </div>
 
-    <script>
-        const mainScreen = document.getElementById('main-screen');
-        const videoScreen = document.getElementById('video-screen');
-        const videoPlayer = document.getElementById('video-player');
-        const rotateMessage = document.getElementById('rotate-message');
-        const viewportMeta = document.getElementById('viewport-meta');
-        const fullscreenButton = document.getElementById('fullscreen-button');
+ <script>
+    const mainScreen = document.getElementById('main-screen');
+    const videoScreen = document.getElementById('video-screen');
+    const videoPlayer = document.getElementById('video-player');
+    const rotateMessage = document.getElementById('rotate-message');
+    const viewportMeta = document.getElementById('viewport-meta');
+    const fullscreenButton = document.getElementById('fullscreen-button');
 
-        function enterFullscreen() {
-            const elem = document.documentElement;
-            let fullscreenPromise;
-            if (elem.requestFullscreen) {
-                fullscreenPromise = elem.requestFullscreen();
-            } else if (elem.webkitRequestFullscreen) { /* Safari */
-                fullscreenPromise = elem.webkitRequestFullscreen();
-            } else if (elem.msRequestFullscreen) { /* IE11 */
-                fullscreenPromise = elem.msRequestFullscreen();
-            }
+    // Show only fullscreen button initially
+    window.addEventListener('load', () => {
+        fullscreenButton.style.display = 'block';
+        mainScreen.style.display = 'none';
+        videoScreen.style.display = 'none';
+        rotateMessage.style.display = 'none';
+    });
 
-            if (fullscreenPromise) {
-                fullscreenPromise.then(() => {
-                    fullscreenButton.style.display = 'none'; /* Hide button */
-                    checkOrientation(); /* Show content based on orientation */
-                }).catch(err => {
-                    console.warn(`Failed to enter fullscreen: ${err.message}`);
-                    fullscreenButton.style.display = 'none'; /* Hide button even if fullscreen fails */
-                    checkOrientation(); /* Ensure content is shown */
-                });
-            } else {
-                fullscreenButton.style.display = 'none'; /* Hide button if no fullscreen support */
-                checkOrientation(); /* Show content */
-            }
+    function enterFullscreen() {
+        const elem = document.documentElement;
+        let fullscreenPromise;
+
+        if (elem.requestFullscreen) {
+            fullscreenPromise = elem.requestFullscreen();
+        } else if (elem.webkitRequestFullscreen) { // Safari
+            fullscreenPromise = elem.webkitRequestFullscreen();
+        } else if (elem.msRequestFullscreen) { // IE11
+            fullscreenPromise = elem.msRequestFullscreen();
         }
 
-        function checkOrientation() {
-            if (window.innerWidth < window.innerHeight) {
-                rotateMessage.style.display = 'flex';
-                mainScreen.style.display = 'none';
-            } else {
-                rotateMessage.style.display = 'none';
-                mainScreen.style.display = 'flex';
-            }
+        if (fullscreenPromise) {
+            fullscreenPromise.then(() => {
+                fullscreenButton.style.display = 'none'; // Hide button
+                checkOrientation(); // Now check orientation
+            }).catch(err => {
+                console.warn(`Failed to enter fullscreen: ${err.message}`);
+                fullscreenButton.style.display = 'none';
+                checkOrientation(); // Still show orientation message or screen
+            });
+        } else {
+            fullscreenButton.style.display = 'none';
+            checkOrientation(); // Fallback
         }
+    }
 
-        window.addEventListener('resize', checkOrientation);
-        window.addEventListener('orientationchange', () => {
-            setTimeout(checkOrientation, 100); /* Delay to ensure orientation change */
-        });
-
-        function playVideo(videoUrl) {
-            videoPlayer.src = videoUrl;
-            viewportMeta.content = 'width=device-width, initial-scale=1.0'; /* Allow pinch-to-zoom */
+    function checkOrientation() {
+        if (window.innerWidth < window.innerHeight) {
+            rotateMessage.style.display = 'flex';
             mainScreen.style.display = 'none';
-            videoScreen.style.display = 'flex';
-            videoPlayer.play();
-        }
-
-        function Home() {
-            window.location.href = "index.html"; // Replace with actual home page if different, e.g., 'home.html'
-        }
-
-        function goBack() {
-            videoPlayer.pause();
-            videoPlayer.src = ''; /* Clear video source */
-            videoScreen.style.display = 'none';
+        } else {
+            rotateMessage.style.display = 'none';
             mainScreen.style.display = 'flex';
-            // Reset zoom
-            viewportMeta.content = 'width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no';
-            setTimeout(() => {
-                viewportMeta.content = 'width=device-width, initial-scale=1.0'; /* Restore pinch-to-zoom */
-            }, 100); /* Short delay for zoom reset */
-            checkOrientation();
         }
-    </script>
+    }
+
+    // Listen for orientation/resize changes
+    window.addEventListener('resize', checkOrientation);
+    window.addEventListener('orientationchange', () => {
+        setTimeout(checkOrientation, 100); // Delay to handle animation
+    });
+
+    function playVideo(videoUrl) {
+        videoPlayer.src = videoUrl;
+        viewportMeta.content = 'width=device-width, initial-scale=1.0';
+        mainScreen.style.display = 'none';
+        videoScreen.style.display = 'flex';
+        videoPlayer.play();
+    }
+
+    function Home() {
+        window.location.href = "index.html";
+    }
+
+    function goBack() {
+        videoPlayer.pause();
+        videoPlayer.src = '';
+        videoScreen.style.display = 'none';
+        mainScreen.style.display = 'flex';
+        viewportMeta.content = 'width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no';
+        setTimeout(() => {
+            viewportMeta.content = 'width=device-width, initial-scale=1.0';
+        }, 100);
+        checkOrientation();
+    }
+</script>
+
 </body>
 </html>
