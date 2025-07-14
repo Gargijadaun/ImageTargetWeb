@@ -1,215 +1,212 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" id="viewport-meta" content="width=device-width, initial-scale=1.0">
-    <title>Motherson</title>
-    <style>
-        body {
-            margin: 0;
-            padding: 0;
-            font-family: Arial, sans-serif;
-            overflow: hidden;
-            background: black; /* Fallback to avoid white screen */
-        }
-        #main-screen, #video-screen {
-            width: 100vw;
-            height: 100vh;
-            display: flex;
-            flex-direction: column;
-            justify-content: flex-end;
-            align-items: center;
-            position: relative;
-        }
-        #main-screen {
-            background-image: url('assets/target/marker.png');
-            background-size: contain; /* Ensure full image is visible */
-            background-position: center;
-            background-repeat: no-repeat;
-        }
-        #rotate-message {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100vw;
-            height: 100vh;
-            background: rgba(0, 0, 0, 0.95); /* Opaque background */
-            color: white;
-            font-size: 5vw; /* Responsive font size */
-            line-height: 1.5; /* Better readability */
-            text-align: center;
-            display: flex; /* Ensure flex for centering */
-            justify-content: center;
-            align-items: center;
-            z-index: 2000; /* High z-index */
-        }
-        .button-container {
-            display: flex;
-            justify-content: space-around;
-            width: 100%;
-            padding: 2vw; /* Responsive padding */
-            background: rgba(0, 0, 0, 0.5);
-            box-sizing: border-box;
-            z-index: 100; /* Above background */
-        }
-        .button-container button {
-            padding: 0;
-            border: none;
-            background: none;
-            cursor: pointer;
-        }
-        .button-container img {
-            width: 10vw; /* Responsive width */
-            height: auto; /* Preserve aspect ratio */
-            max-width: 80px; /* Cap for larger screens */
-            object-fit: contain; /* Ensure image fits without distortion */
-            border-radius: 5px;
-            transition: transform 0.2s;
-        }
-        .button-container img:hover {
-            transform: scale(1.1);
-        }
-        #video-screen {
-            display: none;
-            background: black;
-        }
-        #video-player {
-            width: 100vw;
-            height: 100vh;
-            object-fit: contain; /* Ensure video fits without cropping */
-        }
-        #back-button {
-            position: absolute;
-            top: 2vw; /* Responsive positioning */
-            left: 2vw;
-            padding: 1vw 2vw;
-            font-size: min(2vw, 16px); /* Responsive font size */
-            cursor: pointer;
-            background-color: #2c6a6d;
-            color: white;
-            border: none;
-            border-radius: 5px;
-            z-index: 10; /* Above video */
-        }
-        #back-button:hover {
-            background-color: #d32f2f;
-        }
-        #fullscreen-button {
-            position: fixed;
-            top: 55%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            padding: 2vw 4vw;
-            font-size: min(4vw, 20px);
-            cursor: pointer;
-            background-color: #2c6a6d;
-            color: white;
-            border: none;
-            border-radius: 5px;
-            z-index: 3000; /* Above all elements */
-        }
-        #fullscreen-button:hover {
-            background-color: #d32f2f;
-        }
-    </style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" id="viewport-meta" content="width=device-width, initial-scale=1.0" />
+  <title>Motherson</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: Arial, sans-serif;
+      overflow: hidden;
+      background: black;
+    }
+
+    #main-screen,
+    #video-screen {
+      width: 100vw;
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      align-items: center;
+      position: relative;
+    }
+
+    #rotate-message {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      background: rgba(0, 0, 0, 0.95);
+      color: white;
+      font-size: 5vw;
+      line-height: 1.5;
+      text-align: center;
+      justify-content: center;
+      align-items: center;
+      z-index: 2000;
+    }
+
+    .image-wrapper {
+      width: 100%;
+      position: relative;
+      padding-top: 56.25%;
+      background: black;
+    }
+
+    .image-inner {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+    }
+
+    .bg-image {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      z-index: 1;
+    }
+
+    .hotspot-btn {
+      position: absolute;
+      width: 100px;
+      height: 100px;
+      transform: translate(-50%, -50%);
+      background: transparent;
+      border: none;
+      cursor: pointer;
+      z-index: 2;
+    }
+
+    #video-screen {
+      display: none;
+      background: black;
+    }
+
+    #video-player {
+      width: 100vw;
+      height: 100vh;
+      object-fit: contain;
+    }
+
+    #back-button {
+      position: absolute;
+      top: 2vw;
+      left: 2vw;
+      padding: 1vw 2vw;
+      font-size: min(2vw, 16px);
+      cursor: pointer;
+      background-color: #2c6a6d;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      z-index: 10;
+    }
+
+    #back-button:hover {
+      background-color: #d32f2f;
+    }
+
+    #fullscreen-button {
+      position: fixed;
+      top: 55%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      padding: 2vw 4vw;
+      font-size: min(4vw, 20px);
+      cursor: pointer;
+      background-color: #2c6a6d;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      z-index: 3000;
+    }
+
+    #fullscreen-button:hover {
+      background-color: #d32f2f;
+    }
+  </style>
 </head>
 <body>
-    <button id="fullscreen-button" onclick="enterFullscreen()">Enter Full-Screen</button>
-    <div id="rotate-message" style="display: none;">Please rotate your phone to landscape mode</div>
-    <div id="main-screen" style="display: none;">
-        <button id="back-button" onclick="Home()">Home</button>
-        <div class="button-container">
-            <button onclick="playVideo('assets/video/Video1.mp4')"><img src="assets/images/Button-01.png" alt="Video 1"></button>
-            <button onclick="playVideo('assets/video/Video2.mp4')"><img src="assets/images/Button-01.png" alt="Video 2"></button>
-            <button onclick="playVideo('assets/video/Video3.mp4')"><img src="assets/images/Button-01.png" alt="Video 3"></button>
-            <button onclick="playVideo('assets/video/Video4.mp4')"><img src="assets/images/Button-01.png" alt="Video 4"></button>
-            <button onclick="playVideo('assets/video/Test-01.mp4')"><img src="assets/images/Button-01.png" alt="Video 5"></button>
-        </div>
-    </div>
-    <div id="video-screen" style="display: none;">
-        <button id="back-button" onclick="goBack()">Back</button>
-        <video id="video-player" autoplay></video>
-    </div>
 
-<script>
+  <div id="rotate-message">Please rotate your phone to landscape mode</div>
+
+  <div id="main-screen" style="display: none;">
+    <button id="back-button" onclick="Home()">Home</button>
+
+    <div class="image-wrapper">
+      <div class="image-inner">
+        <img src="assets/images/Brochure-Landscape.jpg" class="bg-image" alt="Background" />
+
+        <!-- Transparent buttons with fixed positions -->
+        <button class="hotspot-btn" style="top: 86.3%; left: 7%;" onclick="playVideo('assets/video/Video1.mp4')"></button>
+        <button class="hotspot-btn" style="top: 86.3%; left: 29%;" onclick="playVideo('assets/video/Video2.mp4')"></button>
+        <button class="hotspot-btn" style="top: 86.3%; left: 49%;" onclick="playVideo('assets/video/Video3.mp4')"></button>
+        <button class="hotspot-btn" style="top: 86.3%; left: 70%;" onclick="playVideo('assets/video/Video4.mp4')"></button>
+        <button class="hotspot-btn" style="top: 86.3%; left: 91%;" onclick="playVideo('assets/video/Test-01.mp4')"></button>
+      </div>
+    </div>
+  </div>
+
+  <div id="video-screen" style="display: none;">
+    <button id="back-button" onclick="goBack()">Back</button>
+    <video id="video-player" autoplay></video>
+  </div>
+
+  <script>
     const mainScreen = document.getElementById('main-screen');
     const videoScreen = document.getElementById('video-screen');
     const videoPlayer = document.getElementById('video-player');
     const rotateMessage = document.getElementById('rotate-message');
     const viewportMeta = document.getElementById('viewport-meta');
-    const fullscreenButton = document.getElementById('fullscreen-button');
 
     window.addEventListener('load', () => {
-        fullscreenButton.style.display = 'block';
-        mainScreen.style.display = 'none';
-        videoScreen.style.display = 'none';
-        rotateMessage.style.display = 'none';
-        checkOrientation(); // Check immediately
+      mainScreen.style.display = 'none';
+      videoScreen.style.display = 'none';
+      rotateMessage.style.display = 'none';
+      checkOrientation();
     });
 
-    function enterFullscreen() {
-        const elem = document.documentElement;
-
-        const requestFullscreen =
-            elem.requestFullscreen ||
-            elem.webkitRequestFullscreen ||
-            elem.msRequestFullscreen;
-
-        if (requestFullscreen) {
-            requestFullscreen.call(elem).finally(() => {
-                fullscreenButton.style.display = 'none';
-                checkOrientation(); // Enforce landscape after fullscreen
-            });
-        } else {
-            fullscreenButton.style.display = 'none';
-            checkOrientation(); // Fallback
-        }
-    }
-
     function checkOrientation() {
-        const isLandscape = window.innerWidth > window.innerHeight;
-
-        if (isLandscape) {
-            rotateMessage.style.display = 'none';
-            mainScreen.style.display = 'flex';
-        } else {
-            rotateMessage.style.display = 'flex';
-            mainScreen.style.display = 'none';
-            videoScreen.style.display = 'none';
-        }
+      const isLandscape = window.innerWidth > window.innerHeight;
+      if (isLandscape) {
+        rotateMessage.style.display = 'none';
+        mainScreen.style.display = 'flex';
+      } else {
+        rotateMessage.style.display = 'flex';
+        mainScreen.style.display = 'none';
+        videoScreen.style.display = 'none';
+      }
     }
 
     window.addEventListener('resize', checkOrientation);
     window.addEventListener('orientationchange', () => {
-        setTimeout(checkOrientation, 200); // allow browser to rotate
+      setTimeout(checkOrientation, 200);
     });
 
     function playVideo(videoUrl) {
-        videoPlayer.src = videoUrl;
-        viewportMeta.content = 'width=device-width, initial-scale=1.0';
-        mainScreen.style.display = 'none';
-        videoScreen.style.display = 'flex';
-        videoPlayer.play();
+      videoPlayer.src = videoUrl;
+      viewportMeta.content = 'width=device-width, initial-scale=1.0';
+      mainScreen.style.display = 'none';
+      videoScreen.style.display = 'flex';
+      videoPlayer.play();
     }
 
     function Home() {
-        window.location.href = "index.html";
+      window.location.href = "index.html";
     }
 
     function goBack() {
-        videoPlayer.pause();
-        videoPlayer.src = '';
-        videoScreen.style.display = 'none';
-        mainScreen.style.display = 'flex';
-        viewportMeta.content = 'width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no';
-        setTimeout(() => {
-            viewportMeta.content = 'width=device-width, initial-scale=1.0';
-        }, 100);
-        checkOrientation();
+      videoPlayer.pause();
+      videoPlayer.src = '';
+      videoScreen.style.display = 'none';
+      mainScreen.style.display = 'flex';
+      viewportMeta.content = 'width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no';
+      setTimeout(() => {
+        viewportMeta.content = 'width=device-width, initial-scale=1.0';
+      }, 100);
+      checkOrientation();
     }
-</script>
-
+  </script>
 
 </body>
 </html>
