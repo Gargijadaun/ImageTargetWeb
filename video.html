@@ -132,7 +132,7 @@
         <video id="video-player" autoplay></video>
     </div>
 
- <script>
+<script>
     const mainScreen = document.getElementById('main-screen');
     const videoScreen = document.getElementById('video-screen');
     const videoPlayer = document.getElementById('video-player');
@@ -140,34 +140,26 @@
     const viewportMeta = document.getElementById('viewport-meta');
     const fullscreenButton = document.getElementById('fullscreen-button');
 
-    // Show only fullscreen button initially
     window.addEventListener('load', () => {
         fullscreenButton.style.display = 'block';
         mainScreen.style.display = 'none';
         videoScreen.style.display = 'none';
         rotateMessage.style.display = 'none';
+        checkOrientation(); // Check immediately
     });
 
     function enterFullscreen() {
         const elem = document.documentElement;
-        let fullscreenPromise;
 
-        if (elem.requestFullscreen) {
-            fullscreenPromise = elem.requestFullscreen();
-        } else if (elem.webkitRequestFullscreen) { // Safari
-            fullscreenPromise = elem.webkitRequestFullscreen();
-        } else if (elem.msRequestFullscreen) { // IE11
-            fullscreenPromise = elem.msRequestFullscreen();
-        }
+        const requestFullscreen =
+            elem.requestFullscreen ||
+            elem.webkitRequestFullscreen ||
+            elem.msRequestFullscreen;
 
-        if (fullscreenPromise) {
-            fullscreenPromise.then(() => {
-                fullscreenButton.style.display = 'none'; // Hide button
-                checkOrientation(); // Now check orientation
-            }).catch(err => {
-                console.warn(`Failed to enter fullscreen: ${err.message}`);
+        if (requestFullscreen) {
+            requestFullscreen.call(elem).finally(() => {
                 fullscreenButton.style.display = 'none';
-                checkOrientation(); // Still show orientation message or screen
+                checkOrientation(); // Enforce landscape after fullscreen
             });
         } else {
             fullscreenButton.style.display = 'none';
@@ -176,19 +168,21 @@
     }
 
     function checkOrientation() {
-        if (window.innerWidth < window.innerHeight) {
-            rotateMessage.style.display = 'flex';
-            mainScreen.style.display = 'none';
-        } else {
+        const isLandscape = window.innerWidth > window.innerHeight;
+
+        if (isLandscape) {
             rotateMessage.style.display = 'none';
             mainScreen.style.display = 'flex';
+        } else {
+            rotateMessage.style.display = 'flex';
+            mainScreen.style.display = 'none';
+            videoScreen.style.display = 'none';
         }
     }
 
-    // Listen for orientation/resize changes
     window.addEventListener('resize', checkOrientation);
     window.addEventListener('orientationchange', () => {
-        setTimeout(checkOrientation, 100); // Delay to handle animation
+        setTimeout(checkOrientation, 200); // allow browser to rotate
     });
 
     function playVideo(videoUrl) {
@@ -215,6 +209,7 @@
         checkOrientation();
     }
 </script>
+
 
 </body>
 </html>

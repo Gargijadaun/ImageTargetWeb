@@ -10,10 +10,47 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/img-comparison-slider@8/dist/styles.css" />
     <link rel="stylesheet" href="https://code.jquery.com/ui/1.14.1/themes/base/jquery-ui.css">
     <link rel="stylesheet" href="./styles/main.css">
+    
+<style>
+  #rotate-warning {
+    display: none;
+    position: fixed;
+    z-index: 9999;
+    background: black;
+    color: white;
+    font-size: 5vw;
+    text-align: center;
+    justify-content: center;
+    align-items: center;
+    width: 100vw;
+    height: 100vh;
+    top: 0;
+    left: 0;
+    padding: 0px;
+  }
+
+  @media screen and (orientation: portrait) {
+    #rotate-warning {
+      display: flex;
+    }
+    #mainScreen,
+    a-scene,
+    .btn-container1,
+    .single-btn-container {
+      display: none !important;
+    }
+  }
+</style>
+
 </head>
 
 <body>
     <main>
+       <div id="rotate-warning">
+  Please rotate your phone to landscape mode
+</div>
+
+
         <div id="backBtn" onclick="goBack()">
             <img src="./assets/icons/back-icon.png" alt="Back">
         </div>
@@ -36,9 +73,10 @@
     <!-- New Button: Continue Without AR -->
     <button class="btn1" onclick="continueWithoutAR()">Continue Without AR</button>
 
-    <img src="./assets/images/02.png" class="image-above-button" alt="Above Start AR">
+    
 
 </div>
+<img src="./assets/images/02.png" class="image-above-button" alt="Above Start AR">
 
 </div>
 
@@ -138,5 +176,26 @@
 
 
 </body>
+<script>
+  function checkOrientation() {
+    const isPortrait = window.innerHeight > window.innerWidth;
+    const warning = document.getElementById("rotate-warning");
+    const mainScreen = document.getElementById("mainScreen");
+    const aScene = document.querySelector("a-scene");
 
+    if (isPortrait) {
+      warning.style.display = "flex";
+      mainScreen.style.display = "none";
+      if (aScene) aScene.style.display = "none";
+    } else {
+      warning.style.display = "none";
+      mainScreen.style.display = "block";
+      if (aScene) aScene.style.display = "block";
+    }
+  }
+
+  window.addEventListener("load", checkOrientation);
+  window.addEventListener("resize", checkOrientation);
+  window.addEventListener("orientationchange", () => setTimeout(checkOrientation, 200));
+</script>
 </html>

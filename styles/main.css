@@ -573,33 +573,38 @@ main {
   transition: 0.3s ease-in-out;
 }
 
+.btn-container.row-buttons {
+    display: flex;
+    justify-content: center;
+    gap: 20px; /* spacing between buttons */
+    margin-top: 20px;
+    flex-wrap: wrap; /* allows wrapping on small screens */
+}
+
 .btn1 {
-  background: url("../assets/images/Button-02.png") no-repeat;
-  background-size: contain;
-  background-position: center center;
-  width: 170px;           /* fixed width */
-  height: 70px;           /* fixed height */
-  font-size: 14px;
-  color: #000000;
-  text-align: center;
-  z-index: 9;
-  border: 0;
-  outline: none;
-  transition: 0.3s ease-in-out;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  white-space: normal;     /* allow multi-line text */
-  line-height: 1.2;
-  text-shadow: 0 0 2px #fff;
+    background: url("../assets/images/Button-02.png") no-repeat center center;
+    background-size: contain;
+    width: 200px;       /* fixed width for consistency */
+    height: 80px;       /* fixed height */
+    font-size: 15px;
+    color: #000;
+    border: 0;
+    outline: none;
+    text-align: center;
+    transition: 0.3s ease-in-out;
+    cursor: pointer;
 }
 
 .image-above-button {
-  display: block;
-  margin: 15 auto 0 auto; /* center image and give space below */
-  max-width: 60%;            /* adjust size as needed */
+  position: fixed;
+  bottom: 20px;            /* distance from bottom */
+  left: 50%;
+  transform: translateX(-50%);
+  max-width: 60%;          /* scale image as needed */
   height: auto;
+  z-index: 10;             /* ensure it stays above background */
 }
+
 #menuBtn {
   position: fixed;
   top: 10px;
@@ -1115,17 +1120,35 @@ AR Page html
 }
 #mainScreen .btn-container {
   position: absolute;
-  bottom: 40px;
+  bottom: 72px;
   left: 3%;
   width: 94%;
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
   align-items: center;
   justify-content: center;
+  gap: 20px; /* <-- This adds space between buttons */
   opacity: 0;
   pointer-events: none;
   transition: 0.3s ease-in;
 }
+#rotate-message {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background: rgba(0, 0, 0, 0.95); /* Opaque background */
+            color: white;
+            font-size: 5vw; /* Responsive font size */
+            line-height: 1.5; /* Better readability */
+            text-align: center;
+            display: flex; /* Ensure flex for centering */
+            justify-content: center;
+            align-items: center;
+            z-index: 2000; /* High z-index */
+        }
 #mainScreen .btn-container.show {
   opacity: 1;
   pointer-events: all;
