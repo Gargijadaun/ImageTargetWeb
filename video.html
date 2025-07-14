@@ -10,7 +10,7 @@
             padding: 0;
             font-family: Arial, sans-serif;
             overflow: hidden;
-            background: black; /* Fallback background to avoid white screen */
+            background: black; /* Fallback to avoid white screen */
         }
         #main-screen, #video-screen {
             width: 100vw;
@@ -34,9 +34,9 @@
             left: 0;
             width: 100vw;
             height: 100vh;
-            background: rgba(0, 0, 0, 0.95); /* Slightly more opaque */
+            background: rgba(0, 0, 0, 0.95); /* Opaque background */
             color: white;
-            font-size: 5vw; /* Larger font for visibility */
+            font-size: 5vw; /* Responsive font size */
             line-height: 1.5; /* Better readability */
             text-align: center;
             justify-content: center;
@@ -97,8 +97,8 @@
     </style>
 </head>
 <body>
+    <div id="rotate-message">Please rotate your phone to landscape mode</div>
     <div id="main-screen">
-        <div id="rotate-message">Please rotate your phone to landscape mode</div>
         <button id="back-button" onclick="Home()">Home</button>
         <div class="button-container">
             <button onclick="playVideo('assets/video/Video1.mp4')"><img src="assets/images/Button-01.png" alt="Video 1"></button>
@@ -120,22 +120,37 @@
         const rotateMessage = document.getElementById('rotate-message');
         const viewportMeta = document.getElementById('viewport-meta');
 
+        // Trigger full-screen mode on page load
+        document.addEventListener('DOMContentLoaded', () => {
+            const elem = document.documentElement;
+            if (elem.requestFullscreen) {
+                elem.requestFullscreen().catch(err => {
+                    console.warn(`Failed to enter fullscreen: ${err.message}`);
+                });
+            } else if (elem.webkitRequestFullscreen) { /* Safari */
+                elem.webkitRequestFullscreen().catch(err => {
+                    console.warn(`Failed to enter fullscreen: ${err.message}`);
+                });
+            } else if (elem.msRequestFullscreen) { /* IE11 */
+                elem.msRequestFullscreen().catch(err => {
+                    console.warn(`Failed to enter fullscreen: ${err.message}`);
+                });
+            }
+        });
+
         function checkOrientation() {
             if (window.innerWidth < window.innerHeight) {
                 rotateMessage.style.display = 'flex';
                 mainScreen.style.display = 'none';
-                mainScreen.style.pointerEvents = 'none';
-                rotateMessage.style.visibility = 'visible'; /* Force visibility */
             } else {
                 rotateMessage.style.display = 'none';
                 mainScreen.style.display = 'flex';
-                mainScreen.style.pointerEvents = 'auto';
             }
         }
 
         window.addEventListener('resize', checkOrientation);
         window.addEventListener('orientationchange', () => {
-            setTimeout(checkOrientation, 100); /* Delay to ensure orientation change is detected */
+            setTimeout(checkOrientation, 100); /* Delay to ensure orientation change */
         });
         checkOrientation();
 
@@ -148,7 +163,7 @@
         }
 
         function Home() {
-            window.location.href = "index.html"; // Replace with actual home page if different
+            window.location.href = "index.html"; // Replace with actual home page if different, e.g., 'home.html'
         }
 
         function goBack() {
