@@ -108,7 +108,7 @@
 
     #fullscreen-button {
       position: fixed;
-      top: 55%;
+      top: 45%;
       left: 50%;
       transform: translate(-50%, -50%);
       padding: 2vw 4vw;
@@ -127,7 +127,7 @@
   </style>
 </head>
 <body>
-
+ <button id="fullscreen-button" onclick="enterFullscreen()">Enter Full-Screen</button>
   <div id="rotate-message">Please rotate your phone to landscape mode</div>
 
   <div id="main-screen" style="display: none;">
@@ -206,6 +206,28 @@
       }, 100);
       checkOrientation();
     }
+     function enterFullscreen() {
+      const elem = document.documentElement;
+      const requestFullscreen =
+        elem.requestFullscreen ||
+        elem.webkitRequestFullscreen ||
+        elem.msRequestFullscreen;
+
+      if (requestFullscreen) {
+        requestFullscreen.call(elem).finally(() => {
+          document.getElementById('fullscreen-button').style.display = 'none';
+          checkOrientation();
+        });
+      } else {
+        document.getElementById('fullscreen-button').style.display = 'none';
+        checkOrientation();
+      }
+    }
+
+    window.addEventListener("load", () => {
+      document.getElementById("fullscreen-button").style.display = "block";
+      checkOrientation();
+    });
   </script>
 
 </body>
