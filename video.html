@@ -5,12 +5,13 @@
   <meta name="viewport" id="viewport-meta" content="width=device-width, initial-scale=1.0" />
   <title>Motherson</title>
   <style>
-    body {
+    html, body {
       margin: 0;
       padding: 0;
-      font-family: Arial, sans-serif;
-      overflow: hidden;
       background: black;
+      height: 100%;
+      width: 100%;
+      overflow: hidden;
     }
 
     #main-screen,
@@ -19,7 +20,7 @@
       height: 100vh;
       display: flex;
       flex-direction: column;
-      justify-content: flex-end;
+      justify-content: center;
       align-items: center;
       position: relative;
     }
@@ -34,7 +35,6 @@
       background: rgba(0, 0, 0, 0.95);
       color: white;
       font-size: 5vw;
-      line-height: 1.5;
       text-align: center;
       justify-content: center;
       align-items: center;
@@ -42,39 +42,32 @@
     }
 
     .image-wrapper {
-      width: 100%;
       position: relative;
-      padding-top: 56.25%;
+      width: 100vw;
+      height: 56.25vw; /* Maintain 1920x1080 (16:9) ratio */
+      max-height: 100vh;
+      max-width: 177.78vh; /* Maintain aspect ratio on tall screens */
       background: black;
-    }
-
-    .image-inner {
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
+      overflow: hidden;
     }
 
     .bg-image {
-      position: absolute;
-      top: 0;
-      left: 0;
       width: 100%;
       height: 100%;
       object-fit: contain;
-      z-index: 1;
+      display: block;
     }
 
     .hotspot-btn {
       position: absolute;
-      width: 100px;
-      height: 100px;
+   width: 9.2%;
+    height: 16.26%; /* About 100px of 1080px => 100 / 1080 = ~9.26% */
       transform: translate(-50%, -50%);
       background: transparent;
-      border: none;
-      cursor: pointer;
+      border: none; /* Optional: highlight area */
+      border-radius: 50%;
       z-index: 2;
+      cursor: pointer;
     }
 
     #video-screen {
@@ -127,23 +120,21 @@
   </style>
 </head>
 <body>
- <button id="fullscreen-button" onclick="enterFullscreen()">Enter Full-Screen</button>
+  <button id="fullscreen-button" onclick="enterFullscreen()">Enter Full-Screen</button>
   <div id="rotate-message">Please rotate your phone to landscape mode</div>
 
   <div id="main-screen" style="display: none;">
     <button id="back-button" onclick="Home()">Home</button>
 
     <div class="image-wrapper">
-      <div class="image-inner">
-        <img src="assets/images/Brochure-Landscape.jpg" class="bg-image" alt="Background" />
+      <img src="assets/images/Brochure-Landscape.jpg" class="bg-image" alt="Background" />
 
-        <!-- Transparent buttons with fixed positions -->
-        <button class="hotspot-btn" style="top: 86.3%; left: 7%;" onclick="playVideo('assets/video/Video1.mp4')"></button>
-        <button class="hotspot-btn" style="top: 86.3%; left: 29%;" onclick="playVideo('assets/video/Video2.mp4')"></button>
-        <button class="hotspot-btn" style="top: 86.3%; left: 49%;" onclick="playVideo('assets/video/Video3.mp4')"></button>
-        <button class="hotspot-btn" style="top: 86.3%; left: 70%;" onclick="playVideo('assets/video/Video4.mp4')"></button>
-        <button class="hotspot-btn" style="top: 86.3%; left: 91%;" onclick="playVideo('assets/video/Test-01.mp4')"></button>
-      </div>
+      <!-- Hotspot buttons positioned according to 1920x1080 reference -->
+      <button class="hotspot-btn" style="top: 86.1%; left: 8%;" onclick="playVideo('assets/video/Video1.mp4')"></button>
+      <button class="hotspot-btn" style="top: 86.1%; left: 29%;" onclick="playVideo('assets/video/Video2.mp4')"></button>
+      <button class="hotspot-btn" style="top: 86.1%; left: 50%;" onclick="playVideo('assets/video/Video3.mp4')"></button>
+      <button class="hotspot-btn" style="top: 86.1%; left: 71%;" onclick="playVideo('assets/video/Video4.mp4')"></button>
+      <button class="hotspot-btn" style="top: 86.1%; left: 92%;" onclick="playVideo('assets/video/Test-01.mp4')"></button>
     </div>
   </div>
 
@@ -159,13 +150,6 @@
     const rotateMessage = document.getElementById('rotate-message');
     const viewportMeta = document.getElementById('viewport-meta');
 
-    window.addEventListener('load', () => {
-      mainScreen.style.display = 'none';
-      videoScreen.style.display = 'none';
-      rotateMessage.style.display = 'none';
-      checkOrientation();
-    });
-
     function checkOrientation() {
       const isLandscape = window.innerWidth > window.innerHeight;
       if (isLandscape) {
@@ -178,21 +162,12 @@
       }
     }
 
-    window.addEventListener('resize', checkOrientation);
-    window.addEventListener('orientationchange', () => {
-      setTimeout(checkOrientation, 200);
-    });
-
     function playVideo(videoUrl) {
       videoPlayer.src = videoUrl;
       viewportMeta.content = 'width=device-width, initial-scale=1.0';
       mainScreen.style.display = 'none';
       videoScreen.style.display = 'flex';
       videoPlayer.play();
-    }
-
-    function Home() {
-      window.location.href = "index.html";
     }
 
     function goBack() {
@@ -206,7 +181,12 @@
       }, 100);
       checkOrientation();
     }
-     function enterFullscreen() {
+
+    function Home() {
+      window.location.href = "index.html";
+    }
+
+    function enterFullscreen() {
       const elem = document.documentElement;
       const requestFullscreen =
         elem.requestFullscreen ||
@@ -228,7 +208,11 @@
       document.getElementById("fullscreen-button").style.display = "block";
       checkOrientation();
     });
-  </script>
 
+    window.addEventListener('resize', checkOrientation);
+    window.addEventListener('orientationchange', () => {
+      setTimeout(checkOrientation, 200);
+    });
+  </script>
 </body>
 </html>
