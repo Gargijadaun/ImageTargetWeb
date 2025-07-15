@@ -121,12 +121,12 @@ body {
 }
 
 #scanning-overlay {
-  position: absolute;
-  left: 0;
-  right: 0;
+  position: fixed; /* Stays fixed on screen */
   top: 0;
-  bottom: 0;
-  z-index: 2;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: 999; /* Make sure it appears above everything */
   display: flex;
   align-items: center;
   justify-content: center;
@@ -134,31 +134,32 @@ body {
 }
 
 #scanning-overlay .inner {
+  position: relative;
   display: flex;
   align-items: center;
   justify-content: center;
-  position: relative;
-  background: linear-gradient(to right, white 6px, transparent 6px) 0 0,
-              linear-gradient(to right, white 6px, transparent 6px) 0 100%,
-              linear-gradient(to left, white 6px, transparent 6px) 100% 0,
-              linear-gradient(to left, white 6px, transparent 6px) 100% 100%,
-              linear-gradient(to bottom, white 6px, transparent 6px) 0 0,
-              linear-gradient(to bottom, white 6px, transparent 6px) 100% 0,
-              linear-gradient(to top, white 6px, transparent 6px) 0 100%,
-              linear-gradient(to top, white 6px, transparent 6px) 100% 100%;
+  
+  background: 
+    linear-gradient(to right, white 6px, transparent 6px) 0 0,
+    linear-gradient(to right, white 6px, transparent 6px) 0 100%,
+    linear-gradient(to left, white 6px, transparent 6px) 100% 0,
+    linear-gradient(to left, white 6px, transparent 6px) 100% 100%,
+    linear-gradient(to bottom, white 6px, transparent 6px) 0 0,
+    linear-gradient(to bottom, white 6px, transparent 6px) 100% 0,
+    linear-gradient(to top, white 6px, transparent 6px) 0 100%,
+    linear-gradient(to top, white 6px, transparent 6px) 100% 100%;
   background-size: 30px 30px;
   background-repeat: no-repeat;
-  aspect-ratio: 1/1;
 
-  /* Make it smaller for landscape (e.g., tablets or phones rotated) */
-  width: 30vh;
-  height: 30vh;
+  /* Size: adjusts based on smaller screen dimension */
+  width: min(30vh, 30vw);
+  aspect-ratio: 1 / 1;
 }
 
 #scanning-overlay .inner img {
   width: 85%;
+  height: auto;
   opacity: 0.35;
-  align-self: center;
 }
 
 #scanning-overlay .inner .scanline {
@@ -169,15 +170,11 @@ body {
   animation: move 2s linear infinite;
 }
 
-/* Optional: Animation keyframes if not already defined */
 @keyframes move {
-  0% {
-    top: 30%;
-  }
-  100% {
-    top: 100%;
-  }
+  0% { top: 0%; }
+  100% { top: 100%; }
 }
+
 
 #scanning-overlay.hidden {
   display: none;
