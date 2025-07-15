@@ -73,37 +73,53 @@ function init() {
     });
 }
 
-// ✅ Go Back Button Handler
+// ✅ Go Back Button Handler - Cleanly exits AR view and resets everything
 function goBack() {
-       document.getElementById("videoScreen").style.display = "none";
-      document.getElementById("videoScreen").classList.remove("active");
-      document.getElementById("mainScreen").style.display = "block";
-      document.getElementById("mainScreen").classList.add("active");
-      checkOrientation();
+    // Hide the AR video screen and deactivate it
+    const videoScreen = document.getElementById("videoScreen");
+    videoScreen.style.display = "none";
+    videoScreen.classList.remove("active");
+
+    // Show the main screen
+    const mainScreen = document.getElementById("mainScreen");
+    mainScreen.style.display = "flex";
+    mainScreen.classList.add("active");
+    mainScreen.classList.remove("hide");
+
+    // Pause and reset all video elements
     document.querySelectorAll("video").forEach(video => {
         video.pause();
         video.currentTime = 0;
     });
 
+    // Hide custom button container used in AR
     const btnContainer1 = document.querySelector(".btn-container1");
-    btnContainer1.classList.add("hide");
-    btnContainer1.classList.remove("show");
-    btnContainer1.style.display = "none";
+    if (btnContainer1) {
+        btnContainer1.classList.add("hide");
+        btnContainer1.classList.remove("show");
+        btnContainer1.style.display = "none";
+    }
 
+    // Hide A-Frame video plane (if present)
     const aVideo = document.querySelector("#displayVideo");
-    if (aVideo) aVideo.setAttribute("visible", "false");
+    if (aVideo) {
+        aVideo.setAttribute("visible", "false");
+    }
 
-    if (arSystem && arSystem.running) {
+    // Stop AR system cleanly
+    if (typeof arSystem !== "undefined" && arSystem.running) {
         arSystem.stop();
         sessionStorage.setItem("cameraActive", "false");
     }
 
-    mainScreen.classList.remove("hide");
-    mainScreen.style.display = "flex";
+    // Hide back button
+    const backBtn = document.getElementById("backBtn");
+    if (backBtn) {
+        backBtn.classList.add("hide");
+        backBtn.classList.remove("show");
+    }
 
-    backBtn.classList.add("hide");
-    backBtn.classList.remove("show");
-
+    // Show main screen button container
     const btnContainer = document.querySelector("#mainScreen .btn-container");
     if (btnContainer) {
         btnContainer.classList.add("show");
@@ -111,10 +127,29 @@ function goBack() {
         btnContainer.style.display = "flex";
     }
 
-    document.getElementById("scanText").style.display = "none";
-    document.getElementById("scanning-overlay").classList.add("hidden");
-    
+    // Hide scan text and scanning overlay
+    const scanText = document.getElementById("scanText");
+    if (scanText) scanText.style.display = "none";
+
+    const scanningOverlay = document.getElementById("scanning-overlay");
+    if (scanningOverlay) scanningOverlay.classList.add("hidden");
+
+    // Optional: Turn off AR camera (A-Frame specific)
+    const arCamera = document.querySelector("a-camera");
+    if (arCamera) {
+        arCamera.setAttribute("active", false);
+    }
+
+    // Optional: Stop the A-Frame scene rendering (if needed)
+    const scene = document.querySelector("a-scene");
+    if (scene && scene.renderer) {
+        scene.pause();
+    }
+
+    // Reset orientation or layout
+    checkOrientation();
 }
+
 
 // ✅ Go to Animation with Default Video Load
 function goToAnimation() {
