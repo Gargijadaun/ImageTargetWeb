@@ -609,7 +609,7 @@ main {
   bottom: 20px;            /* distance from bottom */
   left: 50%;
   transform: translateX(-50%);
-  max-width: 60%;          /* scale image as needed */
+  max-width: 42%;          /* scale image as needed */
   height: auto;
   z-index: 10;             /* ensure it stays above background */
 }
@@ -1099,7 +1099,7 @@ AR Page html
     top: 50px; /* Move it slightly down */
     left: 50%;
     transform: translateX(-50%);
-    width: 35%;
+    width: 21%;
     height: 75%;
 }
 

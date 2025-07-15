@@ -72,7 +72,7 @@
 
     #videoScreen {
       display: none;
-      background: black;
+         background: linear-gradient(90deg, rgb(59 177 213) 0%, rgb(1 143 191) 80%);
     }
 .image-wrapper {
   position: relative;
@@ -154,10 +154,10 @@
       position: fixed;
       top: 2vw;
       left: 2vw;
-      padding: 1vw 2vw;
-      font-size: min(2vw, 16px);
+        padding: 1vw -3vw;
+    font-size: min(-3vw, -3px);
       cursor: pointer;
-      background-color: #2c6a6d;
+      background-color: #018fbf;
       color: white;
       border: none;
       border-radius: 5px;
@@ -205,7 +205,7 @@
     <button id="fullscreen-button" onclick="enterFullscreen()">Enter Full-Screen</button>
 
     <!-- Back Button -->
-    <div id="backBtn" onclick="goBack()" class="hide">
+    <div id="backBtn" onclick="goBack()" class="back-btn hide">
       <img src="./assets/icons/back-icon.png" alt="Back">
     </div>
 
@@ -254,7 +254,7 @@
 
     <!-- Video Player Screen -->
   <div id="videoPlayerScreen">
-  <button class="back-btn" onclick="backToVideoScreen()">
+  <button class="back-btn" onclick="backToVideoScreen()" >
     <img src="./assets/icons/back-icon.png" alt="Back">
   </button>
   <div id="videoZoomContainer">
@@ -414,13 +414,18 @@ function updateTransform() {
       }
     }
 
-    function continueWithoutAR() {
-      document.getElementById("mainScreen").style.display = "none";
-      document.getElementById("mainScreen").classList.remove("active");
-      document.getElementById("videoScreen").style.display = "block";
-      document.getElementById("videoScreen").classList.add("active");
-      checkOrientation();
-    }
+function continueWithoutAR() {
+  document.getElementById("mainScreen").style.display = "none";
+  document.getElementById("mainScreen").classList.remove("active");
+
+  document.getElementById("videoScreen").style.display = "block";
+  document.getElementById("videoScreen").classList.add("active");
+
+  // 👇 Show back button
+  document.getElementById("backBtn").classList.remove("hide");
+
+  checkOrientation();
+}
 
     // function backToMain() {
     //   document.getElementById("videoScreen").style.display = "none";
