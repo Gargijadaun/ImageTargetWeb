@@ -205,7 +205,7 @@
     <button id="fullscreen-button" onclick="enterFullscreen()">Enter Full-Screen</button>
 
     <!-- Back Button -->
-    <div id="backBtn" onclick="goBack()" class="back-btn hide">
+    <div id="backBtn" onclick="goBack()" >
       <img src="./assets/icons/back-icon.png" alt="Back">
     </div>
 
@@ -246,7 +246,7 @@
           onclick="playVideo('assets/video/Test-01.mp4')"></button>
       </div>
     </div>
-    <button class="back-btn" onclick="goBack()">
+    <button class="back-btn" onclick="goBack()" style="display: none;">
       <img src="./assets/icons/back-icon.png" alt="Back">
     </button>
     </div>
@@ -421,8 +421,8 @@ function continueWithoutAR() {
   document.getElementById("videoScreen").style.display = "block";
   document.getElementById("videoScreen").classList.add("active");
 
-  // 👇 Show back button
-  document.getElementById("backBtn").classList.remove("hide");
+  // ✅ Show .back-btn
+  document.querySelector(".back-btn").style.display = "block";
 
   checkOrientation();
 }

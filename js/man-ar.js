@@ -11,6 +11,7 @@ const TIMELINE_DETAILS = {
 // DOM Elements
 const mainScreen = document.querySelector('#mainScreen');
 const backBtn = document.querySelector('#backBtn');
+
 const replayButton = document.querySelector('#replayButton');
 
 let wakeLock = null;
@@ -75,6 +76,7 @@ function init() {
 
 // ✅ Go Back Button Handler
 function goBack() {
+      document.querySelector(".back-btn").style.display = "none";
        document.getElementById("videoScreen").style.display = "none";
       document.getElementById("videoScreen").classList.remove("active");
       document.getElementById("mainScreen").style.display = "block";
@@ -119,7 +121,7 @@ function goBack() {
 // ✅ Go to Animation with Default Video Load
 function goToAnimation() {
     keepScreenAwake();
-
+  document.querySelector(".back-btn").style.display = "block";
     if (mainScreen) mainScreen.style.display = "none";
 
     const btnContainer = mainScreen.querySelector(".btn-container");
