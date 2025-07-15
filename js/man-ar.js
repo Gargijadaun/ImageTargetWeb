@@ -75,6 +75,11 @@ function init() {
 
 // ✅ Go Back Button Handler
 function goBack() {
+       document.getElementById("videoScreen").style.display = "none";
+      document.getElementById("videoScreen").classList.remove("active");
+      document.getElementById("mainScreen").style.display = "block";
+      document.getElementById("mainScreen").classList.add("active");
+      checkOrientation();
     document.querySelectorAll("video").forEach(video => {
         video.pause();
         video.currentTime = 0;
@@ -108,6 +113,7 @@ function goBack() {
 
     document.getElementById("scanText").style.display = "none";
     document.getElementById("scanning-overlay").classList.add("hidden");
+    
 }
 
 // ✅ Go to Animation with Default Video Load
