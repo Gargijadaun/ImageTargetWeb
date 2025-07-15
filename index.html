@@ -175,9 +175,9 @@
       background-color: #d32f2f;
     }
 
- @media screen and (orientation: portrait) {
+  @media screen and (orientation: portrait) {
   #rotate-warning {
-    display: none; /* Hide warning since AR is now supported in portrait */
+    display: flex;
   }
 
   #mainScreen,
@@ -185,42 +185,12 @@
   .single-btn-container,
   #videoScreen,
   #videoPlayerScreen {
-    display: none; /* Hide non-AR screens in portrait, unless active */
+    display: none !important;
   }
 
-  /* Ensure a-scene is visible and scaled properly */
+  /* Ensure a-scene is not hidden in portrait for AR */
   a-scene {
-    display: block;
-    width: 100vw;
-    height: 100vh;
-    overflow: hidden;
-  }
-
-  /* Adjust hotspot buttons for portrait */
-  .hotspot-btn {
-    width: 18vw; /* Increase size for touch usability in portrait */
-    height: 18vw;
-  }
-
-  /* Adjust back button for portrait */
-  .back-btn {
-    top: 4vw;
-    left: 4vw;
-    padding: 2vw 4vw;
-    font-size: min(4vw, 18px);
-  }
-
-  .back-btn img {
-    width: min(6vw, 28px);
-    height: min(6vw, 28px);
-  }
-
-  /* Adjust image wrapper for portrait */
-  .image-wrapper {
-    width: 100vw;
-    height: 177.78vw; /* Inverse aspect ratio for portrait (9:16) */
-    max-height: 100vh;
-    max-width: 56.25vh;
+    display: block !important;
   }
 }
   </style>
@@ -404,26 +374,28 @@ function updateTransform() {
   video.style.transform = `scale(${scale}) translate(${translateX / scale}px, ${translateY / scale}px)`;
 }
 
-   function checkOrientation() {
-  const isPortrait = window.innerHeight > window.innerWidth;
-  const mainScreen = document.getElementById("mainScreen");
-  const aScene = document.querySelector("a-scene");
-  const videoScreen = document.getElementById("videoScreen");
-  const videoPlayerScreen = document.getElementById("videoPlayerScreen");
+    function checkOrientation() {
+      const isPortrait = window.innerHeight > window.innerWidth;
+      const warning = document.getElementById("rotate-warning");
+      const mainScreen = document.getElementById("mainScreen");
+      const aScene = document.querySelector("a-scene");
+      const videoScreen = document.getElementById("videoScreen");
+      const videoPlayerScreen = document.getElementById("videoPlayerScreen");
 
-  if (isPortrait) {
-    // Only show mainScreen or videoScreen if explicitly active, otherwise show AR
-    mainScreen.style.display = mainScreen.classList.contains("active") ? "flex" : "none";
-    videoScreen.style.display = videoScreen.classList.contains("active") ? "flex" : "none";
-    videoPlayerScreen.style.display = videoPlayerScreen.classList.contains("active") ? "block" : "none";
-    aScene.style.display = "block"; // Always show AR scene in portrait
-  } else {
-    mainScreen.style.display = mainScreen.classList.contains("active") ? "flex" : "none";
-    videoScreen.style.display = videoScreen.classList.contains("active") ? "flex" : "none";
-    videoPlayerScreen.style.display = videoPlayerScreen.classList.contains("active") ? "block" : "none";
-    aScene.style.display = "block"; // AR scene visible in landscape
-  }
-}
+      if (isPortrait) {
+        warning.style.display = "flex";
+        mainScreen.style.display = "none";
+        if (aScene) aScene.style.display = "none";
+        videoScreen.style.display = "none";
+        videoPlayerScreen.style.display = "none";
+      } else {
+        warning.style.display = "none";
+        mainScreen.style.display = mainScreen.classList.contains("active") ? "block" : "none";
+        if (aScene) aScene.style.display = "block";
+        videoScreen.style.display = videoScreen.classList.contains("active") ? "block" : "none";
+        videoPlayerScreen.style.display = videoPlayerScreen.classList.contains("active") ? "block" : "none";
+      }
+    }
 
     function enterFullscreen() {
       const elem = document.documentElement;
