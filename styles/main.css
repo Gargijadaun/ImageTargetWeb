@@ -172,7 +172,7 @@ body {
 /* Optional: Animation keyframes if not already defined */
 @keyframes move {
   0% {
-    top: 0;
+    top: 30%;
   }
   100% {
     top: 100%;
