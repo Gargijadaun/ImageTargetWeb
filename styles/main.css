@@ -1132,6 +1132,22 @@ AR Page html
   pointer-events: none;
   transition: 0.3s ease-in;
 }
+#videoZoomContainer {
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+  touch-action: none;
+  position: relative;
+}
+
+#fullScreenVideo {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  transform-origin: center center;
+  transition: transform 0.1s ease-out;
+}
+
 #rotate-message {
             display: none;
             position: fixed;

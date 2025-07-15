@@ -13,21 +13,30 @@
   <link rel="stylesheet" href="./styles/main.css">
 
   <style>
+    html,
+    body {
+      margin: 0;
+      padding: 0;
+      background: black;
+      height: 100%;
+      width: 100%;
+      overflow: hidden;
+    }
+
     #rotate-warning {
       display: none;
-      position: fixed;                         
-      z-index: 9999;
-      background: black;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      background: rgba(0, 0, 0, 0.95);
       color: white;
       font-size: 5vw;
       text-align: center;
       justify-content: center;
       align-items: center;
-      width: 100vw;
-      height: 100vh;
-      top: 0;
-      left: 0;
-      padding: 0;
+      z-index: 2000;
     }
 
     #fullscreen-button {
@@ -35,18 +44,134 @@
       top: 45%;
       left: 50%;
       transform: translate(-50%, -50%);
-      z-index: 9998;
-      padding: 12px 24px;
-      font-size: 1.2em;
-      border: none;
-      border-radius: 8px;
+      padding: 2vw 4vw;
+      font-size: min(4vw, 20px);
+      cursor: pointer;
       background-color: #2c6a6d;
       color: white;
-      cursor: pointer;
-      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+      border: none;
+      border-radius: 5px;
+      z-index: 3000;
     }
 
     #fullscreen-button:hover {
+      background-color: #d32f2f;
+    }
+
+    #mainScreen,
+    #video-screen {
+      width: 100vw;
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      position: relative;
+    }
+
+    #mainScreen {
+      /* Assuming existing styles in main.css for .man-bg */
+    }
+
+    #videoScreen {
+      display: none;
+      background: black;
+    }
+.image-wrapper {
+  position: relative;
+  width: 100vw;
+      height: 56.25vw; /* Maintain 1920x1080 (16:9) ratio */
+      max-height: 100vh;
+      max-width: 177.78vh; /* Maintain aspect ratio on tall screens */
+      background: black;
+  background: black;
+  overflow: hidden;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 0 auto;
+}
+
+.bg-image {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  display: block;
+}
+
+.hotspot-btn {
+  position: absolute;
+  width: 9.2%;
+  height: 16.26%;
+  transform: translate(-50%, -50%);
+  background: transparent;
+  border: none; /* optional for testing */
+  border-radius: 50%;
+  z-index: 2;
+  cursor: pointer;
+}
+
+    .back-btn {
+      position: fixed;
+      /* Fixed to screen, not image */
+      top: 2vw;
+      left: 2vw;
+      padding: 1vw 2vw;
+      font-size: min(2vw, 16px);
+      cursor: pointer;
+      background-color: #2c6a6d;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      z-index: 10;
+    }
+
+    .back-btn img {
+      width: min(4vw, 24px);
+      height: min(4vw, 24px);
+    }
+
+    .back-btn:hover {
+      background-color: #d32f2f;
+    }
+
+    #videoPlayerScreen {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      background: black;
+      z-index: 9998;
+    }
+
+    #videoPlayerScreen video {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+    }
+
+    #videoPlayerScreen .back-btn {
+      position: fixed;
+      top: 2vw;
+      left: 2vw;
+      padding: 1vw 2vw;
+      font-size: min(2vw, 16px);
+      cursor: pointer;
+      background-color: #2c6a6d;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      z-index: 10;
+    }
+
+    #videoPlayerScreen .back-btn img {
+      width: min(4vw, 24px);
+      height: min(4vw, 24px);
+    }
+
+    #videoPlayerScreen .back-btn:hover {
       background-color: #d32f2f;
     }
 
@@ -58,9 +183,15 @@
       #mainScreen,
       a-scene,
       .btn-container1,
-      .single-btn-container {
+      .single-btn-container,
+      #videoScreen,
+      #videoPlayerScreen {
         display: none !important;
       }
+    }
+
+    .video-btn:hover {
+      background-color: #d32f2f;
     }
   </style>
 </head>
@@ -99,6 +230,41 @@
       <img src="./assets/images/02.png" class="image-above-button" alt="Above Start AR">
     </div>
 
+    <!-- Video Selection Screen -->
+    <div id="videoScreen">
+<div class="image-wrapper">
+  <img src="assets/images/Brochure-Landscape.jpg" class="bg-image" alt="Background" />
+
+        <!-- Hotspot buttons positioned according to 1920x1080 reference -->
+        <button class="hotspot-btn" style="top: 86.1%; left: 8%;"
+          onclick="playVideo('assets/video/Video1.mp4')"></button>
+        <button class="hotspot-btn" style="top: 86.1%; left: 29%;"
+          onclick="playVideo('assets/video/Video2.mp4')"></button>
+        <button class="hotspot-btn" style="top: 86.1%; left: 50%;"
+          onclick="playVideo('assets/video/Video3.mp4')"></button>
+        <button class="hotspot-btn" style="top: 86.1%; left: 71%;"
+          onclick="playVideo('assets/video/Video4.mp4')"></button>
+        <button class="hotspot-btn" style="top: 86.1%; left: 92%;"
+          onclick="playVideo('assets/video/Test-01.mp4')"></button>
+      </div>
+    </div>
+    <button class="back-btn" onclick="backToMain()">
+      <img src="./assets/icons/back-icon.png" alt="Back">
+    </button>
+    </div>
+    </div>
+
+    <!-- Video Player Screen -->
+  <div id="videoPlayerScreen">
+  <button class="back-btn" onclick="backToVideoScreen()">
+    <img src="./assets/icons/back-icon.png" alt="Back">
+  </button>
+  <div id="videoZoomContainer">
+    <video id="fullScreenVideo" autoplay playsinline></video>
+  </div>
+</div>
+
+
     <!-- Additional Video Buttons -->
     <div class="btn-container1 hide" style="display: none;">
       <button class="btn" onclick="changeVideo('assets/video/Video1.mp4')">4K Color</button>
@@ -113,7 +279,9 @@
     </div>
 
     <!-- Info Text -->
-    <div id="infoText"><p></p></div>
+    <div id="infoText">
+      <p></p>
+    </div>
 
     <!-- Single Buttons -->
     <div class="single-btn-container">
@@ -130,23 +298,21 @@
     </div>
 
     <!-- A-Frame Scene -->
-    <a-scene mindar-image="uiScanning: #scanning-overlay; imageTargetSrc: ./assets/target/targets.mind; filterMinCF:0.001; filterBeta: 0.05; missTolerance: 5; warmupTolerance: 5; autoStart: false;"
-             renderer="colorManagement: true, physicallyCorrectLights:true;antialias: true;"
-             vr-mode-ui="enabled: false"
-             device-orientation-permission-ui="enabled: false">
-
+    <a-scene
+      mindar-image="uiScanning: #scanning-overlay; imageTargetSrc: ./assets/target/targets.mind; filterMinCF:0.001; filterBeta: 0.05; missTolerance: 5; warmupTolerance: 5; autoStart: false;"
+      renderer="colorManagement: true, physicallyCorrectLights:true;antialias: true;" vr-mode-ui="enabled: false"
+      device-orientation-permission-ui="enabled: false">
       <a-assets>
         <video id="mainVideo" autoplay loop muted playsinline crossorigin="anonymous"></video>
       </a-assets>
-
       <a-camera position="0 0 0" look-controls="enabled: false" cursor="fuse: false; rayOrigin: mouse;"
-                raycaster="near: 10; far: 10000; objects: .clickable"></a-camera>
-
+        raycaster="near: 10; far: 10000; objects: .clickable"></a-camera>
       <a-entity id="targetImage" mindar-image-target="targetIndex: 0">
-        <a-video id="displayVideo" src="#mainVideo" width="1.6" height="0.9" position="0 0 0" rotation="0 0 0" visible="false"></a-video>
-        
+        <a-video id="displayVideo" src="#mainVideo" width="1.6" height="0.9" position="0 0 0" rotation="0 0 0"
+          visible="false"></a-video>
         <a-image src="./assets/images/01.png" width="0.267" height="0.0785" position="0 0.5 0" visible="true"></a-image>
-        <a-image src="./assets/images/02.png" width="0.533" height="0.0603" position="0 -0.5 0" visible="true"></a-image>
+        <a-image src="./assets/images/02.png" width="0.533" height="0.0603" position="0 -0.5 0"
+          visible="true"></a-image>
       </a-entity>
     </a-scene>
   </main>
@@ -158,20 +324,73 @@
   <script src="https://code.jquery.com/ui/1.14.1/jquery-ui.js"></script>
 
   <script>
+
+    let scale = 1, lastScale = 1, startX = 0, startY = 0, translateX = 0, translateY = 0;
+
+const video = document.getElementById("fullScreenVideo");
+const container = document.getElementById("videoZoomContainer");
+
+let isDragging = false;
+
+container.addEventListener("touchstart", (e) => {
+  if (e.touches.length === 2) {
+    lastScale = scale;
+  } else if (e.touches.length === 1) {
+    isDragging = true;
+    startX = e.touches[0].clientX - translateX;
+    startY = e.touches[0].clientY - translateY;
+  }
+});
+
+container.addEventListener("touchmove", (e) => {
+  e.preventDefault();
+  if (e.touches.length === 2) {
+    const dx = e.touches[0].clientX - e.touches[1].clientX;
+    const dy = e.touches[0].clientY - e.touches[1].clientY;
+    const distance = Math.sqrt(dx * dx + dy * dy);
+
+    if (!container.startDist) container.startDist = distance;
+
+    scale = lastScale * (distance / container.startDist);
+    scale = Math.min(Math.max(1, scale), 4); // Limit zoom scale
+
+    updateTransform();
+  } else if (e.touches.length === 1 && isDragging) {
+    translateX = e.touches[0].clientX - startX;
+    translateY = e.touches[0].clientY - startY;
+    updateTransform();
+  }
+}, { passive: false });
+
+container.addEventListener("touchend", () => {
+  isDragging = false;
+  container.startDist = null;
+});
+
+function updateTransform() {
+  video.style.transform = `scale(${scale}) translate(${translateX / scale}px, ${translateY / scale}px)`;
+}
+
     function checkOrientation() {
       const isPortrait = window.innerHeight > window.innerWidth;
       const warning = document.getElementById("rotate-warning");
       const mainScreen = document.getElementById("mainScreen");
       const aScene = document.querySelector("a-scene");
+      const videoScreen = document.getElementById("videoScreen");
+      const videoPlayerScreen = document.getElementById("videoPlayerScreen");
 
       if (isPortrait) {
         warning.style.display = "flex";
         mainScreen.style.display = "none";
         if (aScene) aScene.style.display = "none";
+        videoScreen.style.display = "none";
+        videoPlayerScreen.style.display = "none";
       } else {
         warning.style.display = "none";
-        mainScreen.style.display = "block";
+        mainScreen.style.display = mainScreen.classList.contains("active") ? "block" : "none";
         if (aScene) aScene.style.display = "block";
+        videoScreen.style.display = videoScreen.classList.contains("active") ? "block" : "none";
+        videoPlayerScreen.style.display = videoPlayerScreen.classList.contains("active") ? "block" : "none";
       }
     }
 
@@ -193,8 +412,74 @@
       }
     }
 
+    function continueWithoutAR() {
+      document.getElementById("mainScreen").style.display = "none";
+      document.getElementById("mainScreen").classList.remove("active");
+      document.getElementById("videoScreen").style.display = "block";
+      document.getElementById("videoScreen").classList.add("active");
+      checkOrientation();
+    }
+
+    function backToMain() {
+      document.getElementById("videoScreen").style.display = "none";
+      document.getElementById("videoScreen").classList.remove("active");
+      document.getElementById("mainScreen").style.display = "block";
+      document.getElementById("mainScreen").classList.add("active");
+      checkOrientation();
+    }
+
+    function playVideo(videoSrc) {
+      const video = document.getElementById("fullScreenVideo");
+      video.src = videoSrc;
+      document.getElementById("videoScreen").style.display = "none";
+      document.getElementById("videoScreen").classList.remove("active");
+      document.getElementById("videoPlayerScreen").style.display = "block";
+      document.getElementById("videoPlayerScreen").classList.add("active");
+      video.play();
+      checkOrientation();
+    }
+
+    function backToVideoScreen() {
+      const video = document.getElementById("fullScreenVideo");
+      video.pause();
+      video.src = "";
+      document.getElementById("videoPlayerScreen").style.display = "none";
+      document.getElementById("videoPlayerScreen").classList.remove("active");
+      document.getElementById("videoScreen").style.display = "block";
+      document.getElementById("videoScreen").classList.add("active");
+      checkOrientation();
+    }
+
+    function playAllVideos() {
+      const videos = [
+        'assets/video/Video1.mp4',
+        'assets/video/Video2.mp4',
+        'assets/video/Video3.mp4',
+        'assets/video/Video4.mp4',
+        'assets/video/Test-01.mp4'
+      ];
+      let index = 0;
+      const videoElement = document.getElementById('fullScreenVideo');
+      function playNext() {
+        if (index < videos.length) {
+          videoElement.src = videos[index];
+          videoElement.play();
+          index++;
+          videoElement.onended = playNext;
+        } else {
+          backToVideoScreen();
+        }
+      }
+      document.getElementById("videoScreen").style.display = "none";
+      document.getElementById("videoScreen").classList.remove("active");
+      document.getElementById("videoPlayerScreen").style.display = "block";
+      document.getElementById("videoPlayerScreen").classList.add("active");
+      playNext();
+    }
+
     window.addEventListener("load", () => {
       document.getElementById("fullscreen-button").style.display = "block";
+      document.getElementById("mainScreen").classList.add("active");
       checkOrientation();
     });
 
