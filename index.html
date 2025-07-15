@@ -440,15 +440,26 @@ function updateTransform() {
     }
 
     function backToVideoScreen() {
-      const video = document.getElementById("fullScreenVideo");
-      video.pause();
-      video.src = "";
-      document.getElementById("videoPlayerScreen").style.display = "none";
-      document.getElementById("videoPlayerScreen").classList.remove("active");
-      document.getElementById("videoScreen").style.display = "block";
-      document.getElementById("videoScreen").classList.add("active");
-      checkOrientation();
-    }
+  const video = document.getElementById("fullScreenVideo");
+  video.pause();
+  video.src = "";
+
+  // Reset Zoom and Pan
+  scale = 1;
+  lastScale = 1;
+  translateX = 0;
+  translateY = 0;
+  updateTransform(); // Apply reset transform
+
+  // Toggle screens
+  document.getElementById("videoPlayerScreen").style.display = "none";
+  document.getElementById("videoPlayerScreen").classList.remove("active");
+  document.getElementById("videoScreen").style.display = "block";
+  document.getElementById("videoScreen").classList.add("active");
+
+  checkOrientation();
+}
+
 
     function playAllVideos() {
       const videos = [
