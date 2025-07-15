@@ -568,15 +568,19 @@ main {
   background: url("../assets/images/Button04.png") no-repeat;
   background-size: contain;
   background-position: center center;
-  padding: 20px 40px;
-  font-size: 15px;
+
+  padding: 10px 20px;          /* 🔽 Smaller padding = smaller button */
+  font-size: 22px;             /* 🔼 Larger text */
   color: #000000;
   text-align: center;
   z-index: 9;
   border: 0;
   outline: none;
   transition: 0.3s ease-in-out;
+
+  line-height: 1.2;            /* Keeps text vertically centered */
 }
+
 
 .btn-container.row-buttons {
     display: flex;
@@ -1184,44 +1188,52 @@ AR Page html
   padding: 10px;
 }
 .btn-container1 {
-    position: fixed;
-    bottom: 20px; /* distance from bottom */
-    left: 0;
-    width: 100%;
-    display: flex;
-    justify-content: center; /* center the buttons horizontally */
-    gap: 7px;
-    z-index: 1000; /* optional: ensure it's above other elements */
+  position: fixed;
+  bottom: 20px;
+  left: 0;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  gap: 27px;
+  z-index: 1000;
 }
 
 .btn-container1.show {
   opacity: 1;
   pointer-events: all;
 }
+
 .btn-container1 .btn {
   border: 0;
   outline: 0;
-  width: 210px;         /* Fixed width */
-  height: 80px;         /* Fixed height */
-  font-weight: 400;
-  font-size: 11.5px;
-  padding: 10px;
-  text-align: center;   /* Center the text */
+
+  /* 🔽 Make button smaller */
+  width: 150px;
+  height: 50px;
+
+  /* 🔼 Make text bigger */
+  font-size: 14px;
+  font-weight: 500;
+
+  padding: 8px;
+  text-align: center;
   display: flex;
   align-items: center;
-  justify-content: center; /* Center both vertically & horizontally */
-  white-space: normal;  /* Allow line break if text is long */
+  justify-content: center;
+
+  white-space: normal;
   word-break: break-word;
+  line-height: 1.2;
 }
 
+/* Optional: side margins for spacing on left/right edges */
 .btn-container1 .btn:first-child {
   margin-left: 10px;
 }
-
-/* Extra margin on the last button (right) */
 .btn-container1 .btn:last-child {
   margin-right: 10px;
 }
+
 /* 
  AR Page html
   *//*# sourceMappingURL=main.css.map */
