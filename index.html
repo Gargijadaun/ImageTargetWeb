@@ -290,6 +290,7 @@
     </div>
 
     <!-- AR Marker Scanning Overlay -->
+     <!-- AR Marker Scanning Overlay -->
     <div id="scanning-overlay" class="hidden">
       <div class="inner">
         <img src="./assets/target/marker.png" alt="Marker Overlay">
@@ -298,21 +299,23 @@
     </div>
 
     <!-- A-Frame Scene -->
-    <a-scene
-      mindar-image="uiScanning: #scanning-overlay; imageTargetSrc: ./assets/target/targets.mind; filterMinCF:0.001; filterBeta: 0.05; missTolerance: 5; warmupTolerance: 5; autoStart: false;"
-      renderer="colorManagement: true, physicallyCorrectLights:true;antialias: true;" vr-mode-ui="enabled: false"
-      device-orientation-permission-ui="enabled: false">
+    <a-scene mindar-image="uiScanning: #scanning-overlay; imageTargetSrc: ./assets/target/targets.mind; filterMinCF:0.001; filterBeta: 0.05; missTolerance: 5; warmupTolerance: 5; autoStart: false;"
+             renderer="colorManagement: true, physicallyCorrectLights:true;antialias: true;"
+             vr-mode-ui="enabled: false"
+             device-orientation-permission-ui="enabled: false">
+
       <a-assets>
         <video id="mainVideo" autoplay loop muted playsinline crossorigin="anonymous"></video>
       </a-assets>
+
       <a-camera position="0 0 0" look-controls="enabled: false" cursor="fuse: false; rayOrigin: mouse;"
-        raycaster="near: 10; far: 10000; objects: .clickable"></a-camera>
+                raycaster="near: 10; far: 10000; objects: .clickable"></a-camera>
+
       <a-entity id="targetImage" mindar-image-target="targetIndex: 0">
-        <a-video id="displayVideo" src="#mainVideo" width="1.6" height="0.9" position="0 0 0" rotation="0 0 0"
-          visible="false"></a-video>
+        <a-video id="displayVideo" src="#mainVideo" width="1.6" height="0.9" position="0 0 0" rotation="0 0 0" visible="false"></a-video>
+        
         <a-image src="./assets/images/01.png" width="0.267" height="0.0785" position="0 0.5 0" visible="true"></a-image>
-        <a-image src="./assets/images/02.png" width="0.533" height="0.0603" position="0 -0.5 0"
-          visible="true"></a-image>
+        <a-image src="./assets/images/02.png" width="0.533" height="0.0603" position="0 -0.5 0" visible="true"></a-image>
       </a-entity>
     </a-scene>
   </main>
