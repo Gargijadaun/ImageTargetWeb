@@ -429,6 +429,13 @@ function updateTransform() {
       document.getElementById("mainScreen").style.display = "block";
       document.getElementById("mainScreen").classList.add("active");
       checkOrientation();
+       const aVideo = document.querySelector("#displayVideo");
+    if (aVideo) aVideo.setAttribute("visible", "false");
+
+    if (arSystem && arSystem.running) {
+        arSystem.stop();
+        sessionStorage.setItem("cameraActive", "false");
+    }
     }
 
     function playVideo(videoSrc) {
