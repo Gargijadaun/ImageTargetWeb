@@ -69,9 +69,6 @@
       position: relative;
     }
 
-    #mainScreen {
-      /* Assuming existing styles in main.css for .man-bg */
-    }
 
     #videoScreen {
       display: none;
@@ -207,7 +204,7 @@
     <button id="fullscreen-button" onclick="enterFullscreen()">Enter Full-Screen</button>
 
     <!-- Back Button -->
-    <div id="backBtn" onclick="goBack()">
+    <div id="backBtn" onclick="goBack()" class="hide">
       <img src="./assets/icons/back-icon.png" alt="Back">
     </div>
 
@@ -248,7 +245,7 @@
           onclick="playVideo('assets/video/Test-01.mp4')"></button>
       </div>
     </div>
-    <button class="back-btn" onclick="backToMain()">
+    <button class="back-btn" onclick="goBack()">
       <img src="./assets/icons/back-icon.png" alt="Back">
     </button>
     </div>
@@ -423,20 +420,20 @@ function updateTransform() {
       checkOrientation();
     }
 
-    function backToMain() {
-      document.getElementById("videoScreen").style.display = "none";
-      document.getElementById("videoScreen").classList.remove("active");
-      document.getElementById("mainScreen").style.display = "block";
-      document.getElementById("mainScreen").classList.add("active");
-      checkOrientation();
-       const aVideo = document.querySelector("#displayVideo");
-    if (aVideo) aVideo.setAttribute("visible", "false");
+    // function backToMain() {
+    //   document.getElementById("videoScreen").style.display = "none";
+    //   document.getElementById("videoScreen").classList.remove("active");
+    //   document.getElementById("mainScreen").style.display = "block";
+    //   document.getElementById("mainScreen").classList.add("active");
+    //   checkOrientation();
+    //    const aVideo = document.querySelector("#displayVideo");
+    // if (aVideo) aVideo.setAttribute("visible", "false");
 
-    if (arSystem && arSystem.running) {
-        arSystem.stop();
-        sessionStorage.setItem("cameraActive", "false");
-    }
-    }
+    // if (arSystem && arSystem.running) {
+    //     arSystem.stop();
+    //     sessionStorage.setItem("cameraActive", "false");
+    // }
+    // }
 
     function playVideo(videoSrc) {
       const video = document.getElementById("fullScreenVideo");

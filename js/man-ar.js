@@ -32,7 +32,7 @@ async function keepScreenAwake() {
 // ✅ Initialize AR and set up video logic
 function init() {
     mainScreen.classList.add('hide');
-    backBtn.classList.add('show');
+    // backBtn.classList.add('show');
     document.querySelector('#mainScreen .btn-container').classList.remove('show');
 
     if (!AR_READY) {
