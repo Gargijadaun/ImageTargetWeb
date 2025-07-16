@@ -281,7 +281,7 @@
     <a-scene mindar-image="uiScanning: #scanning-overlay; imageTargetSrc: ./assets/target/targets.mind; filterMinCF:0.001; filterBeta: 0.05; missTolerance: 5; warmupTolerance: 5; autoStart: false;"
              renderer="colorManagement: true, physicallyCorrectLights:true;antialias: true;"
              vr-mode-ui="enabled: false"
-             device-orientation-permission-ui="enabled: false">
+             device-orientation-permission assembled-ui="enabled: false">
 
       <a-assets>
         <video id="video1" src="assets/video/Video1.mp4" preload="auto" loop muted playsinline crossorigin="anonymous"></video>
@@ -295,7 +295,7 @@
                 raycaster="near: 10; far: 10000; objects: .clickable"></a-camera>
 
       <a-entity id="targetImage" mindar-image-target="targetIndex: 0">
-        <a-video id="displayVideo" src="#video1" width="1.6" height="0.9" position="0 0 0" rotation="0 0 0" visible="true"></a-video>
+        <a-video id="displayVideo" src="#video1" width="1.6" height="0.9" position="0 0 0" rotation="0 0 0" visible="false"></a-video>
         <a-image src="./assets/images/01.png" width="0.267" height="0.0785" position="0 0.5 0" visible="true"></a-image>
         <a-image src="./assets/images/02.png" width="0.533" height="0.0603" position="0 -0.5 0" visible="true"></a-image>
         <!-- Interactive 3D buttons -->
@@ -304,6 +304,10 @@
         <a-sphere id="btn3" class="clickable" radius="0.05" position="0 -0.23 0.1" color="#018fbf" visible="false" onclick="playARVideo('video3')"></a-sphere>
         <a-sphere id="btn4" class="clickable" radius="0.05" position="0.34 -0.23 0.1" color="#018fbf" visible="false" onclick="playARVideo('video4')"></a-sphere>
         <a-sphere id="btn5" class="clickable" radius="0.05" position="0.68 -0.23 0.1" color="#018fbf" visible="false" onclick="playARVideo('video5')"></a-sphere>
+        <!-- AR Back Button -->
+        <a-plane id="arBackBtn" class="clickable" width="0.2" height="0.1" position="0 -0.55 0.1" material="color: #018fbf" visible="false" onclick="backToARButtons()">
+          <a-text value="Back" color="white" align="center" position="0 0 0.01" scale="0.1 0.1 0.1"></a-text>
+        </a-plane>
       </a-entity>
     </a-scene>
   </main>
@@ -468,9 +472,40 @@
     // AR-specific functions
     function playARVideo(videoId) {
       const displayVideo = document.querySelector("#displayVideo");
+      const arBackBtn = document.querySelector("#arBackBtn");
+      const buttons = [
+        document.querySelector('#btn1'),
+        document.querySelector('#btn2'),
+        document.querySelector('#btn3'),
+        document.querySelector('#btn4'),
+        document.querySelector('#btn5')
+      ];
+
+      // Hide buttons, show video and back button
+      buttons.forEach(btn => btn.setAttribute('visible', 'false'));
       displayVideo.setAttribute("src", `#${videoId}`);
+      displayVideo.setAttribute("visible", "true");
       displayVideo.components.material.material.map = null; // Reset material to ensure video updates
       displayVideo.play();
+      arBackBtn.setAttribute("visible", "true");
+    }
+
+    function backToARButtons() {
+      const displayVideo = document.querySelector("#displayVideo");
+      const arBackBtn = document.querySelector("#arBackBtn");
+      const buttons = [
+        document.querySelector('#btn1'),
+        document.querySelector('#btn2'),
+        document.querySelector('#btn3'),
+        document.querySelector('#btn4'),
+        document.querySelector('#btn5')
+      ];
+
+      // Hide video and back button, show buttons
+      displayVideo.setAttribute("visible", "false");
+      displayVideo.pause();
+      arBackBtn.setAttribute("visible", "false");
+      buttons.forEach(btn => btn.setAttribute('visible', 'true'));
     }
 
     // Handle AR target detection
@@ -483,15 +518,20 @@
         document.querySelector('#btn4'),
         document.querySelector('#btn5')
       ];
+      const displayVideo = document.querySelector('#displayVideo');
+      const arBackBtn = document.querySelector('#arBackBtn');
 
       target.addEventListener('targetFound', () => {
         buttons.forEach(btn => btn.setAttribute('visible', 'true'));
-        document.querySelector('#displayVideo').setAttribute('visible', 'true');
+        displayVideo.setAttribute('visible', 'false');
+        arBackBtn.setAttribute('visible', 'false');
       });
 
       target.addEventListener('targetLost', () => {
         buttons.forEach(btn => btn.setAttribute('visible', 'false'));
-        document.querySelector('#displayVideo').setAttribute('visible', 'false');
+        displayVideo.setAttribute('visible', 'false');
+        displayVideo.pause();
+        arBackBtn.setAttribute('visible', 'false');
       });
     });
 
