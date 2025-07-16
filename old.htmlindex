@@ -243,7 +243,7 @@
         <button class="hotspot-btn" style="top: 86.1%; left: 71%;"
           onclick="playVideo('assets/video/Video4.mp4')"></button>
         <button class="hotspot-btn" style="top: 86.1%; left: 92%;"
-          onclick="playVideo('assets/video/Test-01.mp4')"></button>
+          onclick="playVideo('assets/video/AMVI-2.mp4')"></button>
       </div>
     </div>
     <button class="back-btn" onclick="goBack()" style="display: none;">
@@ -269,7 +269,7 @@
       <button class="btn" onclick="changeVideo('assets/video/Video2.mp4')">IntelliQuant</button>
       <button class="btn" onclick="changeVideo('assets/video/Video3.mp4')">Multiview</button>
       <button class="btn" onclick="changeVideo('assets/video/Video4.mp4')">Pip View</button>
-        <button class="btn" onclick="changeVideo('assets/video/Video4.mp4')">Pip View1</button>
+        <button class="btn" onclick="changeVideo('assets/video/AMVI-2.mp4')">Pip View1</button>
     </div>
 
     <!-- Device Error -->
@@ -481,7 +481,7 @@ function continueWithoutAR() {
         'assets/video/Video2.mp4',
         'assets/video/Video3.mp4',
         'assets/video/Video4.mp4',
-        'assets/video/Test-01.mp4'
+        'assets/video/AMVI-2.mp4'
       ];
       let index = 0;
       const videoElement = document.getElementById('fullScreenVideo');

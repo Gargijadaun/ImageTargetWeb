@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html>
-
 <head>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <script src="https://aframe.io/releases/1.5.0/aframe.min.js"></script>
@@ -69,69 +68,67 @@
       position: relative;
     }
 
-
     #videoScreen {
       display: none;
-         background: linear-gradient(90deg, rgb(59 177 213) 0%, rgb(1 143 191) 80%);
+      background: linear-gradient(90deg, rgb(59 177 213) 0%, rgb(1 143 191) 80%);
     }
-.image-wrapper {
-  position: relative;
-  width: 100vw;
+
+    .image-wrapper {
+      position: relative;
+      width: 100vw;
       height: 56.25vw; /* Maintain 1920x1080 (16:9) ratio */
       max-height: 100vh;
       max-width: 177.78vh; /* Maintain aspect ratio on tall screens */
       background: black;
-  background: black;
-  overflow: hidden;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  margin: 0 auto;
-  z-index: 3;
-}
+      overflow: hidden;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      margin: 0 auto;
+      z-index: 3;
+    }
 
-.bg-image {
-  width: 100%;
-  height: 100%;
-  object-fit: contain;
-  display: block;
-}
+    .bg-image {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      display: block;
+    }
 
-.hotspot-btn {
-  position: absolute;
-  width: 9.2%;
-  height: 16.26%;
-  transform: translate(-50%, -50%);
-  background: transparent;
-  border: none; /* optional for testing */
-  border-radius: 50%;
-  z-index: 2;
-  cursor: pointer;
-}
+    .hotspot-btn {
+      position: absolute;
+      width: 9.2%;
+      height: 16.26%;
+      transform: translate(-50%, -50%);
+      background: transparent;
+      border: none;
+      border-radius: 50%;
+      z-index: 2;
+      cursor: pointer;
+    }
 
     .back-btn {
-  position: fixed;
-  top: 1vw;
-  left: 1vw;
-  padding: 0.5vw 1vw; /* Smaller padding */
-  font-size: min(1.5vw, 12px); /* Smaller text */
-  cursor: pointer;
-  background-color: #018fbf;
-  color: white;
-  border: none;
-  border-radius: 4px; /* Slightly smaller border radius */
-  z-index: 10;
-}
+      position: fixed;
+      top: 1vw;
+      left: 1vw;
+      padding: 0.5vw 1vw;
+      font-size: min(1.5vw, 12px);
+      cursor: pointer;
+      background-color: #018fbf;
+      color: white;
+      border: none;
+      border-radius: 4px;
+      z-index: 10;
+    }
 
-.back-btn img {
-  width: min(3vw, 18px);  /* Smaller icon */
-  height: min(3vw, 18px);
-}
+    .back-btn img {
+      width: min(3vw, 18px);
+      height: min(3vw, 18px);
+    }
 
-.back-btn:hover {
-  background-color: #d32f2f;
-}
-
+    .back-btn:hover {
+      background-color: #d32f2f;
+    }
 
     #videoPlayerScreen {
       display: none;
@@ -154,8 +151,8 @@
       position: fixed;
       top: 2vw;
       left: 2vw;
-        padding: 1vw -3vw;
-    font-size: min(-3vw, -3px);
+      padding: 1vw -3vw;
+      font-size: min(-3vw, -3px);
       cursor: pointer;
       background-color: #018fbf;
       color: white;
@@ -173,24 +170,23 @@
       background-color: #d32f2f;
     }
 
-  @media screen and (orientation: portrait) {
-  #rotate-warning {
-    display: flex;
-  }
+    @media screen and (orientation: portrait) {
+      #rotate-warning {
+        display: flex;
+      }
 
-  #mainScreen,
-  .btn-container1,
-  .single-btn-container,
-  #videoScreen,
-  #videoPlayerScreen {
-    display: none !important;
-  }
+      #mainScreen,
+      .btn-container1,
+      .single-btn-container,
+      #videoScreen,
+      #videoPlayerScreen {
+        display: none !important;
+      }
 
-  /* Ensure a-scene is not hidden in portrait for AR */
-  a-scene {
-    display: block !important;
-  }
-}
+      a-scene {
+        display: block !important;
+      }
+    }
   </style>
 </head>
 
@@ -230,38 +226,28 @@
 
     <!-- Video Selection Screen -->
     <div id="videoScreen">
-<div class="image-wrapper">
-  <img src="assets/images/Brochure-Landscape-01.jpg" class="bg-image" alt="Background" />
-
-        <!-- Hotspot buttons positioned according to 1920x1080 reference -->
-        <button class="hotspot-btn" style="top: 86.1%; left: 8%;"
-          onclick="playVideo('assets/video/Video1.mp4')"></button>
-        <button class="hotspot-btn" style="top: 86.1%; left: 29%;"
-          onclick="playVideo('assets/video/Video2.mp4')"></button>
-        <button class="hotspot-btn" style="top: 86.1%; left: 50%;"
-          onclick="playVideo('assets/video/Video3.mp4')"></button>
-        <button class="hotspot-btn" style="top: 86.1%; left: 71%;"
-          onclick="playVideo('assets/video/Video4.mp4')"></button>
-        <button class="hotspot-btn" style="top: 86.1%; left: 92%;"
-          onclick="playVideo('assets/video/AMVI-2.mp4')"></button>
+      <div class="image-wrapper">
+        <img src="assets/images/Brochure-Landscape-01.jpg" class="bg-image" alt="Background" />
+        <button class="hotspot-btn" style="top: 86.1%; left: 8%;" onclick="playVideo('assets/video/Video1.mp4')"></button>
+        <button class="hotspot-btn" style="top: 86.1%; left: 29%;" onclick="playVideo('assets/video/Video2.mp4')"></button>
+        <button class="hotspot-btn" style="top: 86.1%; left: 50%;" onclick="playVideo('assets/video/Video3.mp4')"></button>
+        <button class="hotspot-btn" style="top: 86.1%; left: 71%;" onclick="playVideo('assets/video/Video4.mp4')"></button>
+        <button class="hotspot-btn" style="top: 86.1%; left: 92%;" onclick="playVideo('assets/video/AMVI-2.mp4')"></button>
       </div>
-    </div>
-    <button class="back-btn" onclick="goBack()" style="display: none;">
-      <img src="./assets/icons/back-icon.png" alt="Back">
-    </button>
-    </div>
+      <button class="back-btn" onclick="goBack()" style="display: none;">
+        <img src="./assets/icons/back-icon.png" alt="Back">
+      </button>
     </div>
 
     <!-- Video Player Screen -->
-  <div id="videoPlayerScreen">
-  <button class="back-btn" onclick="backToVideoScreen()" >
-    <img src="./assets/icons/back-icon.png" alt="Back">
-  </button>
-  <div id="videoZoomContainer">
-    <video id="fullScreenVideo" autoplay playsinline></video>
-  </div>
-</div>
-
+    <div id="videoPlayerScreen">
+      <button class="back-btn" onclick="backToVideoScreen()">
+        <img src="./assets/icons/back-icon.png" alt="Back">
+      </button>
+      <div id="videoZoomContainer">
+        <video id="fullScreenVideo" autoplay playsinline></video>
+      </div>
+    </div>
 
     <!-- Additional Video Buttons -->
     <div class="btn-container1 hide" style="display: none;">
@@ -269,7 +255,7 @@
       <button class="btn" onclick="changeVideo('assets/video/Video2.mp4')">IntelliQuant</button>
       <button class="btn" onclick="changeVideo('assets/video/Video3.mp4')">Multiview</button>
       <button class="btn" onclick="changeVideo('assets/video/Video4.mp4')">Pip View</button>
-        <button class="btn" onclick="changeVideo('assets/video/AMVI-2.mp4')">Pip View1</button>
+      <button class="btn" onclick="changeVideo('assets/video/AMVI-2.mp4')">Pip View1</button>
     </div>
 
     <!-- Device Error -->
@@ -289,7 +275,6 @@
     </div>
 
     <!-- AR Marker Scanning Overlay -->
-     <!-- AR Marker Scanning Overlay -->
     <div id="scanning-overlay" class="hidden">
       <div class="inner">
         <img src="./assets/target/marker.png" alt="Marker Overlay">
@@ -304,17 +289,26 @@
              device-orientation-permission-ui="enabled: false">
 
       <a-assets>
-        <video id="mainVideo" autoplay loop muted playsinline crossorigin="anonymous"></video>
+        <video id="video1" src="assets/video/Video1.mp4" preload="auto" loop muted playsinline crossorigin="anonymous"></video>
+        <video id="video2" src="assets/video/Video2.mp4" preload="auto" loop muted playsinline crossorigin="anonymous"></video>
+        <video id="video3" src="assets/video/Video3.mp4" preload="auto" loop muted playsinline crossorigin="anonymous"></video>
+        <video id="video4" src="assets/video/Video4.mp4" preload="auto" loop muted playsinline crossorigin="anonymous"></video>
+        <video id="video5" src="assets/video/AMVI-2.mp4" preload="auto" loop muted playsinline crossorigin="anonymous"></video>
       </a-assets>
 
       <a-camera position="0 0 0" look-controls="enabled: false" cursor="fuse: false; rayOrigin: mouse;"
                 raycaster="near: 10; far: 10000; objects: .clickable"></a-camera>
 
       <a-entity id="targetImage" mindar-image-target="targetIndex: 0">
-        <a-video id="displayVideo" src="#mainVideo" width="1.6" height="0.9" position="0 0 0" rotation="0 0 0" visible="false"></a-video>
-        
+        <a-video id="displayVideo" src="#video1" width="1.6" height="0.9" position="0 0 0" rotation="0 0 0" visible="true"></a-video>
         <a-image src="./assets/images/01.png" width="0.267" height="0.0785" position="0 0.5 0" visible="true"></a-image>
         <a-image src="./assets/images/02.png" width="0.533" height="0.0603" position="0 -0.5 0" visible="true"></a-image>
+        <!-- Interactive 3D buttons -->
+        <a-sphere id="btn1" class="clickable" radius="0.05" position="-0.68 -0.23 0.1" color="#018fbf" visible="false" onclick="playARVideo('video1')"></a-sphere>
+        <a-sphere id="btn2" class="clickable" radius="0.05" position="-0.34 -0.23 0.1" color="#018fbf" visible="false" onclick="playARVideo('video2')"></a-sphere>
+        <a-sphere id="btn3" class="clickable" radius="0.05" position="0 -0.23 0.1" color="#018fbf" visible="false" onclick="playARVideo('video3')"></a-sphere>
+        <a-sphere id="btn4" class="clickable" radius="0.05" position="0.34 -0.23 0.1" color="#018fbf" visible="false" onclick="playARVideo('video4')"></a-sphere>
+        <a-sphere id="btn5" class="clickable" radius="0.05" position="0.68 -0.23 0.1" color="#018fbf" visible="false" onclick="playARVideo('video5')"></a-sphere>
       </a-entity>
     </a-scene>
   </main>
@@ -326,52 +320,51 @@
   <script src="https://code.jquery.com/ui/1.14.1/jquery-ui.js"></script>
 
   <script>
-
     let scale = 1, lastScale = 1, startX = 0, startY = 0, translateX = 0, translateY = 0;
 
-const video = document.getElementById("fullScreenVideo");
-const container = document.getElementById("videoZoomContainer");
+    const video = document.getElementById("fullScreenVideo");
+    const container = document.getElementById("videoZoomContainer");
 
-let isDragging = false;
+    let isDragging = false;
 
-container.addEventListener("touchstart", (e) => {
-  if (e.touches.length === 2) {
-    lastScale = scale;
-  } else if (e.touches.length === 1) {
-    isDragging = true;
-    startX = e.touches[0].clientX - translateX;
-    startY = e.touches[0].clientY - translateY;
-  }
-});
+    container.addEventListener("touchstart", (e) => {
+      if (e.touches.length === 2) {
+        lastScale = scale;
+      } else if (e.touches.length === 1) {
+        isDragging = true;
+        startX = e.touches[0].clientX - translateX;
+        startY = e.touches[0].clientY - translateY;
+      }
+    });
 
-container.addEventListener("touchmove", (e) => {
-  e.preventDefault();
-  if (e.touches.length === 2) {
-    const dx = e.touches[0].clientX - e.touches[1].clientX;
-    const dy = e.touches[0].clientY - e.touches[1].clientY;
-    const distance = Math.sqrt(dx * dx + dy * dy);
+    container.addEventListener("touchmove", (e) => {
+      e.preventDefault();
+      if (e.touches.length === 2) {
+        const dx = e.touches[0].clientX - e.touches[1].clientX;
+        const dy = e.touches[0].clientY - e.touches[1].clientY;
+        const distance = Math.sqrt(dx * dx + dy * dy);
 
-    if (!container.startDist) container.startDist = distance;
+        if (!container.startDist) container.startDist = distance;
 
-    scale = lastScale * (distance / container.startDist);
-    scale = Math.min(Math.max(1, scale), 4); // Limit zoom scale
+        scale = lastScale * (distance / container.startDist);
+        scale = Math.min(Math.max(1, scale), 4); // Limit zoom scale
 
-    updateTransform();
-  } else if (e.touches.length === 1 && isDragging) {
-    translateX = e.touches[0].clientX - startX;
-    translateY = e.touches[0].clientY - startY;
-    updateTransform();
-  }
-}, { passive: false });
+        updateTransform();
+      } else if (e.touches.length === 1 && isDragging) {
+        translateX = e.touches[0].clientX - startX;
+        translateY = e.touches[0].clientY - startY;
+        updateTransform();
+      }
+    }, { passive: false });
 
-container.addEventListener("touchend", () => {
-  isDragging = false;
-  container.startDist = null;
-});
+    container.addEventListener("touchend", () => {
+      isDragging = false;
+      container.startDist = null;
+    });
 
-function updateTransform() {
-  video.style.transform = `scale(${scale}) translate(${translateX / scale}px, ${translateY / scale}px)`;
-}
+    function updateTransform() {
+      video.style.transform = `scale(${scale}) translate(${translateX / scale}px, ${translateY / scale}px)`;
+    }
 
     function checkOrientation() {
       const isPortrait = window.innerHeight > window.innerWidth;
@@ -414,33 +407,14 @@ function updateTransform() {
       }
     }
 
-function continueWithoutAR() {
-  document.getElementById("mainScreen").style.display = "none";
-  document.getElementById("mainScreen").classList.remove("active");
-
-  document.getElementById("videoScreen").style.display = "block";
-  document.getElementById("videoScreen").classList.add("active");
-
-  // ✅ Show .back-btn
-  document.querySelector(".back-btn").style.display = "block";
-
-  checkOrientation();
-}
-
-    // function backToMain() {
-    //   document.getElementById("videoScreen").style.display = "none";
-    //   document.getElementById("videoScreen").classList.remove("active");
-    //   document.getElementById("mainScreen").style.display = "block";
-    //   document.getElementById("mainScreen").classList.add("active");
-    //   checkOrientation();
-    //    const aVideo = document.querySelector("#displayVideo");
-    // if (aVideo) aVideo.setAttribute("visible", "false");
-
-    // if (arSystem && arSystem.running) {
-    //     arSystem.stop();
-    //     sessionStorage.setItem("cameraActive", "false");
-    // }
-    // }
+    function continueWithoutAR() {
+      document.getElementById("mainScreen").style.display = "none";
+      document.getElementById("mainScreen").classList.remove("active");
+      document.getElementById("videoScreen").style.display = "block";
+      document.getElementById("videoScreen").classList.add("active");
+      document.querySelector(".back-btn").style.display = "block";
+      checkOrientation();
+    }
 
     function playVideo(videoSrc) {
       const video = document.getElementById("fullScreenVideo");
@@ -454,26 +428,20 @@ function continueWithoutAR() {
     }
 
     function backToVideoScreen() {
-  const video = document.getElementById("fullScreenVideo");
-  video.pause();
-  video.src = "";
-
-  // Reset Zoom and Pan
-  scale = 1;
-  lastScale = 1;
-  translateX = 0;
-  translateY = 0;
-  updateTransform(); // Apply reset transform
-
-  // Toggle screens
-  document.getElementById("videoPlayerScreen").style.display = "none";
-  document.getElementById("videoPlayerScreen").classList.remove("active");
-  document.getElementById("videoScreen").style.display = "block";
-  document.getElementById("videoScreen").classList.add("active");
-
-  checkOrientation();
-}
-
+      const video = document.getElementById("fullScreenVideo");
+      video.pause();
+      video.src = "";
+      scale = 1;
+      lastScale = 1;
+      translateX = 0;
+      translateY = 0;
+      updateTransform();
+      document.getElementById("videoPlayerScreen").style.display = "none";
+      document.getElementById("videoPlayerScreen").classList.remove("active");
+      document.getElementById("videoScreen").style.display = "block";
+      document.getElementById("videoScreen").classList.add("active");
+      checkOrientation();
+    }
 
     function playAllVideos() {
       const videos = [
@@ -502,6 +470,36 @@ function continueWithoutAR() {
       playNext();
     }
 
+    // AR-specific functions
+    function playARVideo(videoId) {
+      const displayVideo = document.querySelector("#displayVideo");
+      displayVideo.setAttribute("src", `#${videoId}`);
+      displayVideo.components.material.material.map = null; // Reset material to ensure video updates
+      displayVideo.play();
+    }
+
+    // Handle AR target detection
+    document.addEventListener('DOMContentLoaded', () => {
+      const target = document.querySelector('#targetImage');
+      const buttons = [
+        document.querySelector('#btn1'),
+        document.querySelector('#btn2'),
+        document.querySelector('#btn3'),
+        document.querySelector('#btn4'),
+        document.querySelector('#btn5')
+      ];
+
+      target.addEventListener('targetFound', () => {
+        buttons.forEach(btn => btn.setAttribute('visible', 'true'));
+        document.querySelector('#displayVideo').setAttribute('visible', 'true');
+      });
+
+      target.addEventListener('targetLost', () => {
+        buttons.forEach(btn => btn.setAttribute('visible', 'false'));
+        document.querySelector('#displayVideo').setAttribute('visible', 'false');
+      });
+    });
+
     window.addEventListener("load", () => {
       document.getElementById("fullscreen-button").style.display = "block";
       document.getElementById("mainScreen").classList.add("active");
@@ -512,5 +510,4 @@ function continueWithoutAR() {
     window.addEventListener("orientationchange", () => setTimeout(checkOrientation, 200));
   </script>
 </body>
-
 </html>
