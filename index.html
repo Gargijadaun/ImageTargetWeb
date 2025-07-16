@@ -279,9 +279,9 @@
 
     <!-- A-Frame Scene -->
     <a-scene mindar-image="uiScanning: #scanning-overlay; imageTargetSrc: ./assets/target/targets.mind; filterMinCF:0.001; filterBeta: 0.05; missTolerance: 5; warmupTolerance: 5; autoStart: false;"
-             renderer="colorManagement: true, physicallyCorrectLights:true;antialias: true;"
+             renderer="colorManagement: true, physicallyCorrectLights: true; antialias: true;"
              vr-mode-ui="enabled: false"
-             device-orientation-permission assembled-ui="enabled: false">
+             device-orientation-permission-ui="enabled: false">
 
       <a-assets>
         <video id="video1" src="assets/video/Video1.mp4" preload="auto" loop muted playsinline crossorigin="anonymous"></video>
@@ -292,7 +292,7 @@
       </a-assets>
 
       <a-camera position="0 0 0" look-controls="enabled: false" cursor="fuse: false; rayOrigin: mouse;"
-                raycaster="near: 10; far: 10000; objects: .clickable"></a-camera>
+                raycaster="near: 0.1; far: 1000; objects: .clickable"></a-camera>
 
       <a-entity id="targetImage" mindar-image-target="targetIndex: 0">
         <a-video id="displayVideo" src="#video1" width="1.6" height="0.9" position="0 0 0" rotation="0 0 0" visible="false"></a-video>
@@ -422,7 +422,9 @@
       document.getElementById("videoScreen").classList.remove("active");
       document.getElementById("videoPlayerScreen").style.display = "block";
       document.getElementById("videoPlayerScreen").classList.add("active");
-      video.play();
+      video.play().catch(error => {
+        console.error("Error playing fullScreenVideo:", error);
+      });
       checkOrientation();
     }
 
@@ -455,7 +457,9 @@
       function playNext() {
         if (index < videos.length) {
           videoElement.src = videos[index];
-          videoElement.play();
+          videoElement.play().catch(error => {
+            console.error("Error playing video in sequence:", error);
+          });
           index++;
           videoElement.onended = playNext;
         } else {
@@ -481,13 +485,27 @@
         document.querySelector('#btn5')
       ];
 
+      // Get the video element
+      const videoElement = document.getElementById(videoId);
+      if (!videoElement) {
+        console.error(`Video element with ID ${videoId} not found`);
+        return;
+      }
+
       // Hide buttons, show video and back button
       buttons.forEach(btn => btn.setAttribute('visible', 'false'));
       displayVideo.setAttribute("src", `#${videoId}`);
       displayVideo.setAttribute("visible", "true");
       displayVideo.components.material.material.map = null; // Reset material to ensure video updates
-      displayVideo.play();
       arBackBtn.setAttribute("visible", "true");
+
+      // Ensure video is loaded and play
+      videoElement.load(); // Reload to ensure the video is ready
+      videoElement.play().then(() => {
+        console.log(`Playing video: ${videoId}`);
+      }).catch(error => {
+        console.error(`Error playing video ${videoId}:`, error);
+      });
     }
 
     function backToARButtons() {
@@ -503,7 +521,11 @@
 
       // Hide video and back button, show buttons
       displayVideo.setAttribute("visible", "false");
-      displayVideo.pause();
+      const currentVideo = document.querySelector(displayVideo.getAttribute("src"));
+      if (currentVideo) {
+        currentVideo.pause();
+        console.log("Video paused");
+      }
       arBackBtn.setAttribute("visible", "false");
       buttons.forEach(btn => btn.setAttribute('visible', 'true'));
     }
@@ -522,15 +544,20 @@
       const arBackBtn = document.querySelector('#arBackBtn');
 
       target.addEventListener('targetFound', () => {
+        console.log("Target found");
         buttons.forEach(btn => btn.setAttribute('visible', 'true'));
         displayVideo.setAttribute('visible', 'false');
         arBackBtn.setAttribute('visible', 'false');
       });
 
       target.addEventListener('targetLost', () => {
+        console.log("Target lost");
         buttons.forEach(btn => btn.setAttribute('visible', 'false'));
         displayVideo.setAttribute('visible', 'false');
-        displayVideo.pause();
+        const currentVideo = document.querySelector(displayVideo.getAttribute("src"));
+        if (currentVideo) {
+          currentVideo.pause();
+        }
         arBackBtn.setAttribute('visible', 'false');
       });
     });
