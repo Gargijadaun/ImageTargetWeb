@@ -129,6 +129,28 @@
     .back-btn:hover {
       background-color: #d32f2f;
     }
+ .back-btn1 {
+      position: fixed;
+      top: 1vw;
+      left: 1vw;
+      padding: 0.5vw 1vw;
+      font-size: min(1.5vw, 12px);
+      cursor: pointer;
+      background-color: #018fbf;
+      color: white;
+      border: none;
+      border-radius: 4px;
+      z-index: 10;
+    }
+
+    .back-btn1 img {
+      width: min(3vw, 18px);
+      height: min(3vw, 18px);
+    }
+
+    .back-btn1:hover {
+      background-color: #d32f2f;
+    }
 
     #videoPlayerScreen {
       display: none;
@@ -221,17 +243,32 @@
         <button class="btn1" onclick="goToAnimation()">Start AR</button>
         <button class="btn1" onclick="continueWithoutAR()">Continue Without AR</button>
       </div>
+      
       <img src="./assets/images/02.png" class="image-above-button" alt="Above Start AR">
     </div>
 
     <!-- Video Selection Screen -->
-    <div id="videoScreen">
-      <div class="image-wrapper">
-        <img src="assets/images/Brochure-Landscape-01.jpg" class="bg-image" alt="Background" />
+      <div id="videoScreen">
+<div class="image-wrapper">
+  <img src="assets/images/Brochure-Landscape-01.jpg" class="bg-image" alt="Background" />
+
+        <!-- Hotspot buttons positioned according to 1920x1080 reference -->
+        <button class="hotspot-btn" style="top: 86.1%; left: 8%;"
+          onclick="playVideo('assets/video/Video1.mp4')"></button>
+        <button class="hotspot-btn" style="top: 86.1%; left: 29%;"
+          onclick="playVideo('assets/video/Video2.mp4')"></button>
+        <button class="hotspot-btn" style="top: 86.1%; left: 50%;"
+          onclick="playVideo('assets/video/Video3.mp4')"></button>
+        <button class="hotspot-btn" style="top: 86.1%; left: 71%;"
+          onclick="playVideo('assets/video/Video4.mp4')"></button>
+        <button class="hotspot-btn" style="top: 86.1%; left: 92%;"
+          onclick="playVideo('assets/video/AMVI-2.mp4')"></button>
       </div>
-      <button class="back-btn" onclick="goBack()" style="display: none;">
-        <img src="./assets/icons/back-icon.png" alt="Back">
-      </button>
+    </div>
+    <button class="back-btn" onclick="goBack()" style="display: none;">
+      <img src="./assets/icons/back-icon.png" alt="Back">
+    </button>
+    </div>
     </div>
 
     <!-- Video Player Screen -->
@@ -246,11 +283,14 @@
 
     <!-- Additional Video Buttons -->
     <div class="btn-container1 hide" style="display: none;">
-      <button class="btn" onclick="changeVideo('assets/video/Video1.mp4')">4K Color</button>
+       <button class="back-btn1" onclick="goBack()" style="display: none;">
+        <img src="./assets/icons/back-icon.png" alt="Back">
+      </button>
+      <!-- <button class="btn" onclick="changeVideo('assets/video/Video1.mp4')">4K Color</button>
       <button class="btn" onclick="changeVideo('assets/video/Video2.mp4')">IntelliQuant</button>
       <button class="btn" onclick="changeVideo('assets/video/Video3.mp4')">Multiview</button>
       <button class="btn" onclick="changeVideo('assets/video/Video4.mp4')">Pip View</button>
-      <button class="btn" onclick="changeVideo('assets/video/AMVI-2.mp4')">Pip View1</button>
+      <button class="btn" onclick="changeVideo('assets/video/AMVI-2.mp4')">Pip View1</button> -->
     </div>
 
     <!-- Device Error -->

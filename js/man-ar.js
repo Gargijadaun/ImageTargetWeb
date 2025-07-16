@@ -122,6 +122,7 @@ function goBack() {
 function goToAnimation() {
     keepScreenAwake();
   document.querySelector(".back-btn").style.display = "block";
+  document.querySelector(".back-btn1").style.display = "block";
     if (mainScreen) mainScreen.style.display = "none";
 
     const btnContainer = mainScreen.querySelector(".btn-container");
