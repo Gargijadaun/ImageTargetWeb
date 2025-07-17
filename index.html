@@ -314,15 +314,16 @@
                 raycaster="near: 10; far: 10000; objects: .clickable"></a-camera>
 
       <a-entity id="targetImage" mindar-image-target="targetIndex: 0">
-     <a-video 
-  id="displayVideo" 
+   <a-video 
+  id="displayVideo"
   width="1.6" 
   height="0.9" 
   position="0 0 0" 
-  rotation="0 0 0" 
+  rotation="0 0 0"
   visible="false"
-  color="#000000">
+  color="black">
 </a-video>
+
 
         <a-image src="./assets/images/01.png" width="0.267" height="0.0785" position="0 0.5 0" visible="true"></a-image>
         <a-image src="./assets/images/02.png" width="0.533" height="0.0603" position="0 -0.5 0" visible="true"></a-image>
@@ -497,10 +498,10 @@
       playNext();
     }
 
-    // AR-specific functions
-  function playARVideo(videoId) {
+ function playARVideo(videoId) {
   const displayVideo = document.querySelector("#displayVideo");
   const arBackBtn = document.querySelector("#arBackBtn");
+
   const buttons = [
     document.querySelector('#btn1'),
     document.querySelector('#btn2'),
@@ -511,29 +512,31 @@
 
   const videoEl = document.querySelector(`#${videoId}`);
 
-  // Reset and reload video
-  videoEl.pause();
-  videoEl.currentTime = 0;
-  videoEl.load(); // Ensure browser loads it fresh
-  videoEl.muted = true; // Required for autoplay on mobile
+  // Stop all videos first
+  document.querySelectorAll('video').forEach(v => {
+    v.pause();
+    v.currentTime = 0;
+  });
 
-  // Wait for metadata and then play
-  videoEl.onloadeddata = () => {
+  videoEl.load();
+
+  videoEl.oncanplay = () => {
     videoEl.play().then(() => {
+      // Set the video as texture source
       displayVideo.setAttribute("src", `#${videoId}`);
       displayVideo.setAttribute("visible", "true");
 
-      // Force-refresh the texture
-      setTimeout(() => {
-        if (displayVideo.getObject3D('mesh')) {
-          displayVideo.getObject3D('mesh').material.map.needsUpdate = true;
-        }
-      }, 100);
+      // Refresh the material
+      const mesh = displayVideo.getObject3D('mesh');
+      if (mesh && mesh.material && mesh.material.map) {
+        mesh.material.map.needsUpdate = true;
+      }
 
+      // Show back button, hide other buttons
       arBackBtn.setAttribute("visible", "true");
       buttons.forEach(btn => btn.setAttribute("visible", "false"));
     }).catch(err => {
-      console.error("Autoplay failed:", err);
+      console.error("Video play error:", err);
     });
   };
 }
