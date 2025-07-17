@@ -138,6 +138,7 @@ function goBack() {
 
 // ✅ Go to Animation with Default Video Load
 function goToAnimation() {
+    // Initial renderer resize
     forceRendererResize();
     keepScreenAwake();
     document.querySelector(".back-btn").style.display = "block";
@@ -166,8 +167,13 @@ function goToAnimation() {
     changeVideoSource("assets/video/Test-01.mp4");
     init();
 
-    // Ensure resize after initialization
-    setTimeout(forceResize, 100);
+    // Multiple resize calls to stabilize WebXR and canvas
+    setTimeout(forceRendererResize, 50);
+    setTimeout(forceRendererResize, 200);
+    setTimeout(forceRendererResize, 500);
+    setTimeout(forceRendererResize, 1000);
+    checkOrientation();
+
     sessionStorage.setItem("cameraActive", "true");
 }
 

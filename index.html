@@ -610,28 +610,14 @@ function checkOrientation() {
     if (aScene) {
       aScene.style.display = "block";
       // Force renderer resize when scene is made visible
-      setTimeout(forceRendererResize, 100); // Slight delay to ensure renderer is ready
+      
     }
     videoScreen.style.display = videoScreen.classList.contains("active") ? "block" : "none";
     videoPlayerScreen.style.display = videoPlayerScreen.classList.contains("active") ? "block" : "none";
     fullscreenbutton.style.display = "block";
   }
 }
-function forceRendererResize() {
-  const scene = document.querySelector('a-scene');
-  if (scene && scene.renderer) {
-    const renderer = scene.renderer;
-    if (renderer) {
-      // Increase size by 5% to ensure it covers the viewport
-      const width = window.innerWidth * 1.05;
-      const height = window.innerHeight * 1.05;
-      renderer.setSize(width, height);
-      scene.camera.aspect = width / height;
-      scene.camera.updateProjectionMatrix();
-      console.log(width, height); // Logs the calculated width and height
-    }
-  }
-}
+
  function enterFullscreen() {
   const elem = document.documentElement;
   const requestFullscreen =
@@ -996,7 +982,7 @@ stopAllAudio();
 document.addEventListener('DOMContentLoaded', () => {
   const scene = document.querySelector('a-scene');
   scene.addEventListener('loaded', () => {
-    forceRendererResize();
+    
   });
       const target = document.querySelector('#targetImage');
       const buttons = [
@@ -1054,7 +1040,7 @@ window.addEventListener("load", () => {
   document.getElementById("fullscreen-button").style.display = "none";
   document.getElementById("mainScreen").classList.add("active");
   checkOrientation();
-  forceRendererResize(); // Triggers the console log
+ 
 
 
   // Set initial colors and states
