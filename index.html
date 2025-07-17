@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html>
 <head>
@@ -68,7 +67,28 @@
       align-items: center;
       position: relative;
     }
+ .back-btn1 {
+      position: fixed;
+      top: 1vw;
+      left: 1vw;
+      padding: 0.5vw 1vw;
+      font-size: min(1.5vw, 12px);
+      cursor: pointer;
+      background-color: #018fbf;
+      color: white;
+      border: none;
+      border-radius: 4px;
+      z-index: 10;
+    }
 
+    .back-btn1 img {
+      width: min(3vw, 18px);
+      height: min(3vw, 18px);
+    }
+
+    .back-btn1:hover {
+      background-color: #d32f2f;
+    }
     #videoScreen {
       display: none;
       background: linear-gradient(90deg, rgb(59 177 213) 0%, rgb(1 143 191) 80%);
@@ -247,11 +267,9 @@
 
     <!-- Additional Video Buttons -->
     <div class="btn-container1 hide" style="display: none;">
-      <button class="btn" onclick="changeVideo('assets/video/Video1.mp4')">4K Color</button>
-      <button class="btn" onclick="changeVideo('assets/video/Video2.mp4')">IntelliQuant</button>
-      <button class="btn" onclick="changeVideo('assets/video/Video3.mp4')">Multiview</button>
-      <button class="btn" onclick="changeVideo('assets/video/Video4.mp4')">Pip View</button>
-      <button class="btn" onclick="changeVideo('assets/video/AMVI-2.mp4')">Pip View1</button>
+       <button class="back-btn1" onclick="goBack()" style="display: none;">
+        <img src="./assets/icons/back-icon.png" alt="Back">
+      </button>
     </div>
 
     <!-- Device Error -->
