@@ -363,7 +363,7 @@
         <button class="hotspot-btn" style="top: 86.1%; left: 71%;"
           onclick="playVideo('assets/video/Video4.mp4', 'assets/audio/IntelliQuant Dashboard -04.mp3')"></button>
         <button class="hotspot-btn" style="top: 86.1%; left: 92%;"
-          onclick="playVideo('assets/video/Video4.mp4', 'assets/audio/Fully Customisable Colour -03.mp3')"></button>
+          onclick="playVideo('assets/video/Video5.mp4', 'assets/audio/Fully Customisable Colour -03.mp3')"></button>
       </div>
     </div>
     <button class="back-btn" onclick="goBack()" style="display: none;">
@@ -620,17 +620,26 @@ let targetDetected = false;     // whether image target is currently visible
     }
 function toggleVoiceOver() {
   const btn = document.getElementById("voiceToggleBtn");
-  const isOn = btn.textContent.includes("On");
-  
-  btn.textContent = isOn ? "Voice Over Off" : "Voice Over On";
-  btn.style.backgroundColor = isOn ? "#d32f2f" : "#018fbf"; // Red if OFF, Blue if ON
+  const isMuted = lastPlayedAudio && lastPlayedAudio.muted; // Check if audio is muted
 
-  for (let i = 1; i <= 5; i++) {
-    const audio = document.getElementById(`audio${i}`);
-    if (audio) audio.muted = isOn;
+  if (isMuted) {
+    // Unmute audio
+    for (let i = 1; i <= 5; i++) {
+      const audio = document.getElementById(`audio${i}`);
+      if (audio) audio.muted = false;
+    }
+    btn.textContent = "Voice Over Off"; // Audio is playing
+    btn.style.backgroundColor = "#d32f2f"; // Red when audio is playing
+  } else {
+    // Mute audio
+    for (let i = 1; i <= 5; i++) {
+      const audio = document.getElementById(`audio${i}`);
+      if (audio) audio.muted = true;
+    }
+    btn.textContent = "Voice Over On"; // Audio is muted
+    btn.style.backgroundColor = "#018fbf"; // Blue when audio is muted
   }
 }
-
 
 function toggleDescription() {
   const btn = document.getElementById("descToggleBtn");
@@ -640,10 +649,9 @@ function toggleDescription() {
 
   descriptionVisible = !descriptionVisible;
   btn.textContent = descriptionVisible ? "Description Off" : "Description On";
-  btn.style.backgroundColor = descriptionVisible ? "#d32f2f" : "#018fbf"; // Blue if ON, Red if OFF
+  btn.style.backgroundColor = descriptionVisible ? "#d32f2f" : "#018fbf"; // Red when visible, blue when hidden
   bottomText.style.display = descriptionVisible ? "block" : "none";
 }
-
 
    function playVideo(videoSrc, audioSrc = null) {
   const video = document.getElementById("fullScreenVideo");
@@ -745,14 +753,15 @@ function toggleDescription() {
     }
 
     // AR-specific functions
-   function playARVideo(videoId) {
-     descriptionVisible = false;
+ function playARVideo(videoId) {
+  descriptionVisible = false;
   const videoEl = document.querySelector(`#${videoId}`);
   const mainVideoEl = document.querySelector("#mainVideo");
   const displayVideo = document.querySelector("#displayVideo");
   const arBackBtn = document.querySelector("#arBackBtn");
-    const arBackBtn1 = document.querySelector("#arBackBtn1");
-     const arPlayPauseBtn1 = document.getElementById("arPlayPauseBtn1");
+  const arBackBtn1 = document.querySelector("#arBackBtn1");
+  const arPlayPauseBtn1 = document.getElementById("arPlayPauseBtn1");
+  const playPauseText = document.querySelector("#playPauseText");
   const buttons = [
     document.querySelector('#btn1'),
     document.querySelector('#btn2'),
@@ -772,41 +781,39 @@ function toggleDescription() {
   // Set new video source
   mainVideoEl.src = videoEl.src;
   mainVideoEl.load();
-  mainVideoEl.muted = false; // unmute for voice over if needed
+  mainVideoEl.muted = false; // Ensure video is not muted
 
   mainVideoEl.onloadeddata = () => {
     mainVideoEl.play().then(() => {
       displayVideo.setAttribute("visible", "true");
       playPauseText.setAttribute("value", "Pause");
+      arPlayPauseBtn1.textContent = "Pause";
+      arPlayPauseBtn1.style.backgroundColor = "#018fbf"; // Blue when playing
 
-      setTimeout(() => {
-        const mesh = displayVideo.getObject3D("mesh");
-        if (mesh) mesh.material.map.needsUpdate = true;
-      }, 100);
-
+      // Update UI
       arBackBtn.setAttribute("visible", "false");
       arBackBtn1.style.display = "block";
-      
-        document.querySelector("#arPlayPauseBtn1").style.display = "block";
-       
-arPlayPauseBtn1.style.backgroundColor = "#018fbf"; // Blue
-arPlayPauseBtn1.textContent = "Pause";             // Set text
+      document.querySelector("#arPlayPauseBtn1").style.display = "block";
+      document.getElementById("voiceToggleBtn").style.display = "block";
+      document.getElementById("descToggleBtn").style.display = "block";
 
-          document.getElementById("voiceToggleBtn").style.display = "block";
-  document.getElementById("descToggleBtn").style.display = "block";
+      // Set Voice Over button to "Off" (audio playing) and red
+      document.getElementById("voiceToggleBtn").textContent = "Voice Over Off";
+      document.getElementById("voiceToggleBtn").style.backgroundColor = "#d32f2f";
 
-  // Show description if user had turned it on
-  if (descriptionVisible) {
-    document.querySelector(".bottom-text").style.display = "none";
-  }
-      document.querySelector("#arPlayPauseBtn").setAttribute("visible", "false");
+      // Set Description button to "On" (description hidden) and blue
+      document.querySelector(".bottom-text").style.display = "none";
+      document.getElementById("descToggleBtn").textContent = "Description On";
+      document.getElementById("descToggleBtn").style.backgroundColor = "#018fbf";
+
       buttons.forEach(btn => btn.setAttribute("visible", "false"));
+      document.querySelector("#arPlayPauseBtn").setAttribute("visible", "false");
 
-      // ✅ Play associated audio
+      // Play associated audio
       playAssociatedAudio(videoId);
       updateBottomText(videoId);
     }).catch(err => {
-      console.error("Autoplay error:", err);
+      console.error("Video playback error:", err);
     });
   };
 }
@@ -900,17 +907,21 @@ function playAssociatedAudio(videoId) {
   const audioId = audioMap[videoId];
   if (audioId) {
     const audio = document.getElementById(audioId);
-    const voiceToggle = document.getElementById("voiceToggleBtn");
-    const voiceEnabled = voiceToggle.textContent.includes("On");
-
-    if (audio && voiceEnabled) {
-      lastPlayedAudio = audio; // ✅ Track currently playing audio
-      audio.play().catch(err => console.warn("Audio playback blocked:", err));
+    if (audio) {
+      lastPlayedAudio = audio;
+      audio.muted = false; // Ensure audio is unmuted
+      audio.currentTime = 0; // Reset audio to start
+      audio.play().catch(err => {
+        console.warn("Audio playback blocked:", err);
+        setTimeout(() => audio.play().catch(e => console.error("Retry failed:", e)), 100);
+      });
+    } else {
+      console.error(`Audio element ${audioId} not found`);
     }
+  } else {
+    console.error(`No audio mapped for videoId: ${videoId}`);
   }
 }
-
-
     function backToARButtons() {
       const displayVideo = document.querySelector("#displayVideo");
       const arBackBtn = document.querySelector("#arBackBtn");
@@ -994,15 +1005,17 @@ target.addEventListener('targetLost', () => {
 
     });
 
-  window.addEventListener("load", () => {
+ window.addEventListener("load", () => {
   document.getElementById("fullscreen-button").style.display = "none";
   document.getElementById("mainScreen").classList.add("active");
   checkOrientation();
 
-  // Set initial colors
-  document.getElementById("voiceToggleBtn").style.backgroundColor = "#018fbf";
-  document.getElementById("descToggleBtn").style.backgroundColor = "#d32f2f";
-  document.getElementById("arPlayPauseBtn1").style.backgroundColor = "#018fbf"; // Assuming video starts playing
+  // Set initial colors and states
+  const voiceToggleBtn = document.getElementById("voiceToggleBtn");
+  voiceToggleBtn.style.backgroundColor = "#018fbf"; // Blue for muted
+  voiceToggleBtn.textContent = "Voice Over On"; // Indicates audio is off
+  document.getElementById("descToggleBtn").style.backgroundColor = "#018fbf";
+  document.getElementById("arPlayPauseBtn1").style.backgroundColor = "#018fbf";
 });
 
     window.addEventListener("resize", checkOrientation);
