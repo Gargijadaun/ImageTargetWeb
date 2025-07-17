@@ -627,7 +627,7 @@ function toggleDescription() {
 
   descriptionVisible = !descriptionVisible;
   btn.textContent = descriptionVisible ? "Description Off" : "Description On";
-  btn.style.backgroundColor = descriptionVisible ? "#018fbf" : "#d32f2f"; // Blue if ON, Red if OFF
+  btn.style.backgroundColor = descriptionVisible ? "#d32f2f" : "#018fbf"; // Blue if ON, Red if OFF
   bottomText.style.display = descriptionVisible ? "block" : "none";
 }
 
@@ -903,6 +903,8 @@ stopAllAudio();
       arBackBtn.setAttribute("visible", "false");
       arBackBtn1.style.display ="none";
        document.querySelector("#arPlayPauseBtn1").style.display ="none";
+          document.querySelector("#voiceToggleBtn").style.display ="none";
+             document.querySelector("#descToggleBtn").style.display ="none";
       document.querySelector("#arPlayPauseBtn").setAttribute("visible", "false");
 
       buttons.forEach(btn => btn.setAttribute('visible', 'true'));
@@ -968,7 +970,7 @@ target.addEventListener('targetLost', () => {
   checkOrientation();
 
   // Set initial colors
-  document.getElementById("voiceToggleBtn").style.backgroundColor = "#d32f2f";
+  document.getElementById("voiceToggleBtn").style.backgroundColor = "#018fbf";
   document.getElementById("descToggleBtn").style.backgroundColor = "#d32f2f";
   document.getElementById("arPlayPauseBtn1").style.backgroundColor = "#018fbf"; // Assuming video starts playing
 });
