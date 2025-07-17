@@ -112,21 +112,10 @@
       background-color: #d32f2f;
     }
 
-    .top-right-buttons {
-      position: fixed;
-      top: 1vw;
-      right: 1vw;
-      display: flex;
-      flex-direction: column;
-      /* ← Make buttons stack vertically */
-      gap: 0.5vw;
-      z-index: 10;
-    }
-
 .bottom-text {
   display: none;
   width: 100%;
-  background-color: #0178a07a;
+  background-color: #018fbf61;
   color: white;
   padding: 0.5vw 1vw;
   font-family: Arial, sans-serif;
@@ -158,20 +147,30 @@
   line-height: 1.1em;
 }
 
-    .top-right-buttons button {
-      padding: 0.5vw 1vw;
-      font-size: min(1.5vw, 12px);
-      cursor: pointer;
-      background-color: #018fbf;
-      color: white;
-      border: none;
-      border-radius: 4px;
-      z-index: 10;
-    }
+ .top-right-buttons {
+  position: fixed;
+  top: 60px;
+  right: 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  z-index: 999;
+}
 
-    .top-right-buttons button:hover {
-      background-color: #d32f2f;
-    }
+.top-right-buttons button {
+  padding: 8px 12px;
+  font-size: 14px;
+  background-color: #018fbf;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.top-right-buttons button:hover {
+  background-color: #d32f2f;
+}
+
 
     #videoScreen {
       display: none;
@@ -276,7 +275,7 @@
     #videoPlayerScreen .back-btn:hover {
       background-color: #d32f2f;
     }
-#voiceToggleBtn, #descToggleBtn,#arPlayPauseBtn, #arBackBtn {
+#voiceToggleBtn, #descToggleBtn {
   display: none;
 }
 
@@ -362,12 +361,14 @@
 
       </button>
       <img src="./assets/images/02.png" class="bottom-img" alt="Bottom Image">
-      <div class="top-right-buttons">
-        <button id="voiceToggleBtn" onclick="toggleVoiceOver()">Voice Over On</button>
-        <button id="descToggleBtn" onclick="toggleDescription()">Description On</button>
-        <button id="arPlayPauseBtn" onclick="toggleARVideoPlayPause()">Play</button>
-        <button id="arBackBtn" onclick="backToARButtons()">Back btn</button>
-      </div>
+     <div class="top-right-buttons" style="display: none;">
+  <button id="voiceToggleBtn" onclick="toggleVoiceOver()">Voice Over On</button>
+  <button id="descToggleBtn" onclick="toggleDescription()">Description On</button>
+  <button id="arBackHtmlBtn" onclick="backToARButtons()" style="display: none;">Back</button>
+  <button id="arPlayPauseHtmlBtn" onclick="toggleARVideoPlayPause()" style="display: none;">Pause</button>
+</div>
+
+
     <div class="bottom-text">
   <h1 id="bottomHeading">True 4K Colour with Fluorescence</h1>
   <p id="bottomDescription">
@@ -463,17 +464,7 @@
           material="src: #btnImg; color: #00ff00; side: double; transparent: true; opacity: 0.5" visible="false"
           onclick="playARVideo('video5')"></a-circle>
 
-        <!-- AR Back Button -->
-        <!-- <a-plane id="arBackBtn" class="clickable" width="0.2" height="0.1" position="0 -0.55 0.1"
-          material="color: #018fbf" visible="false" onclick="backToARButtons()">
-          <a-text value="Back" color="white" align="center" position="0 0 0.01" scale="0.1 0.1 0.1"></a-text>
-        </a-plane>
-        <a-plane id="arPlayPauseBtn" class="clickable" width="0.2" height="0.1" position="0.25 -0.55 0.1"
-          material="color: #018fbf" visible="false" onclick="toggleARVideoPlayPause()">
-          <a-text id="playPauseText" value="Pause" color="white" align="center" position="0 0 0.01"
-            scale="0.1 0.1 0.1"></a-text>
-        </a-plane> -->
-
+      
       </a-entity>
     </a-scene>
   </main>
@@ -619,7 +610,7 @@ let targetDetected = false;     // whether image target is currently visible
     }
    function toggleARVideoPlayPause() {
   const mainVideoEl = document.querySelector("#mainVideo");
-  const playPauseText = document.querySelector("#arPlayPauseBtn");
+  const playPauseText = document.querySelector("#playPauseText");
 
   const currentVideoId = Object.entries({
     "video1": "audio1",
@@ -635,13 +626,11 @@ let targetDetected = false;     // whether image target is currently visible
   if (mainVideoEl.paused) {
     mainVideoEl.play();
     if (currentAudio && !currentAudio.muted) currentAudio.play();
-  playPauseText.textContent = "Pause";
-
+    playPauseText.setAttribute("value", "Pause");
   } else {
     mainVideoEl.pause();
     if (currentAudio) currentAudio.pause();
-  playPauseText.textContent = "Play";
-
+    playPauseText.setAttribute("value", "Play");
   }
 }
 
@@ -694,7 +683,7 @@ let targetDetected = false;     // whether image target is currently visible
   const videoEl = document.querySelector(`#${videoId}`);
   const mainVideoEl = document.querySelector("#mainVideo");
   const displayVideo = document.querySelector("#displayVideo");
-  const arBackBtn = document.querySelector("#arBackBtn");
+  // const arBackBtn = document.querySelector("#arBackBtn");
   const buttons = [
     document.querySelector('#btn1'),
     document.querySelector('#btn2'),
@@ -705,8 +694,7 @@ let targetDetected = false;     // whether image target is currently visible
 
   // Stop previous playback
   mainVideoEl.pause();
- mainVideoEl.src = "";
-
+  mainVideoEl.removeAttribute("src");
   mainVideoEl.load();
 
   // Stop previous audio
@@ -720,15 +708,15 @@ let targetDetected = false;     // whether image target is currently visible
   mainVideoEl.onloadeddata = () => {
     mainVideoEl.play().then(() => {
       displayVideo.setAttribute("visible", "true");
-     playPauseText.textContent = "Pause";
+      playPauseText.setAttribute("value", "Pause");
 
       setTimeout(() => {
         const mesh = displayVideo.getObject3D("mesh");
         if (mesh) mesh.material.map.needsUpdate = true;
       }, 100);
 
- document.querySelector("#arBackBtn").style.display = "block";
-document.querySelector("#arPlayPauseBtn").style.display = "block";
+    document.getElementById("arBackHtmlBtn").style.display = "inline-block";
+document.getElementById("arPlayPauseHtmlBtn").style.display = "inline-block";
 
       buttons.forEach(btn => btn.setAttribute("visible", "false"));
 
@@ -841,8 +829,8 @@ function playAssociatedAudio(videoId) {
 
 
     function backToARButtons() {
-      const displayVideo = document.querySelector("#displayVideo");
-      const arBackBtn = document.querySelector("#arBackBtn");
+      // const displayVideo = document.querySelector("#displayVideo");
+      // const arBackBtn = document.querySelector("#arBackBtn");
       descriptionVisible = false;
 document.getElementById("descToggleBtn").textContent = "Description On";
 document.querySelector(".bottom-text").style.display = "none";
@@ -858,9 +846,10 @@ document.querySelector(".bottom-text").style.display = "none";
       // Hide video and back button, show buttons
       displayVideo.setAttribute("visible", "false");
       displayVideo.pause();
-    document.querySelector("#arBackBtn").style.display = "none";
-document.querySelector("#arPlayPauseBtn").style.display = "none";
-
+      // arBackBtn.setAttribute("visible", "false");
+      // document.querySelector("#arPlayPauseBtn").setAttribute("visible", "false");
+document.getElementById("arBackHtmlBtn").style.display = "none";
+document.getElementById("arPlayPauseHtmlBtn").style.display = "none";
 
       buttons.forEach(btn => btn.setAttribute('visible', 'true'));
     }
@@ -876,21 +865,24 @@ document.querySelector("#arPlayPauseBtn").style.display = "none";
         document.querySelector('#btn5')
       ];
       const displayVideo = document.querySelector('#displayVideo');
-      const arBackBtn = document.querySelector('#arBackBtn');
+      // const arBackBtn = document.querySelector('#arBackBtn');
 
   target.addEventListener('targetFound', () => {
   targetDetected = true;
 
   buttons.forEach(btn => btn.setAttribute('visible', 'true'));
   displayVideo.setAttribute('visible', 'false');
-document.querySelector("#arBackBtn").style.display = "none";
-document.querySelector("#arPlayPauseBtn").style.display = "none";
-
 
   document.getElementById("voiceToggleBtn").style.display = "block";
   document.getElementById("descToggleBtn").style.display = "block";
 
-  // Show description if user had turned it on
+  // Show container
+  document.querySelector(".top-right-buttons").style.display = "flex";
+
+  // Hide back and play/pause buttons initially
+  document.getElementById("arBackHtmlBtn").style.display = "none";
+  document.getElementById("arPlayPauseHtmlBtn").style.display = "none";
+
   if (descriptionVisible) {
     document.querySelector(".bottom-text").style.display = "block";
   }
@@ -902,8 +894,8 @@ target.addEventListener('targetLost', () => {
   buttons.forEach(btn => btn.setAttribute('visible', 'false'));
   displayVideo.setAttribute('visible', 'false');
   displayVideo.pause();
-  arBackBtn.setAttribute('visible', 'false');
-  document.querySelector("#arPlayPauseBtn").setAttribute("visible", "false");
+  // arBackBtn.setAttribute('visible', 'false');
+  // document.querySelector("#arPlayPauseBtn").setAttribute("visible", "false");
 
   document.getElementById("voiceToggleBtn").style.display = "none";
   document.getElementById("descToggleBtn").style.display = "none";
