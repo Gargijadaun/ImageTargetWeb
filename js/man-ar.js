@@ -11,7 +11,6 @@ const TIMELINE_DETAILS = {
 // DOM Elements
 const mainScreen = document.querySelector('#mainScreen');
 const backBtn = document.querySelector('#backBtn');
-
 const replayButton = document.querySelector('#replayButton');
 
 let wakeLock = null;
@@ -30,17 +29,36 @@ async function keepScreenAwake() {
     }
 }
 
+// ✅ Force resize of renderer and camera
+function forceResize() {
+    if (arSystem && sceneEl) {
+        const renderer = sceneEl.renderer;
+        const camera = sceneEl.camera;
+        if (renderer && camera) {
+            renderer.setSize(window.innerWidth, window.innerHeight);
+            camera.aspect = window.innerWidth / window.innerHeight;
+            camera.updateProjectionMatrix();
+            console.log(`Resized to ${window.innerWidth}x${window.innerHeight}`);
+        } else {
+            console.warn('Renderer or camera not ready');
+        }
+    }
+}
+
 // ✅ Initialize AR and set up video logic
 function init() {
     mainScreen.classList.add('hide');
-    // backBtn.classList.add('show');
     document.querySelector('#mainScreen .btn-container').classList.remove('show');
 
     if (!AR_READY) {
         arSystem.start();
         AR_READY = true;
+        forceRendererResize()
+        setTimeout(forceResize, 100); // Delay to ensure renderer is ready
     } else {
         arSystem.unpause();
+        forceResize();
+        forceRendererResize()
     }
 
     // 📌 Target Found
@@ -76,12 +94,13 @@ function init() {
 
 // ✅ Go Back Button Handler
 function goBack() {
-      document.querySelector(".back-btn").style.display = "none";
-       document.getElementById("videoScreen").style.display = "none";
-      document.getElementById("videoScreen").classList.remove("active");
-      document.getElementById("mainScreen").style.display = "block";
-      document.getElementById("mainScreen").classList.add("active");
-      checkOrientation();
+    document.querySelector(".back-btn").style.display = "none";
+    document.querySelector(".back-btn1").style.display = "none";
+    document.getElementById("videoScreen").style.display = "none";
+    document.getElementById("videoScreen").classList.remove("active");
+    document.getElementById("mainScreen").style.display = "block";
+    document.getElementById("mainScreen").classList.add("active");
+    window.checkOrientation();
     document.querySelectorAll("video").forEach(video => {
         video.pause();
         video.currentTime = 0;
@@ -115,14 +134,14 @@ function goBack() {
 
     document.getElementById("scanText").style.display = "none";
     document.getElementById("scanning-overlay").classList.add("hidden");
-    
 }
 
 // ✅ Go to Animation with Default Video Load
 function goToAnimation() {
+    forceRendererResize();
     keepScreenAwake();
-  document.querySelector(".back-btn").style.display = "block";
-  document.querySelector(".back-btn1").style.display = "block";
+    document.querySelector(".back-btn").style.display = "block";
+    document.querySelector(".back-btn1").style.display = "block";
     if (mainScreen) mainScreen.style.display = "none";
 
     const btnContainer = mainScreen.querySelector(".btn-container");
@@ -147,6 +166,8 @@ function goToAnimation() {
     changeVideoSource("assets/video/Test-01.mp4");
     init();
 
+    // Ensure resize after initialization
+    setTimeout(forceResize, 100);
     sessionStorage.setItem("cameraActive", "true");
 }
 
@@ -154,7 +175,21 @@ function goToAnimation() {
 function changeVideo(videoPath) {
     changeVideoSource(videoPath);
 }
-
+function forceRendererResize() {
+  const scene = document.querySelector('a-scene');
+  if (scene && scene.renderer) {
+    const renderer = scene.renderer;
+    if (renderer) {
+      // Increase size by 5% to ensure it covers the viewport
+      const width = window.innerWidth * 1.05;
+      const height = window.innerHeight * 1.05;
+      renderer.setSize(width, height);
+      scene.camera.aspect = width / height;
+      scene.camera.updateProjectionMatrix();
+      console.log(width, height); // Logs the calculated width and height
+    }
+  }
+}
 // ✅ Core Function to Change and Reload Video Source
 function changeVideoSource(videoPath) {
     const mainVideoEl = document.querySelector('#mainVideo');
@@ -184,13 +219,19 @@ document.addEventListener("DOMContentLoaded", () => {
     sceneEl.addEventListener("loaded", () => {
         arSystem = sceneEl.systems["mindar-image-system"];
         document.querySelector('#mainScreen .btn-container').classList.add('show');
+        window.checkOrientation();
+        setTimeout(forceResize, 100);
     });
 });
-// function continueWithoutAR() {
-//     window.location.href = "video.html"; // Replace with your actual file name
-// }
+
+// ✅ Listen for resize events
+window.addEventListener('resize', () => {
+    window.checkOrientation();
+    setTimeout(forceResize, 100);
+});
 
 // ✅ Global Access
 window.goToAnimation = goToAnimation;
 window.goBack = goBack;
 window.changeVideo = changeVideo;
+window.forceResize = forceResize;

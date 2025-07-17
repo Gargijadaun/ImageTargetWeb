@@ -595,7 +595,7 @@ main {
     background-size: contain;
     width: 200px;       /* fixed width for consistency */
     height: 80px;       /* fixed height */
-    font-size: 15px;
+    font-size: 20px;
     color: #000;
     border: 0;
     outline: none;
@@ -609,7 +609,7 @@ main {
   bottom: 20px;            /* distance from bottom */
   left: 50%;
   transform: translateX(-50%);
-  max-width: 42%;          /* scale image as needed */
+  max-width: 33%;          /* scale image as needed */
   height: auto;
   z-index: 10;             /* ensure it stays above background */
 }
