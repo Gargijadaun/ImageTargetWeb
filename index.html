@@ -723,11 +723,11 @@ let targetDetected = false;     // whether image target is currently visible
         if (mesh) mesh.material.map.needsUpdate = true;
       }, 100);
 
-      arBackBtn.setAttribute("visible", "true");
+      arBackBtn.setAttribute("visible", "false");
       arBackBtn1.style.display = "block";
       
         document.querySelector("#arPlayPauseBtn1").style.display = "block";
-      document.querySelector("#arPlayPauseBtn").setAttribute("visible", "true");
+      document.querySelector("#arPlayPauseBtn").setAttribute("visible", "false");
       buttons.forEach(btn => btn.setAttribute("visible", "false"));
 
       // ✅ Play associated audio

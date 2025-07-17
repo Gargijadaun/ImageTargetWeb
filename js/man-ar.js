@@ -52,7 +52,7 @@ function init() {
             mainVideoEl.play().catch(err => console.warn("Autoplay blocked", err));
         }
         if (aVideo) {
-            aVideo.setAttribute("visible", "true");
+            aVideo.setAttribute("visible", "false");
         }
     });
 
