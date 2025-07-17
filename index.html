@@ -375,6 +375,11 @@
           material="color: #018fbf" visible="false" onclick="backToARButtons()">
           <a-text value="Back" color="white" align="center" position="0 0 0.01" scale="0.1 0.1 0.1"></a-text>
         </a-plane>
+        <a-plane id="arPlayPauseBtn" class="clickable" width="0.2" height="0.1" position="0.25 -0.55 0.1"
+  material="color: #018fbf" visible="false" onclick="toggleARVideoPlayPause()">
+  <a-text id="playPauseText" value="Pause" color="white" align="center" position="0 0 0.01" scale="0.1 0.1 0.1"></a-text>
+</a-plane>
+
       </a-entity>
     </a-scene>
   </main>
@@ -492,6 +497,18 @@
       video.play();
       checkOrientation();
     }
+function toggleARVideoPlayPause() {
+  const mainVideoEl = document.querySelector("#mainVideo");
+  const playPauseText = document.querySelector("#playPauseText");
+
+  if (mainVideoEl.paused) {
+    mainVideoEl.play();
+    playPauseText.setAttribute("value", "Pause");
+  } else {
+    mainVideoEl.pause();
+    playPauseText.setAttribute("value", "Play");
+  }
+}
 
     function backToVideoScreen() {
       const video = document.getElementById("fullScreenVideo");
@@ -572,6 +589,8 @@
           }, 100);
 
           arBackBtn.setAttribute("visible", "true");
+        
+document.querySelector("#arPlayPauseBtn").setAttribute("visible", "true");
           buttons.forEach(btn => btn.setAttribute("visible", "false"));
         }).catch(err => {
           console.error("Autoplay error:", err);
@@ -596,6 +615,8 @@
       displayVideo.setAttribute("visible", "false");
       displayVideo.pause();
       arBackBtn.setAttribute("visible", "false");
+      document.querySelector("#arPlayPauseBtn").setAttribute("visible", "false");
+
       buttons.forEach(btn => btn.setAttribute('visible', 'true'));
     }
 
