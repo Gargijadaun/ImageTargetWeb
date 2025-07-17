@@ -108,16 +108,16 @@
       padding: 0.5vw 1vw;
       font-size: min(1.5vw, 12px);
       cursor: pointer;
-      background-color: #018fbf;
-      color: white;
+      background-color: transparent;
+      /* color: white; */
       border: none;
       border-radius: 4px;
       z-index: 10;
     }
 
     .back-btn1 img {
-      width: min(3vw, 18px);
-      height: min(3vw, 18px);
+      width: min(4vw, 32px);
+  height: min(4vw, 32px);
     }
 
     .back-btn1:hover {
@@ -241,8 +241,8 @@
     }
 
     .back-btn img {
-      width: min(3vw, 18px);
-      height: min(3vw, 18px);
+     width: min(4vw, 32px);
+  height: min(4vw, 32px);
     }
 
     .back-btn:hover {
@@ -266,28 +266,26 @@
       object-fit: contain;
     }
 
-    #videoPlayerScreen .back-btn {
-      position: fixed;
-      top: 2vw;
-      left: 2vw;
-      padding: 1vw -3vw;
-      font-size: min(-3vw, -3px);
-      cursor: pointer;
-      background-color: #018fbf;
-      color: white;
-      border: none;
-      border-radius: 5px;
-      z-index: 10;
-    }
+  #videoPlayerScreen .back-btn {
+  position: fixed;
+  top: 2vw;
+  left: 0.5vw;
+  padding: 0; /* No extra padding since it’s only an image */
+  background-color: transparent; /* No button background */
+  border: none;
+  cursor: pointer;
+  z-index: 10;
+}
 
-    #videoPlayerScreen .back-btn img {
-      width: min(4vw, 24px);
-      height: min(4vw, 24px);
-    }
+#videoPlayerScreen .back-btn img {
+  width: min(6vw, 48px);
+  height: min(6vw, 48px);
+}
 
-    #videoPlayerScreen .back-btn:hover {
-      background-color: #d32f2f;
-    }
+#videoPlayerScreen .back-btn:hover {
+  background-color: transparent; /* Keep it clean on hover */
+}
+
 #voiceToggleBtn, #descToggleBtn, #arBackBtn1, #arPlayPauseBtn1 {
   display: none;
 }
@@ -350,19 +348,34 @@
     </div>
 
     <!-- Video Selection Screen -->
-    <div id="videoScreen">
-      <div class="image-wrapper">
-        <img src="assets/images/Brochure-Landscape-01.jpg" class="bg-image" alt="Background" />
+   <div id="videoScreen">
+<div class="image-wrapper">
+  <img src="assets/images/Brochure-Landscape-01.jpg" class="bg-image" alt="Background" />
+<audio id="videoAudio"></audio>
+
+        <!-- Hotspot buttons positioned according to 1920x1080 reference -->
+        <button class="hotspot-btn" style="top: 86.1%; left: 8%;"
+          onclick="playVideo('assets/video/Video1.mp4', 'assets/audio/True 4K Colour -01.mp3')"></button>
+        <button class="hotspot-btn" style="top: 86.1%; left: 29%;"
+          onclick="playVideo('assets/video/Video2.mp4', 'assets/audio/Multiple Feed Views --02.mp3')"></button>
+        <button class="hotspot-btn" style="top: 86.1%; left: 50%;"
+          onclick="playVideo('assets/video/Video3.mp4', 'assets/audio/Powerful LED Source with AMVI-05.mp3')"></button>
+        <button class="hotspot-btn" style="top: 86.1%; left: 71%;"
+          onclick="playVideo('assets/video/Video4.mp4', 'assets/audio/IntelliQuant Dashboard -04.mp3')"></button>
+        <button class="hotspot-btn" style="top: 86.1%; left: 92%;"
+          onclick="playVideo('assets/video/Video4.mp4', 'assets/audio/Fully Customisable Colour -03.mp3')"></button>
       </div>
-      <button class="back-btn" onclick="goBack()" style="display: none;">
-        <img src="./assets/icons/back-icon.png" alt="Back">
-      </button>
+    </div>
+    <button class="back-btn" onclick="goBack()" style="display: none;">
+      <img src="./assets/images/home01.png" alt="Back">
+    </button>
+    </div>
     </div>
 
     <!-- Video Player Screen -->
     <div id="videoPlayerScreen">
       <button class="back-btn" onclick="backToVideoScreen()">
-        <img src="./assets/icons/back-icon.png" alt="Back">
+        <img src="./assets/images/home01.png" alt="Back">
       </button>
       <div id="videoZoomContainer">
         <video id="fullScreenVideo" autoplay playsinline></video>
@@ -373,7 +386,7 @@
     <div class="btn-container1 hide" style="display: none;">
       <img src="./assets/images/01.png" class="top-img" alt="Top Image">
       <button class="back-btn1" onclick="goBack()" style="display: none;">
-        <img src="./assets/icons/back-icon.png" alt="Back">
+        <img src="./assets/images/home01.png" alt="Back">
 
       </button>
       <img src="./assets/images/02.png" class="bottom-img" alt="Bottom Image">
@@ -632,16 +645,30 @@ function toggleDescription() {
 }
 
 
-    function playVideo(videoSrc) {
-      const video = document.getElementById("fullScreenVideo");
-      video.src = videoSrc;
-      document.getElementById("videoScreen").style.display = "none";
-      document.getElementById("videoScreen").classList.remove("active");
-      document.getElementById("videoPlayerScreen").style.display = "block";
-      document.getElementById("videoPlayerScreen").classList.add("active");
-      video.play();
-      checkOrientation();
-    }
+   function playVideo(videoSrc, audioSrc = null) {
+  const video = document.getElementById("fullScreenVideo");
+  const audio = document.getElementById("videoAudio");
+
+  video.src = videoSrc;
+  video.play();
+
+  // Optional audio
+  if (audioSrc) {
+    audio.src = audioSrc;
+    audio.play();
+  } else {
+    audio.pause();
+    audio.currentTime = 0;
+  }
+
+  document.getElementById("videoScreen").style.display = "none";
+  document.getElementById("videoScreen").classList.remove("active");
+  document.getElementById("videoPlayerScreen").style.display = "block";
+  document.getElementById("videoPlayerScreen").classList.add("active");
+
+  checkOrientation();
+}
+
  function toggleARVideoPlayPause() {
   const mainVideoEl = document.querySelector("#mainVideo");
   const playPauseText = document.querySelector("#playPauseText"); // A-Frame text
@@ -673,8 +700,11 @@ function toggleDescription() {
 
     function backToVideoScreen() {
       const video = document.getElementById("fullScreenVideo");
+        const audio = document.getElementById("videoAudio");
       video.pause();
       video.src = "";
+        audio.pause();
+  audio.currentTime = 0;
       scale = 1;
       lastScale = 1;
       translateX = 0;
