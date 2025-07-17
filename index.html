@@ -328,6 +328,7 @@
       device-orientation-permission assembled-ui="enabled: false">
 
       <a-assets>
+          <img id="btnImg" src="assets/images/play.png">
         <video id="video1" src="assets/video/Video1.mp4" muted playsinline crossorigin="anonymous"></video>
         <video id="video2" src="assets/video/Video2.mp4" muted playsinline crossorigin="anonymous"></video>
         <video id="video3" src="assets/video/Video3.mp4" muted playsinline crossorigin="anonymous"></video>
@@ -349,26 +350,25 @@
         <a-image src="./assets/images/02.png" width="0.533" height="0.0603" position="0 -0.5 0"
           visible="true"></a-image> -->
         <!-- Interactive 3D buttons -->
-   <a-circle id="btn1" class="clickable" radius="0.07" position="-0.4 -0.3 0.01" color="#00ff00"
-  material="side: double; metalness: 0.2; roughness: 0.4" visible="false"
-  onclick="playARVideo('video1')"></a-circle>
+  <a-circle id="btn1" class="clickable" radius="0.07" position="-0.4 -0.3 0.01"
+  material="src: #btnImg; color: #00ff00; side: double; transparent: true; opacity: 0.6"
+  visible="false" onclick="playARVideo('video1')"></a-circle>
 
-<a-circle id="btn2" class="clickable" radius="0.07" position="-0.2 -0.3 0.01" color="#00ff00"
-  material="side: double; metalness: 0.2; roughness: 0.4" visible="false"
-  onclick="playARVideo('video2')"></a-circle>
+<a-circle id="btn2" class="clickable" radius="0.07" position="-0.2 -0.3 0.01"
+  material="src: #btnImg; color: #00ff00; side: double; transparent: true; opacity: 0.6"
+  visible="false" onclick="playARVideo('video2')"></a-circle>
 
-<a-circle id="btn3" class="clickable" radius="0.07" position="0 -0.3 0.01" color="#00ff00"
-  material="side: double; metalness: 0.2; roughness: 0.4" visible="false"
-  onclick="playARVideo('video3')"></a-circle>
+<a-circle id="btn3" class="clickable" radius="0.07" position="0 -0.3 0.01"
+  material="src: #btnImg; color: #00ff00; side: double; transparent: true; opacity: 0.6"
+  visible="false" onclick="playARVideo('video3')"></a-circle>
 
-<a-circle id="btn4" class="clickable" radius="0.07" position="0.2 -0.3 0.01" color="#00ff00"
-  material="side: double; metalness: 0.2; roughness: 0.4" visible="false"
-  onclick="playARVideo('video4')"></a-circle>
+<a-circle id="btn4" class="clickable" radius="0.07" position="0.2 -0.3 0.01"
+  material="src: #btnImg; color: #00ff00; side: double; transparent: true; opacity: 0.6"
+  visible="false" onclick="playARVideo('video4')"></a-circle>
 
-<a-circle id="btn5" class="clickable" radius="0.07" position="0.4 -0.3 0.01" color="#00ff00"
-  material="side: double; metalness: 0.2; roughness: 0.4" visible="false"
-  onclick="playARVideo('video5')"></a-circle>
-
+<a-circle id="btn5" class="clickable" radius="0.07" position="0.4 -0.3 0.01"
+  material="src: #btnImg; color: #00ff00; side: double; transparent: true; opacity: 0.6"
+  visible="false" onclick="playARVideo('video5')"></a-circle>
 
         <!-- AR Back Button -->
         <a-plane id="arBackBtn" class="clickable" width="0.2" height="0.1" position="0 -0.55 0.1"
