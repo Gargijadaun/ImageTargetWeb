@@ -114,13 +114,13 @@
 
     .top-right-buttons {
       position: fixed;
-      top: 3vw;
-      right: 1vw;
-      display: flex;
-      flex-direction: column;
-      /* ← Make buttons stack vertically */
-      gap: 0.5vw;
-      z-index: 10;
+    top: 13vw;
+    right: 1vw;
+    display: flex
+;
+    flex-direction: column;
+    gap: 1.5vw;
+    z-index: 10;
     }
 
 .bottom-text {
@@ -363,7 +363,7 @@
       </button>
       <img src="./assets/images/02.png" class="bottom-img" alt="Bottom Image">
       <div class="top-right-buttons">
-        <button id="voiceToggleBtn" onclick="toggleVoiceOver()">Voice Over On</button>
+        <button id="voiceToggleBtn" onclick="toggleVoiceOver()">Voice Over Off</button>
         <button id="descToggleBtn" onclick="toggleDescription()">Description On</button>
          <button id="arBackBtn1" onclick="backToARButtons()">Back</button>
         <button id="arPlayPauseBtn1" onclick="toggleARVideoPlayPause()">Play/Pause</button>
@@ -485,6 +485,8 @@
   <script src="https://code.jquery.com/ui/1.14.1/jquery-ui.js"></script>
 
   <script>
+    let lastPlayedAudio = null;
+
     let descriptionVisible = false; // whether user clicked Description On
 let targetDetected = false;     // whether image target is currently visible
 
@@ -621,24 +623,22 @@ let targetDetected = false;     // whether image target is currently visible
   const mainVideoEl = document.querySelector("#mainVideo");
   const playPauseText = document.querySelector("#playPauseText");
 
-  // Find the currently playing audio (only one should be playing)
-  let activeAudio = null;
-  for (let i = 1; i <= 5; i++) {
-    const audio = document.getElementById(`audio${i}`);
-    if (!audio.paused && !audio.ended) {
-      activeAudio = audio;
-      break;
-    }
-  }
-
   if (mainVideoEl.paused) {
     mainVideoEl.play();
     playPauseText.setAttribute("value", "Pause");
-    if (activeAudio) activeAudio.play(); // Resume audio if it was paused
+    
+    // ✅ Resume previously played audio
+    if (lastPlayedAudio) {
+      lastPlayedAudio.play().catch(err => console.warn("Audio resume error:", err));
+    }
   } else {
     mainVideoEl.pause();
     playPauseText.setAttribute("value", "Play");
-    if (activeAudio) activeAudio.pause(); // Pause currently playing audio
+
+    // ✅ Pause currently playing audio
+    if (lastPlayedAudio && !lastPlayedAudio.paused) {
+      lastPlayedAudio.pause();
+    }
   }
 }
 
@@ -687,6 +687,7 @@ let targetDetected = false;     // whether image target is currently visible
 
     // AR-specific functions
    function playARVideo(videoId) {
+     descriptionVisible = false;
   const videoEl = document.querySelector(`#${videoId}`);
   const mainVideoEl = document.querySelector("#mainVideo");
   const displayVideo = document.querySelector("#displayVideo");
@@ -727,6 +728,13 @@ let targetDetected = false;     // whether image target is currently visible
       arBackBtn1.style.display = "block";
       
         document.querySelector("#arPlayPauseBtn1").style.display = "block";
+          document.getElementById("voiceToggleBtn").style.display = "block";
+  document.getElementById("descToggleBtn").style.display = "block";
+
+  // Show description if user had turned it on
+  if (descriptionVisible) {
+    document.querySelector(".bottom-text").style.display = "none";
+  }
       document.querySelector("#arPlayPauseBtn").setAttribute("visible", "false");
       buttons.forEach(btn => btn.setAttribute("visible", "false"));
 
@@ -832,6 +840,7 @@ function playAssociatedAudio(videoId) {
     const voiceEnabled = voiceToggle.textContent.includes("On");
 
     if (audio && voiceEnabled) {
+      lastPlayedAudio = audio; // ✅ Track currently playing audio
       audio.play().catch(err => console.warn("Audio playback blocked:", err));
     }
   }
@@ -890,12 +899,12 @@ stopAllAudio();
        document.querySelector("#arPlayPauseBtn1").style.display ="none";
 
 
-  document.getElementById("voiceToggleBtn").style.display = "block";
-  document.getElementById("descToggleBtn").style.display = "block";
+  document.getElementById("voiceToggleBtn").style.display = "none";
+  document.getElementById("descToggleBtn").style.display = "none";
 
   // Show description if user had turned it on
   if (descriptionVisible) {
-    document.querySelector(".bottom-text").style.display = "block";
+    document.querySelector(".bottom-text").style.display = "none";
   }
 });
 
