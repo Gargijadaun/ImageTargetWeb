@@ -276,7 +276,7 @@
     #videoPlayerScreen .back-btn:hover {
       background-color: #d32f2f;
     }
-#voiceToggleBtn, #descToggleBtn {
+#voiceToggleBtn, #descToggleBtn, #arBackBtn, #arPlayPauseBtn {
   display: none;
 }
 
@@ -365,6 +365,8 @@
       <div class="top-right-buttons">
         <button id="voiceToggleBtn" onclick="toggleVoiceOver()">Voice Over On</button>
         <button id="descToggleBtn" onclick="toggleDescription()">Description On</button>
+         <button id="arBackBtn" onclick="backToARButtons()">Back</button>
+        <button id="arPlayPauseBtn" onclick="toggleARVideoPlayPause()">Play/Pause</button>
       </div>
     <div class="bottom-text">
   <h1 id="bottomHeading">True 4K Colour with Fluorescence</h1>
@@ -418,7 +420,7 @@
         <video id="video2" src="assets/video/Video2.mp4" muted playsinline crossorigin="anonymous"></video>
         <video id="video3" src="assets/video/Video3.mp4" muted playsinline crossorigin="anonymous"></video>
         <video id="video4" src="assets/video/Video4.mp4" muted playsinline crossorigin="anonymous"></video>
-        <video id="video5" src="assets/video/AMVI-2.mp4" muted playsinline crossorigin="anonymous"></video>
+        <video id="video5" src="assets/video/Video5.mp4" muted playsinline crossorigin="anonymous"></video>
         <video id="mainVideo" muted playsinline crossorigin="anonymous" loop></video>
         <audio id="audio1" src="assets/audio/True 4K Colour -01.mp3" preload="auto" crossorigin="anonymous"></audio>
         <audio id="audio2" src="assets/audio/Multiple Feed Views --02.mp3" preload="auto" crossorigin="anonymous"></audio>
@@ -650,7 +652,7 @@ let targetDetected = false;     // whether image target is currently visible
         'assets/video/Video2.mp4',
         'assets/video/Video3.mp4',
         'assets/video/Video4.mp4',
-        'assets/video/AMVI-2.mp4'
+        'assets/video/Video5.mp4'
       ];
       let index = 0;
       const videoElement = document.getElementById('fullScreenVideo');
@@ -709,6 +711,8 @@ let targetDetected = false;     // whether image target is currently visible
       }, 100);
 
       arBackBtn.setAttribute("visible", "true");
+      arBackBtn.style.display = true;
+        document.querySelector("#arPlayPauseBtn").style.display = true;
       document.querySelector("#arPlayPauseBtn").setAttribute("visible", "true");
       buttons.forEach(btn => btn.setAttribute("visible", "false"));
 
@@ -839,6 +843,8 @@ document.querySelector(".bottom-text").style.display = "none";
       displayVideo.setAttribute("visible", "false");
       displayVideo.pause();
       arBackBtn.setAttribute("visible", "false");
+      arBackBtn.style.display =false;
+       document.querySelector("#arPlayPauseBtn").style.display =false;
       document.querySelector("#arPlayPauseBtn").setAttribute("visible", "false");
 
       buttons.forEach(btn => btn.setAttribute('visible', 'true'));
@@ -864,6 +870,9 @@ document.querySelector(".bottom-text").style.display = "none";
   displayVideo.setAttribute('visible', 'false');
   arBackBtn.setAttribute('visible', 'false');
   document.querySelector("#arPlayPauseBtn").setAttribute("visible", "false");
+    arBackBtn.style.display =false;
+       document.querySelector("#arPlayPauseBtn").style.display =false;
+
 
   document.getElementById("voiceToggleBtn").style.display = "block";
   document.getElementById("descToggleBtn").style.display = "block";
@@ -876,12 +885,14 @@ document.querySelector(".bottom-text").style.display = "none";
 
 target.addEventListener('targetLost', () => {
   targetDetected = false;
-
+ stopAllAudio();
   buttons.forEach(btn => btn.setAttribute('visible', 'false'));
   displayVideo.setAttribute('visible', 'false');
   displayVideo.pause();
   arBackBtn.setAttribute('visible', 'false');
   document.querySelector("#arPlayPauseBtn").setAttribute("visible", "false");
+    arBackBtn.style.display =false;
+       document.querySelector("#arPlayPauseBtn").style.display =false;
 
   document.getElementById("voiceToggleBtn").style.display = "none";
   document.getElementById("descToggleBtn").style.display = "none";
