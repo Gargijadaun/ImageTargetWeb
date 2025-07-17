@@ -207,6 +207,7 @@
 
       a-scene {
         display: block !important;
+         z-index: 1;
       }
     }
   </style>
@@ -286,11 +287,7 @@
        <button class="back-btn1" onclick="goBack()" style="display: none;">
         <img src="./assets/icons/back-icon.png" alt="Back">
       </button>
-      <!-- <button class="btn" onclick="changeVideo('assets/video/Video1.mp4')">4K Color</button>
-      <button class="btn" onclick="changeVideo('assets/video/Video2.mp4')">IntelliQuant</button>
-      <button class="btn" onclick="changeVideo('assets/video/Video3.mp4')">Multiview</button>
-      <button class="btn" onclick="changeVideo('assets/video/Video4.mp4')">Pip View</button>
-      <button class="btn" onclick="changeVideo('assets/video/AMVI-2.mp4')">Pip View1</button> -->
+     
     </div>
 
     <!-- Device Error -->
@@ -318,38 +315,156 @@
     </div>
 
     <!-- A-Frame Scene -->
-    <a-scene mindar-image="uiScanning: #scanning-overlay; imageTargetSrc: ./assets/target/targets.mind; filterMinCF:0.001; filterBeta: 0.05; missTolerance: 5; warmupTolerance: 5; autoStart: false;"
-             renderer="colorManagement: true, physicallyCorrectLights: true; antialias: true;"
-             vr-mode-ui="enabled: false"
-             device-orientation-permission-ui="enabled: false">
+  <a-scene
+  mindar-image="uiScanning: #scanning-overlay; imageTargetSrc: ./assets/target/targets.mind; filterMinCF:0.001; filterBeta: 0.05; missTolerance: 5; warmupTolerance: 5; autoStart: false;"
+  renderer="colorManagement: true, physicallyCorrectLights: true; antialias: true;"
+  vr-mode-ui="enabled: false"
+  device-orientation-permission-ui="enabled: false"
+>
+  <a-assets>
+    <video
+      id="video1"
+      src="assets/video/Video1.mp4"
+      preload="auto"
+      loop
+      muted
+      playsinline
+      crossorigin="anonymous"
+    ></video>
+    <video
+      id="video2"
+      src="assets/video/Video2.mp4"
+      preload="auto"
+      loop
+      muted
+      playsinline
+      crossorigin="anonymous"
+    ></video>
+    <video
+      id="video3"
+      src="assets/video/Video3.mp4"
+      preload="auto"
+      loop
+      muted
+      playsinline
+      crossorigin="anonymous"
+    ></video>
+    <video
+      id="video4"
+      src="assets/video/Video4.mp4"
+      preload="auto"
+      loop
+      muted
+      playsinline
+      crossorigin="anonymous"
+    ></video>
+    <video
+      id="video5"
+      src="assets/video/AMVI-2.mp4"
+      preload="auto"
+      loop
+      muted
+      playsinline
+      crossorigin="anonymous"
+    ></video>
+  </a-assets>
 
-      <a-assets>
-        <video id="video1" src="assets/video/Video1.mp4" preload="auto" loop muted playsinline crossorigin="anonymous"></video>
-        <video id="video2" src="assets/video/Video2.mp4" preload="auto" loop muted playsinline crossorigin="anonymous"></video>
-        <video id="video3" src="assets/video/Video3.mp4" preload="auto" loop muted playsinline crossorigin="anonymous"></video>
-        <video id="video4" src="assets/video/Video4.mp4" preload="auto" loop muted playsinline crossorigin="anonymous"></video>
-        <video id="video5" src="assets/video/AMVI-2.mp4" preload="auto" loop muted playsinline crossorigin="anonymous"></video>
-      </a-assets>
+  <a-camera
+    position="0 0 0"
+    look-controls="enabled: true"
+    cursor="fuse: false; rayOrigin: mouse;"
+    raycaster="near: 0.1; far: 1000; objects: .clickable"
+  ></a-camera>
 
-      <a-camera position="0 0 0" look-controls="enabled: false" cursor="fuse: false; rayOrigin: mouse;"
-                raycaster="near: 0.1; far: 1000; objects: .clickable"></a-camera>
-
-      <a-entity id="targetImage" mindar-image-target="targetIndex: 0">
-        <a-video id="displayVideo" src="#video1" width="1.6" height="0.9" position="0 0 0" rotation="0 0 0" visible="false"></a-video>
-        <a-image src="./assets/images/01.png" width="0.267" height="0.0785" position="0 0.5 0" visible="true"></a-image>
-        <a-image src="./assets/images/02.png" width="0.533" height="0.0603" position="0 -0.5 0" visible="true"></a-image>
-        <!-- Interactive 3D buttons -->
-        <a-sphere id="btn1" class="clickable" radius="0.05" position="-0.68 -0.23 0.1" color="#018fbf" visible="false" onclick="playARVideo('video1')"></a-sphere>
-        <a-sphere id="btn2" class="clickable" radius="0.05" position="-0.34 -0.23 0.1" color="#018fbf" visible="false" onclick="playARVideo('video2')"></a-sphere>
-        <a-sphere id="btn3" class="clickable" radius="0.05" position="0 -0.23 0.1" color="#018fbf" visible="false" onclick="playARVideo('video3')"></a-sphere>
-        <a-sphere id="btn4" class="clickable" radius="0.05" position="0.34 -0.23 0.1" color="#018fbf" visible="false" onclick="playARVideo('video4')"></a-sphere>
-        <a-sphere id="btn5" class="clickable" radius="0.05" position="0.68 -0.23 0.1" color="#018fbf" visible="false" onclick="playARVideo('video5')"></a-sphere>
-        <!-- AR Back Button -->
-        <a-plane id="arBackBtn" class="clickable" width="0.2" height="0.1" position="0 -0.55 0.1" material="color: #018fbf" visible="false" onclick="backToARButtons()">
-          <a-text value="Back" color="white" align="center" position="0 0 0.01" scale="0.1 0.1 0.1"></a-text>
-        </a-plane>
-      </a-entity>
-    </a-scene>
+  <a-entity id="targetImage" mindar-image-target="targetIndex: 0">
+    <a-video
+      id="displayVideo"
+      src="#video1"
+      width="1.6"
+      height="0.9"
+      position="0 0 0"
+      rotation="0 0 0"
+      visible="false"
+    ></a-video>
+    <a-image
+      src="./assets/images/01.png"
+      width="0.267"
+      height="0.0785"
+      position="0 0.5 0"
+      visible="true"
+    ></a-image>
+    <a-image
+      src="./assets/images/02.png"
+      width="0.533"
+      height="0.0603"
+      position="0 -0.5 0"
+      visible="true"
+    ></a-image>
+    <a-sphere
+      id="btn1"
+      class="clickable"
+      radius="0.05"
+      position="-0.68 -0.23 0.2"
+      color="#018fbf"
+      visible="false"
+      click-handler
+    ></a-sphere>
+    <a-sphere
+      id="btn2"
+      class="clickable"
+      radius="0.05"
+      position="-0.34 -0.23 0.2"
+      color="#018fbf"
+      visible="false"
+      click-handler
+    ></a-sphere>
+    <a-sphere
+      id="btn3"
+      class="clickable"
+      radius="0.05"
+      position="0 -0.23 0.2"
+      color="#018fbf"
+      visible="false"
+      click-handler
+    ></a-sphere>
+    <a-sphere
+      id="btn4"
+      class="clickable"
+      radius="0.05"
+      position="0.34 -0.23 0.2"
+      color="#018fbf"
+      visible="false"
+      click-handler
+    ></a-sphere>
+    <a-sphere
+      id="btn5"
+      class="clickable"
+      radius="0.05"
+      position="0.68 -0.23 0.2"
+      color="#018fbf"
+      visible="false"
+      click-handler
+    ></a-sphere>
+    <a-plane
+      id="arBackBtn"
+      class="clickable"
+      width="0.2"
+      height="0.1"
+      position="0 -0.55 0.2"
+      material="color: #018fbf"
+      visible="false"
+      onclick="backToARButtons()"
+    >
+      <a-text
+        value="Back"
+        color="white"
+        align="center"
+        position="0 0 0.01"
+        scale="0.1 0.1 0.1"
+      ></a-text>
+    </a-plane>
+  </a-entity>
+</a-scene>
   </main>
 
   <!-- Scripts -->
