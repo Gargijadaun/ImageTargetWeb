@@ -303,11 +303,11 @@
              device-orientation-permission assembled-ui="enabled: false">
 
       <a-assets>
-        <video id="video1" src="assets/video/Video1.mp4" preload="auto" loop muted playsinline crossorigin="anonymous"></video>
-        <video id="video2" src="assets/video/Video2.mp4" preload="auto" loop muted playsinline crossorigin="anonymous"></video>
-        <video id="video3" src="assets/video/Video3.mp4" preload="auto" loop muted playsinline crossorigin="anonymous"></video>
-        <video id="video4" src="assets/video/Video4.mp4" preload="auto" loop muted playsinline crossorigin="anonymous"></video>
-        <video id="video5" src="assets/video/AMVI-2.mp4" preload="auto" loop muted playsinline crossorigin="anonymous"></video>
+        <video id="video1" src="assets/video/Video1.mp4" preload="auto" playsinline crossorigin="anonymous"></video>
+        <video id="video2" src="assets/video/Video2.mp4" preload="auto" playsinline crossorigin="anonymous"></video>
+        <video id="video3" src="assets/video/Video3.mp4" preload="auto" playsinline crossorigin="anonymous"></video>
+        <video id="video4" src="assets/video/Video4.mp4" preload="auto" playsinline crossorigin="anonymous"></video>
+        <video id="video5" src="assets/video/AMVI-2.mp4" preload="auto" playsinline crossorigin="anonymous"></video>
       </a-assets>
 
       <a-camera position="0 0 0" look-controls="enabled: false" cursor="fuse: false; rayOrigin: mouse;"
@@ -502,10 +502,14 @@
 
       // Hide buttons, show video and back button
       buttons.forEach(btn => btn.setAttribute('visible', 'false'));
-      displayVideo.setAttribute("src", `#${videoId}`);
-      displayVideo.setAttribute("visible", "true");
-      displayVideo.components.material.material.map = null; // Reset material to ensure video updates
-      displayVideo.play();
+     displayVideo.setAttribute("src", `#${videoId}`);
+displayVideo.setAttribute("visible", "true");
+displayVideo.play();
+
+setTimeout(() => {
+  displayVideo.components.material.material.map = null;
+}, 100); // slight delay
+
       arBackBtn.setAttribute("visible", "true");
     }
 
