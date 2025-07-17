@@ -706,95 +706,116 @@ let targetDetected = false;     // whether image target is currently visible
   mainVideoEl.muted = false; // unmute for voice over if needed
 
   mainVideoEl.onloadeddata = () => {
-    mainVideoEl.play().then(() => {
-      displayVideo.setAttribute("visible", "true");
-      playPauseText.setAttribute("value", "Pause");
+   mainVideoEl.play().then(() => {
+  displayVideo.setAttribute("visible", "true");
+  playPauseText.setAttribute("value", "Pause");
 
-      setTimeout(() => {
-        const mesh = displayVideo.getObject3D("mesh");
-        if (mesh) mesh.material.map.needsUpdate = true;
-      }, 100);
+  setTimeout(() => {
+    const mesh = displayVideo.getObject3D("mesh");
+    if (mesh) mesh.material.map.needsUpdate = true;
+  }, 100);
 
-    document.getElementById("arBackHtmlBtn").style.display = "inline-block";
-document.getElementById("arPlayPauseHtmlBtn").style.display = "inline-block";
+  // ✅ Hide all circle buttons once video starts
+  buttons.forEach(btn => btn.setAttribute("visible", "false"));
 
-      buttons.forEach(btn => btn.setAttribute("visible", "false"));
+  // ✅ Show control buttons now
+  document.getElementById("arBackHtmlBtn").style.display = "inline-block";
+  document.getElementById("arPlayPauseHtmlBtn").style.display = "inline-block";
+  document.getElementById("voiceToggleBtn").style.display = "inline-block";
+  document.getElementById("descToggleBtn").style.display = "inline-block";
 
-      // ✅ Play associated audio
-      playAssociatedAudio(videoId);
-      updateBottomText(videoId);
-    }).catch(err => {
-      console.error("Autoplay error:", err);
-    });
+  // ✅ Play audio and show description (if enabled)
+  playAssociatedAudio(videoId);
+  updateBottomText(videoId);
+  if (descriptionVisible) {
+    document.querySelector(".bottom-text").style.display = "block";
+  }
+
+}).catch(err => {
+  console.error("Autoplay error:", err);
+});
+
   };
 }
 
 function updateBottomText(videoId) {
   const heading = document.getElementById("bottomHeading");
   const description = document.getElementById("bottomDescription");
+  const points = document.getElementById("bottomPoints");
+
+  let newHeading = "";
+  let newDescription = "";
+  let newPoints = [];
 
   switch (videoId) {
     case "video1":
-      heading.textContent = "True 4K Colour with Fluorescence";
-      description.textContent = `Visualise the surgical field in unparalleled clarity and superior resolution. 
-Augment your colour vision with ICG fluorescence overlay and multiple imaging modes.
-• Enhanced Bile Duct Visualisation
-• Real-time Tissue perfusion & Precise Nodal Dissection
-• Intra-Operative Ureteral Identification`;
+      newHeading = "True 4K Colour with Fluorescence";
+      newDescription = "Visualise the surgical field in unparalleled clarity and superior resolution. Augment your colour vision with ICG fluorescence overlay and multiple imaging modes.";
+      newPoints = [
+        "Enhanced Bile Duct Visualisation",
+        "Real-time Tissue Perfusion & Precise Nodal Dissection",
+        "Intra-Operative Ureteral Identification"
+      ];
       break;
 
     case "video2":
-      heading.textContent = "Multiple Feed Views";
-      description.textContent = `Built-in Feed Customisations that allow 
-enhanced visualisation experiences for 
-monitoring different phases of surgery.
- • Depth Contrast Mode
- • Raw Infrared Feed PIP
- • RGB Fluorescence Profiles`;
+      newHeading = "Multiple Feed Views";
+      newDescription = "Built-in Feed Customisations that allow enhanced visualisation experiences for monitoring different phases of surgery.";
+      newPoints = [
+        "Depth Contrast Mode",
+        "Raw Infrared Feed PIP",
+        "RGB Fluorescence Profiles"
+      ];
       break;
 
     case "video3":
-      heading.textContent = "Powerful LED Source with AMVI";
-      description.textContent = `Durable, high-power LED sources provide 
-optimal light for all telescopes, with 
-AMVI activation enhancing contrast in 
-f
- ine patterns and sub-mucosal capillary 
-structures.
- • Visualise abnormal vasculature
- • Enable targeted biopsy of lesions`;
+      newHeading = "Powerful LED Source with AMVI";
+      newDescription = "Durable, high-power LED sources provide optimal light for all telescopes, with AMVI activation enhancing contrast in fine patterns and sub-mucosal capillary structures.";
+      newPoints = [
+        "Visualise abnormal vasculature",
+        "Enable targeted biopsy of lesions"
+      ];
       break;
 
     case "video4":
-      heading.textContent = "IntelliQuant Dashboard";
-      description.textContent = ` An industry-first tool for Quantitative 
-Assessment of Fluorescence Intensity 
-with Laparoscopic Surgery with Live 
-Fluorescence Contours.
- • Assess Perfusion in Colorectal 
-Anastomosis in real-time.  
-• Differentiate between Fluorescence 
-Shadows and Signal using Live 
-Contours`;
+      newHeading = "IntelliQuant Dashboard";
+      newDescription = "An industry-first tool for Quantitative Assessment of Fluorescence Intensity in Laparoscopic Surgery using Live Fluorescence Contours.";
+      newPoints = [
+        "Assess Perfusion in Colorectal Anastomosis in real-time",
+        "Differentiate between Fluorescence Shadows and Signal using Live Contours"
+      ];
       break;
 
     case "video5":
-      heading.textContent = " Fully Customisable Colour";
-      description.textContent = ` 10 bit Colour with Advanced 24 Axis 
-Colour Calibration Options improve 
-differentiation between key anatomical 
-features as per personalized preferences.
- • Digital Zoom upto 2.5x
- • 3 Fully-Customizable Colour 
-Profiles for saving individual 
-preferences.`;
+      newHeading = "Fully Customisable Colour";
+      newDescription = "10-bit Colour with Advanced 24 Axis Colour Calibration Options improves differentiation between key anatomical features as per personalized preferences.";
+      newPoints = [
+        "Digital Zoom up to 2.5x",
+        "3 Fully-Customizable Colour Profiles for saving individual preferences"
+      ];
       break;
 
     default:
-      heading.textContent = "";
-      description.textContent = "";
+      newHeading = "";
+      newDescription = "";
+      newPoints = [];
   }
+
+  // Update DOM
+  heading.textContent = newHeading;
+  description.textContent = newDescription;
+
+  // Clear existing bullet points
+  points.innerHTML = "";
+
+  // Add new bullet points
+  newPoints.forEach(point => {
+    const li = document.createElement("li");
+    li.textContent = point;
+    points.appendChild(li);
+  });
 }
+
 
 function stopAllAudio() {
   for (let i = 1; i <= 5; i++) {
@@ -822,37 +843,49 @@ function playAssociatedAudio(videoId) {
     const voiceEnabled = voiceToggle.textContent.includes("On");
 
     if (audio && voiceEnabled) {
-      audio.play().catch(err => console.warn("Audio playback blocked:", err));
+      audio.muted = false; // ensure it's not muted
+  audio.play().catch(err => console.warn("Audio playback blocked:", err));
     }
   }
 }
 
 
-    function backToARButtons() {
-      // const displayVideo = document.querySelector("#displayVideo");
-      // const arBackBtn = document.querySelector("#arBackBtn");
-      descriptionVisible = false;
-document.getElementById("descToggleBtn").textContent = "Description On";
-document.querySelector(".bottom-text").style.display = "none";
+   function backToARButtons() {
+  // Hide video
+  const displayVideo = document.querySelector("#displayVideo");
+  displayVideo.setAttribute("visible", "false");
+  displayVideo.pause();
 
-      const buttons = [
-        document.querySelector('#btn1'),
-        document.querySelector('#btn2'),
-        document.querySelector('#btn3'),
-        document.querySelector('#btn4'),
-        document.querySelector('#btn5')
-      ];
+  // Hide bottom text & reset description toggle
+  descriptionVisible = false;
+  document.getElementById("descToggleBtn").textContent = "Description On";
+  document.querySelector(".bottom-text").style.display = "none";
 
-      // Hide video and back button, show buttons
-      displayVideo.setAttribute("visible", "false");
-      displayVideo.pause();
-      // arBackBtn.setAttribute("visible", "false");
-      // document.querySelector("#arPlayPauseBtn").setAttribute("visible", "false");
-document.getElementById("arBackHtmlBtn").style.display = "none";
-document.getElementById("arPlayPauseHtmlBtn").style.display = "none";
+  // Stop audio
+  stopAllAudio();
 
-      buttons.forEach(btn => btn.setAttribute('visible', 'true'));
-    }
+  // Hide all control buttons
+  document.getElementById("arBackHtmlBtn").style.display = "none";
+  document.getElementById("arPlayPauseHtmlBtn").style.display = "none";
+  document.getElementById("voiceToggleBtn").style.display = "none";
+  document.getElementById("descToggleBtn").style.display = "none";
+
+  // Reset and pause main video
+  const mainVideoEl = document.querySelector("#mainVideo");
+  mainVideoEl.pause();
+  mainVideoEl.removeAttribute("src");
+  mainVideoEl.load();
+
+  // Show only the circle buttons again
+  const buttons = [
+    document.querySelector('#btn1'),
+    document.querySelector('#btn2'),
+    document.querySelector('#btn3'),
+    document.querySelector('#btn4'),
+    document.querySelector('#btn5')
+  ];
+  buttons.forEach(btn => btn.setAttribute('visible', 'true'));
+}
 
     // Handle AR target detection
     document.addEventListener('DOMContentLoaded', () => {
@@ -870,23 +903,23 @@ document.getElementById("arPlayPauseHtmlBtn").style.display = "none";
   target.addEventListener('targetFound', () => {
   targetDetected = true;
 
+  // ✅ Only show circle buttons initially
   buttons.forEach(btn => btn.setAttribute('visible', 'true'));
   displayVideo.setAttribute('visible', 'false');
 
-  document.getElementById("voiceToggleBtn").style.display = "block";
-  document.getElementById("descToggleBtn").style.display = "block";
-
-  // Show container
-  document.querySelector(".top-right-buttons").style.display = "flex";
-
-  // Hide back and play/pause buttons initially
+  // 🔴 HIDE everything else at this stage
+  document.getElementById("voiceToggleBtn").style.display = "none";
+  document.getElementById("descToggleBtn").style.display = "none";
   document.getElementById("arBackHtmlBtn").style.display = "none";
   document.getElementById("arPlayPauseHtmlBtn").style.display = "none";
 
-  if (descriptionVisible) {
-    document.querySelector(".bottom-text").style.display = "block";
-  }
+  // ✅ Hide bottom text unless already active
+  document.querySelector(".bottom-text").style.display = "none";
+
+  // ✅ Show button container (needed for layout)
+  document.querySelector(".top-right-buttons").style.display = "flex";
 });
+
 
 target.addEventListener('targetLost', () => {
   targetDetected = false;
