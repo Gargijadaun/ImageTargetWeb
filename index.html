@@ -327,19 +327,31 @@
         <video id="video5" src="assets/video/AMVI-2.mp4" preload="auto" loop muted playsinline crossorigin="anonymous"></video>
       </a-assets>
 
-      <a-camera position="0 0 0" look-controls="enabled: false" cursor="fuse: false; rayOrigin: mouse;"
-                raycaster="near: 0.1; far: 1000; objects: .clickable"></a-camera>
+   <a-camera 
+  position="0 0 0" 
+  cursor="fuse: false; rayOrigin: entity;" 
+  raycaster="near: 0.1; far: 1000; objects: .clickable">
+  <a-entity 
+    cursor="fuse: false" 
+    position="0 0 -1" 
+    geometry="primitive: ring; radiusInner: 0.01; radiusOuter: 0.015" 
+    material="color: cyan; shader: flat">
+  </a-entity>
+</a-camera>
+
+
 
       <a-entity id="targetImage" mindar-image-target="targetIndex: 0">
         <a-video id="displayVideo" src="#video3" width="1.6" height="0.9" position="0 0 0" rotation="0 0 0" visible="false"></a-video>
         <a-image src="./assets/images/01.png" width="0.267" height="0.0785" position="0 0.5 0" visible="true"></a-image>
         <a-image src="./assets/images/02.png" width="0.533" height="0.0603" position="0 -0.5 0" visible="true"></a-image>
         <!-- Interactive 3D buttons -->
-     <a-sphere id="btn1" class="clickable" radius="0.05" position="-0.68 -0.23 0.1" color="#018fbf" visible="false"></a-sphere>
+    <a-sphere id="btn1" class="clickable" radius="0.05" position="-0.68 -0.23 0.1" color="#018fbf" visible="false"></a-sphere>
 <a-sphere id="btn2" class="clickable" radius="0.05" position="-0.34 -0.23 0.1" color="#018fbf" visible="false"></a-sphere>
 <a-sphere id="btn3" class="clickable" radius="0.05" position="0 -0.23 0.1" color="#018fbf" visible="false"></a-sphere>
 <a-sphere id="btn4" class="clickable" radius="0.05" position="0.34 -0.23 0.1" color="#018fbf" visible="false"></a-sphere>
 <a-sphere id="btn5" class="clickable" radius="0.05" position="0.68 -0.23 0.1" color="#018fbf" visible="false"></a-sphere>
+
 
         <!-- AR Back Button -->
         <a-plane id="arBackBtn" class="clickable" width="0.2" height="0.1" position="0 -0.55 0.1" material="color: #018fbf" visible="false" onclick="backToARButtons()">
