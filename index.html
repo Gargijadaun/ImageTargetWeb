@@ -22,22 +22,34 @@
       width: 100%;
       overflow: hidden;
     }
+.hide-important {
+  display: none !important;
+}
 
-    #rotate-warning {
-      display: none;
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100vw;
-      height: 100vh;
-      background: rgba(49, 34, 183, 0.95);
-      color: white;
-      font-size: 5vw;
-      text-align: center;
-      justify-content: center;
-      align-items: center;
-      z-index: 2000;
-    }
+   #rotate-warning {
+  display: none; 
+  flex-direction: column;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(49, 34, 183, 0.95);
+  color: white;
+  font-size: 5vw;
+  text-align: center;
+  justify-content: center;
+  align-items: center;
+  z-index: 2000;
+  padding: 20px;
+  box-sizing: border-box;
+}
+
+#rotate-warning p {
+  max-width: 80%;
+  line-height: 1.2;
+}
+
 
     #fullscreen-button {
       position: fixed;
@@ -169,9 +181,9 @@
       z-index: 10;
     }
 
-    .top-right-buttons button:hover {
+    /* .top-right-buttons button:hover {
       background-color: #d32f2f;
-    }
+    } */
 
     #videoScreen {
       display: none;
@@ -303,9 +315,12 @@
 <body>
   <main>
     <!-- Landscape Mode Warning -->
-    <div id="rotate-warning">
-      Please rotate your phone to landscape mode
-    </div>
+ <div id="rotate-warning">
+  <p>Please rotate your phone<br>to landscape mode</p>
+  <img src="assets/images/rotate.png" alt="Rotate Phone" style="width: 100px; margin-top: 10px;">
+</div>
+
+
 
     <!-- Fullscreen Button -->
     <button id="fullscreen-button" onclick="enterFullscreen()">Enter Full-Screen</button>
@@ -366,7 +381,7 @@
         <button id="voiceToggleBtn" onclick="toggleVoiceOver()">Voice Over Off</button>
         <button id="descToggleBtn" onclick="toggleDescription()">Description On</button>
          <button id="arBackBtn1" onclick="backToARButtons()">Back</button>
-        <button id="arPlayPauseBtn1" onclick="toggleARVideoPlayPause()">Play/Pause</button>
+        <button id="arPlayPauseBtn1" onclick="toggleARVideoPlayPause()">Pause</button>
       </div>
     <div class="bottom-text">
   <h1 id="bottomHeading">True 4K Colour with Fluorescence</h1>
@@ -543,39 +558,44 @@ let targetDetected = false;     // whether image target is currently visible
       const aScene = document.querySelector("a-scene");
       const videoScreen = document.getElementById("videoScreen");
       const videoPlayerScreen = document.getElementById("videoPlayerScreen");
-
+ const fullscreenbutton = document.getElementById("fullscreen-button");
       if (isPortrait) {
+        fullscreenbutton.style.display = "none";
+     
         warning.style.display = "flex";
         mainScreen.style.display = "none";
         if (aScene) aScene.style.display = "none";
         videoScreen.style.display = "none";
         videoPlayerScreen.style.display = "none";
       } else {
+         
         warning.style.display = "none";
         mainScreen.style.display = mainScreen.classList.contains("active") ? "block" : "none";
         if (aScene) aScene.style.display = "block";
         videoScreen.style.display = videoScreen.classList.contains("active") ? "block" : "none";
         videoPlayerScreen.style.display = videoPlayerScreen.classList.contains("active") ? "block" : "none";
+        fullscreenbutton.style.display = "block";
       }
     }
 
-    function enterFullscreen() {
-      const elem = document.documentElement;
-      const requestFullscreen =
-        elem.requestFullscreen ||
-        elem.webkitRequestFullscreen ||
-        elem.msRequestFullscreen;
+ function enterFullscreen() {
+  const elem = document.documentElement;
+  const requestFullscreen =
+    elem.requestFullscreen ||
+    elem.webkitRequestFullscreen ||
+    elem.msRequestFullscreen;
 
-      if (requestFullscreen) {
-        requestFullscreen.call(elem).finally(() => {
-          document.getElementById('fullscreen-button').style.display = 'none';
-          checkOrientation();
-        });
-      } else {
-        document.getElementById('fullscreen-button').style.display = 'none';
-        checkOrientation();
-      }
-    }
+  if (requestFullscreen) {
+    requestFullscreen.call(elem).finally(() => {
+      document.getElementById('fullscreen-button').classList.add('hide-important');
+      checkOrientation();
+    });
+  } else {
+    document.getElementById('fullscreen-button').classList.add('hide-important');
+    checkOrientation();
+  }
+}
+
 
     function continueWithoutAR() {
       document.getElementById("mainScreen").style.display = "none";
@@ -585,29 +605,32 @@ let targetDetected = false;     // whether image target is currently visible
       document.querySelector(".back-btn").style.display = "block";
       checkOrientation();
     }
- function toggleVoiceOver() {
+function toggleVoiceOver() {
   const btn = document.getElementById("voiceToggleBtn");
   const isOn = btn.textContent.includes("On");
+  
   btn.textContent = isOn ? "Voice Over Off" : "Voice Over On";
+  btn.style.backgroundColor = isOn ? "#d32f2f" : "#018fbf"; // Red if OFF, Blue if ON
 
-  // Mute or unmute all audios
   for (let i = 1; i <= 5; i++) {
     const audio = document.getElementById(`audio${i}`);
-    if (audio) audio.muted = isOn;  // mute when turning OFF
+    if (audio) audio.muted = isOn;
   }
 }
 
 
-  function toggleDescription() {
+function toggleDescription() {
   const btn = document.getElementById("descToggleBtn");
   const bottomText = document.querySelector(".bottom-text");
 
-  if (!targetDetected) return; // prevent toggling if no marker detected
+  if (!targetDetected) return;
 
   descriptionVisible = !descriptionVisible;
   btn.textContent = descriptionVisible ? "Description Off" : "Description On";
+  btn.style.backgroundColor = descriptionVisible ? "#018fbf" : "#d32f2f"; // Blue if ON, Red if OFF
   bottomText.style.display = descriptionVisible ? "block" : "none";
 }
+
 
     function playVideo(videoSrc) {
       const video = document.getElementById("fullScreenVideo");
@@ -619,28 +642,34 @@ let targetDetected = false;     // whether image target is currently visible
       video.play();
       checkOrientation();
     }
-  function toggleARVideoPlayPause() {
+ function toggleARVideoPlayPause() {
   const mainVideoEl = document.querySelector("#mainVideo");
-  const playPauseText = document.querySelector("#playPauseText");
+  const playPauseText = document.querySelector("#playPauseText"); // A-Frame text
+  const btn = document.getElementById("arPlayPauseBtn1"); // DOM button
 
   if (mainVideoEl.paused) {
     mainVideoEl.play();
-    playPauseText.setAttribute("value", "Pause");
-    
-    // ✅ Resume previously played audio
+    playPauseText.setAttribute("value", "Pause"); // A-Frame label
+    btn.textContent = "Pause";                   // DOM button label
+    btn.style.backgroundColor = "#018fbf";       // Blue when playing
+
+    // Resume audio if available
     if (lastPlayedAudio) {
       lastPlayedAudio.play().catch(err => console.warn("Audio resume error:", err));
     }
   } else {
     mainVideoEl.pause();
-    playPauseText.setAttribute("value", "Play");
+    playPauseText.setAttribute("value", "Play"); // A-Frame label
+    btn.textContent = "Play";                    // DOM button label
+    btn.style.backgroundColor = "#d32f2f";       // Red when paused
 
-    // ✅ Pause currently playing audio
+    // Pause audio if playing
     if (lastPlayedAudio && !lastPlayedAudio.paused) {
       lastPlayedAudio.pause();
     }
   }
 }
+
 
     function backToVideoScreen() {
       const video = document.getElementById("fullScreenVideo");
@@ -693,6 +722,7 @@ let targetDetected = false;     // whether image target is currently visible
   const displayVideo = document.querySelector("#displayVideo");
   const arBackBtn = document.querySelector("#arBackBtn");
     const arBackBtn1 = document.querySelector("#arBackBtn1");
+     const arPlayPauseBtn1 = document.getElementById("arPlayPauseBtn1");
   const buttons = [
     document.querySelector('#btn1'),
     document.querySelector('#btn2'),
@@ -728,6 +758,10 @@ let targetDetected = false;     // whether image target is currently visible
       arBackBtn1.style.display = "block";
       
         document.querySelector("#arPlayPauseBtn1").style.display = "block";
+       
+arPlayPauseBtn1.style.backgroundColor = "#018fbf"; // Blue
+arPlayPauseBtn1.textContent = "Pause";             // Set text
+
           document.getElementById("voiceToggleBtn").style.display = "block";
   document.getElementById("descToggleBtn").style.display = "block";
 
@@ -928,11 +962,16 @@ target.addEventListener('targetLost', () => {
 
     });
 
-    window.addEventListener("load", () => {
-      document.getElementById("fullscreen-button").style.display = "block";
-      document.getElementById("mainScreen").classList.add("active");
-      checkOrientation();
-    });
+  window.addEventListener("load", () => {
+  document.getElementById("fullscreen-button").style.display = "none";
+  document.getElementById("mainScreen").classList.add("active");
+  checkOrientation();
+
+  // Set initial colors
+  document.getElementById("voiceToggleBtn").style.backgroundColor = "#d32f2f";
+  document.getElementById("descToggleBtn").style.backgroundColor = "#d32f2f";
+  document.getElementById("arPlayPauseBtn1").style.backgroundColor = "#018fbf"; // Assuming video starts playing
+});
 
     window.addEventListener("resize", checkOrientation);
     window.addEventListener("orientationchange", () => setTimeout(checkOrientation, 200));
