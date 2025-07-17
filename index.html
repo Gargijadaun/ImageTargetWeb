@@ -365,8 +365,8 @@
       <div class="top-right-buttons">
         <button id="voiceToggleBtn" onclick="toggleVoiceOver()">Voice Over On</button>
         <button id="descToggleBtn" onclick="toggleDescription()">Description On</button>
-         <button id="arBackBtn" onclick="backToARButtons()">Back</button>
-        <button id="arPlayPauseBtn" onclick="toggleARVideoPlayPause()">Play/Pause</button>
+         <button id="arBackBtn1" onclick="backToARButtons()">Back</button>
+        <button id="arPlayPauseBtn1" onclick="toggleARVideoPlayPause()">Play/Pause</button>
       </div>
     <div class="bottom-text">
   <h1 id="bottomHeading">True 4K Colour with Fluorescence</h1>
@@ -691,6 +691,7 @@ let targetDetected = false;     // whether image target is currently visible
   const mainVideoEl = document.querySelector("#mainVideo");
   const displayVideo = document.querySelector("#displayVideo");
   const arBackBtn = document.querySelector("#arBackBtn");
+    const arBackBtn1 = document.querySelector("#arBackBtn1");
   const buttons = [
     document.querySelector('#btn1'),
     document.querySelector('#btn2'),
@@ -723,8 +724,9 @@ let targetDetected = false;     // whether image target is currently visible
       }, 100);
 
       arBackBtn.setAttribute("visible", "true");
-      arBackBtn.style.display = true;
-        document.querySelector("#arPlayPauseBtn").style.display = true;
+      arBackBtn1.style.display = "block";
+      
+        document.querySelector("#arPlayPauseBtn1").style.display = "block";
       document.querySelector("#arPlayPauseBtn").setAttribute("visible", "true");
       buttons.forEach(btn => btn.setAttribute("visible", "false"));
 
@@ -839,6 +841,7 @@ function playAssociatedAudio(videoId) {
     function backToARButtons() {
       const displayVideo = document.querySelector("#displayVideo");
       const arBackBtn = document.querySelector("#arBackBtn");
+       const arBackBtn1 = document.querySelector("#arBackBtn1");
       descriptionVisible = false;
 document.getElementById("descToggleBtn").textContent = "Description On";
 document.querySelector(".bottom-text").style.display = "none";
@@ -855,8 +858,8 @@ stopAllAudio();
       displayVideo.setAttribute("visible", "false");
       displayVideo.pause();
       arBackBtn.setAttribute("visible", "false");
-      arBackBtn.style.display =false;
-       document.querySelector("#arPlayPauseBtn").style.display =false;
+      arBackBtn1.style.display ="none";
+       document.querySelector("#arPlayPauseBtn1").style.display ="none";
       document.querySelector("#arPlayPauseBtn").setAttribute("visible", "false");
 
       buttons.forEach(btn => btn.setAttribute('visible', 'true'));
@@ -874,6 +877,7 @@ stopAllAudio();
       ];
       const displayVideo = document.querySelector('#displayVideo');
       const arBackBtn = document.querySelector('#arBackBtn');
+        const arBackBtn1 = document.querySelector('#arBackBtn1');
 
   target.addEventListener('targetFound', () => {
   targetDetected = true;
@@ -882,8 +886,8 @@ stopAllAudio();
   displayVideo.setAttribute('visible', 'false');
   arBackBtn.setAttribute('visible', 'false');
   document.querySelector("#arPlayPauseBtn").setAttribute("visible", "false");
-    arBackBtn.style.display =false;
-       document.querySelector("#arPlayPauseBtn").style.display =false;
+    arBackBtn1.style.display ="none";
+       document.querySelector("#arPlayPauseBtn1").style.display ="none";
 
 
   document.getElementById("voiceToggleBtn").style.display = "block";
@@ -903,8 +907,8 @@ target.addEventListener('targetLost', () => {
   displayVideo.pause();
   arBackBtn.setAttribute('visible', 'false');
   document.querySelector("#arPlayPauseBtn").setAttribute("visible", "false");
-    arBackBtn.style.display =false;
-       document.querySelector("#arPlayPauseBtn").style.display =false;
+    arBackBtn1.style.display ="none";
+       document.querySelector("#arPlayPauseBtn1").style.display ="none";
 
   document.getElementById("voiceToggleBtn").style.display = "none";
   document.getElementById("descToggleBtn").style.display = "none";
