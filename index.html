@@ -68,22 +68,25 @@
       align-items: center;
       position: relative;
     }
-.top-img, .bottom-img {
-  position: fixed;
-  left: 50%;
-  transform: translateX(-50%);
-  width: min(15vw, 120px);  /* Increased from 8vw/60px to 15vw/120px */
-  height: auto;
-  z-index: 10;
-  pointer-events: none;
-}
 
-.top-img {
-  top: 1vw;
-}
+    .top-img,
+    .bottom-img {
+      position: fixed;
+      left: 50%;
+      transform: translateX(-50%);
+      width: min(15vw, 120px);
+      /* Increased from 8vw/60px to 15vw/120px */
+      height: auto;
+      z-index: 10;
+      pointer-events: none;
+    }
 
-.bottom-img {
-  bottom: 1vw;
+    .top-img {
+      top: 1vw;
+    }
+
+   .bottom-img {
+  bottom: 14.5vw; /* or 10vw, adjust as needed */
 }
 
     .back-btn1 {
@@ -106,6 +109,67 @@
     }
 
     .back-btn1:hover {
+      background-color: #d32f2f;
+    }
+
+    .top-right-buttons {
+      position: fixed;
+      top: 1vw;
+      right: 1vw;
+      display: flex;
+      flex-direction: column;
+      /* ← Make buttons stack vertically */
+      gap: 0.5vw;
+      z-index: 10;
+    }
+
+.bottom-text {
+  display: none;
+  width: 100%;
+  background-color: #444;
+  color: white;
+  padding: 0.5vw 1vw;
+  font-family: Arial, sans-serif;
+  font-size: min(2vw, 12px);
+  line-height: 1.3em;
+  position: absolute;         /* Stick to bottom */
+  bottom: 0;                  /* No space below */
+  left: 0;
+  z-index: 1;
+  box-sizing: border-box;
+}
+#bottomHeading {
+  margin: 0;
+  font-size: min(2.5vw, 14px);
+  font-weight: bold;
+}
+
+#bottomDescription {
+  margin: 0.3vw 0;
+  font-size: min(2vw, 12px);
+  line-height: 1.1em;
+}
+
+#bottomPoints {
+  list-style-type: disc;
+  padding-left: 1.2em;
+  margin: 0.3vw 0 0 0;
+  font-size: min(2vw, 12px);
+  line-height: 1.1em;
+}
+
+    .top-right-buttons button {
+      padding: 0.5vw 1vw;
+      font-size: min(1.5vw, 12px);
+      cursor: pointer;
+      background-color: #018fbf;
+      color: white;
+      border: none;
+      border-radius: 4px;
+      z-index: 10;
+    }
+
+    .top-right-buttons button:hover {
       background-color: #d32f2f;
     }
 
@@ -212,6 +276,9 @@
     #videoPlayerScreen .back-btn:hover {
       background-color: #d32f2f;
     }
+#voiceToggleBtn, #descToggleBtn {
+  display: none;
+}
 
     @media screen and (orientation: portrait) {
       #rotate-warning {
@@ -289,12 +356,30 @@
 
     <!-- Additional Video Buttons -->
     <div class="btn-container1 hide" style="display: none;">
-       <img src="./assets/images/01.png" class="top-img" alt="Top Image">
+      <img src="./assets/images/01.png" class="top-img" alt="Top Image">
       <button class="back-btn1" onclick="goBack()" style="display: none;">
         <img src="./assets/icons/back-icon.png" alt="Back">
-        
+
       </button>
-<img src="./assets/images/02.png" class="bottom-img" alt="Bottom Image">
+      <img src="./assets/images/02.png" class="bottom-img" alt="Bottom Image">
+      <div class="top-right-buttons">
+        <button id="voiceToggleBtn" onclick="toggleVoiceOver()">Voice Over On</button>
+        <button id="descToggleBtn" onclick="toggleDescription()">Description On</button>
+      </div>
+    <div class="bottom-text">
+  <h1 id="bottomHeading">True 4K Colour with Fluorescence</h1>
+  <p id="bottomDescription">
+    Visualise the surgical field in unparalleled clarity and superior resolution.
+    Augment your colour vision with ICG fluorescence overlay and multiple imaging modes.
+  </p>
+  <ul id="bottomPoints">
+    <li>Enhanced Bile Duct Visualisation</li>
+    <li>Real-time Tissue Perfusion & Precise Nodal Dissection</li>
+    <li>Intra-Operative Ureteral Identification</li>
+  </ul>
+</div>
+
+
     </div>
 
     <!-- Device Error -->
@@ -328,13 +413,19 @@
       device-orientation-permission assembled-ui="enabled: false">
 
       <a-assets>
-          <img id="btnImg" src="assets/images/play.png">
+        <img id="btnImg" src="assets/images/play.png">
         <video id="video1" src="assets/video/Video1.mp4" muted playsinline crossorigin="anonymous"></video>
         <video id="video2" src="assets/video/Video2.mp4" muted playsinline crossorigin="anonymous"></video>
         <video id="video3" src="assets/video/Video3.mp4" muted playsinline crossorigin="anonymous"></video>
         <video id="video4" src="assets/video/Video4.mp4" muted playsinline crossorigin="anonymous"></video>
         <video id="video5" src="assets/video/AMVI-2.mp4" muted playsinline crossorigin="anonymous"></video>
         <video id="mainVideo" muted playsinline crossorigin="anonymous" loop></video>
+        <audio id="audio1" src="assets/audio/True 4K Colour -01.mp3" preload="auto" crossorigin="anonymous"></audio>
+        <audio id="audio2" src="assets/audio/Multiple Feed Views --02.mp3" preload="auto" crossorigin="anonymous"></audio>
+        <audio id="audio3" src="assets/audio/Powerful LED Source with AMVI-05.mp3" preload="auto" crossorigin="anonymous"></audio>
+        <audio id="audio4" src="assets/audio/IntelliQuant Dashboard -04.mp3" preload="auto" crossorigin="anonymous"></audio>
+        <audio id="audio5" src="assets/audio/Fully Customisable Colour -03.mp3" preload="auto" crossorigin="anonymous"></audio>
+
       </a-assets>
 
       <a-camera position="0 0 0" look-controls="enabled: false" cursor="fuse: false; rayOrigin: mouse;"
@@ -350,25 +441,25 @@
         <a-image src="./assets/images/02.png" width="0.533" height="0.0603" position="0 -0.5 0"
           visible="true"></a-image> -->
         <!-- Interactive 3D buttons -->
-  <a-circle id="btn1" class="clickable" radius="0.07" position="-0.4 -0.28 0.005"
-  material="src: #btnImg; color: #00ff00; side: double; transparent: true; opacity: 0.5"
-  visible="false" onclick="playARVideo('video1')"></a-circle>
+        <a-circle id="btn1" class="clickable" radius="0.07" position="-0.4 -0.28 0.005"
+          material="src: #btnImg; color: #00ff00; side: double; transparent: true; opacity: 0.5" visible="false"
+          onclick="playARVideo('video1')"></a-circle>
 
-<a-circle id="btn2" class="clickable" radius="0.07" position="-0.2 -0.28 0.005"
-  material="src: #btnImg; color: #00ff00; side: double; transparent: true; opacity: 0.5"
-  visible="false" onclick="playARVideo('video2')"></a-circle>
+        <a-circle id="btn2" class="clickable" radius="0.07" position="-0.2 -0.28 0.005"
+          material="src: #btnImg; color: #00ff00; side: double; transparent: true; opacity: 0.5" visible="false"
+          onclick="playARVideo('video2')"></a-circle>
 
-<a-circle id="btn3" class="clickable" radius="0.07" position="0 -0.28 0.005"
-  material="src: #btnImg; color: #00ff00; side: double; transparent: true; opacity: 0.5"
-  visible="false" onclick="playARVideo('video3')"></a-circle>
+        <a-circle id="btn3" class="clickable" radius="0.07" position="0 -0.28 0.005"
+          material="src: #btnImg; color: #00ff00; side: double; transparent: true; opacity: 0.5" visible="false"
+          onclick="playARVideo('video3')"></a-circle>
 
-<a-circle id="btn4" class="clickable" radius="0.07" position="0.2 -0.28 0.005"
-  material="src: #btnImg; color: #00ff00; side: double; transparent: true; opacity: 0.5"
-  visible="false" onclick="playARVideo('video4')"></a-circle>
+        <a-circle id="btn4" class="clickable" radius="0.07" position="0.2 -0.28 0.005"
+          material="src: #btnImg; color: #00ff00; side: double; transparent: true; opacity: 0.5" visible="false"
+          onclick="playARVideo('video4')"></a-circle>
 
-<a-circle id="btn5" class="clickable" radius="0.07" position="0.4 -0.28 0.005"
-  material="src: #btnImg; color: #00ff00; side: double; transparent: true; opacity: 0.5"
-  visible="false" onclick="playARVideo('video5')"></a-circle>
+        <a-circle id="btn5" class="clickable" radius="0.07" position="0.4 -0.28 0.005"
+          material="src: #btnImg; color: #00ff00; side: double; transparent: true; opacity: 0.5" visible="false"
+          onclick="playARVideo('video5')"></a-circle>
 
         <!-- AR Back Button -->
         <a-plane id="arBackBtn" class="clickable" width="0.2" height="0.1" position="0 -0.55 0.1"
@@ -376,9 +467,10 @@
           <a-text value="Back" color="white" align="center" position="0 0 0.01" scale="0.1 0.1 0.1"></a-text>
         </a-plane>
         <a-plane id="arPlayPauseBtn" class="clickable" width="0.2" height="0.1" position="0.25 -0.55 0.1"
-  material="color: #018fbf" visible="false" onclick="toggleARVideoPlayPause()">
-  <a-text id="playPauseText" value="Pause" color="white" align="center" position="0 0 0.01" scale="0.1 0.1 0.1"></a-text>
-</a-plane>
+          material="color: #018fbf" visible="false" onclick="toggleARVideoPlayPause()">
+          <a-text id="playPauseText" value="Pause" color="white" align="center" position="0 0 0.01"
+            scale="0.1 0.1 0.1"></a-text>
+        </a-plane>
 
       </a-entity>
     </a-scene>
@@ -391,6 +483,9 @@
   <script src="https://code.jquery.com/ui/1.14.1/jquery-ui.js"></script>
 
   <script>
+    let descriptionVisible = false; // whether user clicked Description On
+let targetDetected = false;     // whether image target is currently visible
+
     let scale = 1, lastScale = 1, startX = 0, startY = 0, translateX = 0, translateY = 0;
 
     const video = document.getElementById("fullScreenVideo");
@@ -486,6 +581,29 @@
       document.querySelector(".back-btn").style.display = "block";
       checkOrientation();
     }
+ function toggleVoiceOver() {
+  const btn = document.getElementById("voiceToggleBtn");
+  const isOn = btn.textContent.includes("On");
+  btn.textContent = isOn ? "Voice Over Off" : "Voice Over On";
+
+  // Mute or unmute all audios
+  for (let i = 1; i <= 5; i++) {
+    const audio = document.getElementById(`audio${i}`);
+    if (audio) audio.muted = isOn;  // mute when turning OFF
+  }
+}
+
+
+  function toggleDescription() {
+  const btn = document.getElementById("descToggleBtn");
+  const bottomText = document.querySelector(".bottom-text");
+
+  if (!targetDetected) return; // prevent toggling if no marker detected
+
+  descriptionVisible = !descriptionVisible;
+  btn.textContent = descriptionVisible ? "Description Off" : "Description On";
+  bottomText.style.display = descriptionVisible ? "block" : "none";
+}
 
     function playVideo(videoSrc) {
       const video = document.getElementById("fullScreenVideo");
@@ -497,18 +615,18 @@
       video.play();
       checkOrientation();
     }
-function toggleARVideoPlayPause() {
-  const mainVideoEl = document.querySelector("#mainVideo");
-  const playPauseText = document.querySelector("#playPauseText");
+    function toggleARVideoPlayPause() {
+      const mainVideoEl = document.querySelector("#mainVideo");
+      const playPauseText = document.querySelector("#playPauseText");
 
-  if (mainVideoEl.paused) {
-    mainVideoEl.play();
-    playPauseText.setAttribute("value", "Pause");
-  } else {
-    mainVideoEl.pause();
-    playPauseText.setAttribute("value", "Play");
-  }
-}
+      if (mainVideoEl.paused) {
+        mainVideoEl.play();
+        playPauseText.setAttribute("value", "Pause");
+      } else {
+        mainVideoEl.pause();
+        playPauseText.setAttribute("value", "Play");
+      }
+    }
 
     function backToVideoScreen() {
       const video = document.getElementById("fullScreenVideo");
@@ -554,56 +672,161 @@ function toggleARVideoPlayPause() {
     }
 
     // AR-specific functions
-    function playARVideo(videoId) {
-      const videoEl = document.querySelector(`#${videoId}`);
-      const mainVideoEl = document.querySelector("#mainVideo");
-      const displayVideo = document.querySelector("#displayVideo");
-      const arBackBtn = document.querySelector("#arBackBtn");
-      const buttons = [
-        document.querySelector('#btn1'),
-        document.querySelector('#btn2'),
-        document.querySelector('#btn3'),
-        document.querySelector('#btn4'),
-        document.querySelector('#btn5')
-      ];
+   function playARVideo(videoId) {
+  const videoEl = document.querySelector(`#${videoId}`);
+  const mainVideoEl = document.querySelector("#mainVideo");
+  const displayVideo = document.querySelector("#displayVideo");
+  const arBackBtn = document.querySelector("#arBackBtn");
+  const buttons = [
+    document.querySelector('#btn1'),
+    document.querySelector('#btn2'),
+    document.querySelector('#btn3'),
+    document.querySelector('#btn4'),
+    document.querySelector('#btn5')
+  ];
 
-      // Stop previous playback
-      mainVideoEl.pause();
-      mainVideoEl.removeAttribute("src");
-      mainVideoEl.load();
+  // Stop previous playback
+  mainVideoEl.pause();
+  mainVideoEl.removeAttribute("src");
+  mainVideoEl.load();
 
-      // Set new source and reload
-      mainVideoEl.src = videoEl.src;
-      mainVideoEl.load();
-      mainVideoEl.muted = true;
+  // Stop previous audio
+  stopAllAudio();
 
-      mainVideoEl.onloadeddata = () => {
-        mainVideoEl.play().then(() => {
-          playPauseText.setAttribute("value", "Pause");
-          displayVideo.setAttribute("visible", "true");
+  // Set new video source
+  mainVideoEl.src = videoEl.src;
+  mainVideoEl.load();
+  mainVideoEl.muted = false; // unmute for voice over if needed
 
-          setTimeout(() => {
-            const mesh = displayVideo.getObject3D("mesh");
-            if (mesh) {
-              mesh.material.map.needsUpdate = true;
-            }
-          }, 100);
+  mainVideoEl.onloadeddata = () => {
+    mainVideoEl.play().then(() => {
+      displayVideo.setAttribute("visible", "true");
+      playPauseText.setAttribute("value", "Pause");
 
-          arBackBtn.setAttribute("visible", "true");
-        
-document.querySelector("#arPlayPauseBtn").setAttribute("visible", "true");
-          buttons.forEach(btn => btn.setAttribute("visible", "false"));
-        }).catch(err => {
-          console.error("Autoplay error:", err);
-        });
-      };
+      setTimeout(() => {
+        const mesh = displayVideo.getObject3D("mesh");
+        if (mesh) mesh.material.map.needsUpdate = true;
+      }, 100);
+
+      arBackBtn.setAttribute("visible", "true");
+      document.querySelector("#arPlayPauseBtn").setAttribute("visible", "true");
+      buttons.forEach(btn => btn.setAttribute("visible", "false"));
+
+      // ✅ Play associated audio
+      playAssociatedAudio(videoId);
+      updateBottomText(videoId);
+    }).catch(err => {
+      console.error("Autoplay error:", err);
+    });
+  };
+}
+
+function updateBottomText(videoId) {
+  const heading = document.getElementById("bottomHeading");
+  const description = document.getElementById("bottomDescription");
+
+  switch (videoId) {
+    case "video1":
+      heading.textContent = "True 4K Colour with Fluorescence";
+      description.textContent = `Visualise the surgical field in unparalleled clarity and superior resolution. 
+Augment your colour vision with ICG fluorescence overlay and multiple imaging modes.
+• Enhanced Bile Duct Visualisation
+• Real-time Tissue perfusion & Precise Nodal Dissection
+• Intra-Operative Ureteral Identification`;
+      break;
+
+    case "video2":
+      heading.textContent = "Multiple Feed Views";
+      description.textContent = `Built-in Feed Customisations that allow 
+enhanced visualisation experiences for 
+monitoring different phases of surgery.
+ • Depth Contrast Mode
+ • Raw Infrared Feed PIP
+ • RGB Fluorescence Profiles`;
+      break;
+
+    case "video3":
+      heading.textContent = "Powerful LED Source with AMVI";
+      description.textContent = `Durable, high-power LED sources provide 
+optimal light for all telescopes, with 
+AMVI activation enhancing contrast in 
+f
+ ine patterns and sub-mucosal capillary 
+structures.
+ • Visualise abnormal vasculature
+ • Enable targeted biopsy of lesions`;
+      break;
+
+    case "video4":
+      heading.textContent = "IntelliQuant Dashboard";
+      description.textContent = ` An industry-first tool for Quantitative 
+Assessment of Fluorescence Intensity 
+with Laparoscopic Surgery with Live 
+Fluorescence Contours.
+ • Assess Perfusion in Colorectal 
+Anastomosis in real-time.  
+• Differentiate between Fluorescence 
+Shadows and Signal using Live 
+Contours`;
+      break;
+
+    case "video5":
+      heading.textContent = " Fully Customisable Colour";
+      description.textContent = ` 10 bit Colour with Advanced 24 Axis 
+Colour Calibration Options improve 
+differentiation between key anatomical 
+features as per personalized preferences.
+ • Digital Zoom upto 2.5x
+ • 3 Fully-Customizable Colour 
+Profiles for saving individual 
+preferences.`;
+      break;
+
+    default:
+      heading.textContent = "";
+      description.textContent = "";
+  }
+}
+
+function stopAllAudio() {
+  for (let i = 1; i <= 5; i++) {
+    const audio = document.getElementById(`audio${i}`);
+    if (audio) {
+      audio.pause();
+      audio.currentTime = 0;
     }
+  }
+}
 
+function playAssociatedAudio(videoId) {
+  const audioMap = {
+    "video1": "audio1",
+    "video2": "audio2",
+    "video3": "audio3",
+    "video4": "audio4",
+    "video5": "audio5"
+  };
+
+  const audioId = audioMap[videoId];
+  if (audioId) {
+    const audio = document.getElementById(audioId);
+    const voiceToggle = document.getElementById("voiceToggleBtn");
+    const voiceEnabled = voiceToggle.textContent.includes("On");
+
+    if (audio && voiceEnabled) {
+      audio.play().catch(err => console.warn("Audio playback blocked:", err));
+    }
+  }
+}
 
 
     function backToARButtons() {
       const displayVideo = document.querySelector("#displayVideo");
       const arBackBtn = document.querySelector("#arBackBtn");
+      descriptionVisible = false;
+document.getElementById("descToggleBtn").textContent = "Description On";
+document.querySelector(".bottom-text").style.display = "none";
+
       const buttons = [
         document.querySelector('#btn1'),
         document.querySelector('#btn2'),
@@ -634,20 +857,39 @@ document.querySelector("#arPlayPauseBtn").setAttribute("visible", "true");
       const displayVideo = document.querySelector('#displayVideo');
       const arBackBtn = document.querySelector('#arBackBtn');
 
-      target.addEventListener('targetFound', () => {
-        buttons.forEach(btn => btn.setAttribute('visible', 'true'));
-        displayVideo.setAttribute('visible', 'false');
-        arBackBtn.setAttribute('visible', 'false');
-        document.querySelector("#arPlayPauseBtn").setAttribute("visible", "false");
-      });
+  target.addEventListener('targetFound', () => {
+  targetDetected = true;
 
-      target.addEventListener('targetLost', () => {
-        buttons.forEach(btn => btn.setAttribute('visible', 'false'));
-        displayVideo.setAttribute('visible', 'false');
-        displayVideo.pause();
-        arBackBtn.setAttribute('visible', 'false');
-        document.querySelector("#arPlayPauseBtn").setAttribute("visible", "false");
-      });
+  buttons.forEach(btn => btn.setAttribute('visible', 'true'));
+  displayVideo.setAttribute('visible', 'false');
+  arBackBtn.setAttribute('visible', 'false');
+  document.querySelector("#arPlayPauseBtn").setAttribute("visible", "false");
+
+  document.getElementById("voiceToggleBtn").style.display = "block";
+  document.getElementById("descToggleBtn").style.display = "block";
+
+  // Show description if user had turned it on
+  if (descriptionVisible) {
+    document.querySelector(".bottom-text").style.display = "block";
+  }
+});
+
+target.addEventListener('targetLost', () => {
+  targetDetected = false;
+
+  buttons.forEach(btn => btn.setAttribute('visible', 'false'));
+  displayVideo.setAttribute('visible', 'false');
+  displayVideo.pause();
+  arBackBtn.setAttribute('visible', 'false');
+  document.querySelector("#arPlayPauseBtn").setAttribute("visible", "false");
+
+  document.getElementById("voiceToggleBtn").style.display = "none";
+  document.getElementById("descToggleBtn").style.display = "none";
+
+  // Hide description always when lost
+  document.querySelector(".bottom-text").style.display = "none";
+});
+
     });
 
     window.addEventListener("load", () => {
