@@ -303,11 +303,11 @@
              device-orientation-permission assembled-ui="enabled: false">
 
       <a-assets>
-        <video id="video1" src="assets/video/Video1.mp4" preload="auto" playsinline crossorigin="anonymous"></video>
-        <video id="video2" src="assets/video/Video2.mp4" preload="auto" playsinline crossorigin="anonymous"></video>
-        <video id="video3" src="assets/video/Video3.mp4" preload="auto" playsinline crossorigin="anonymous"></video>
-        <video id="video4" src="assets/video/Video4.mp4" preload="auto" playsinline crossorigin="anonymous"></video>
-        <video id="video5" src="assets/video/AMVI-2.mp4" preload="auto" playsinline crossorigin="anonymous"></video>
+        <video id="video1" src="assets/video/Video1.mp4" muted  playsinline crossorigin="anonymous"></video>
+        <video id="video2" src="assets/video/Video2.mp4" muted  playsinline crossorigin="anonymous"></video>
+        <video id="video3" src="assets/video/Video3.mp4" muted  playsinline crossorigin="anonymous"></video>
+        <video id="video4" src="assets/video/Video4.mp4" muted  playsinline crossorigin="anonymous"></video>
+        <video id="video5" src="assets/video/AMVI-2.mp4" muted  playsinline crossorigin="anonymous"></video>
       </a-assets>
 
       <a-camera position="0 0 0" look-controls="enabled: false" cursor="fuse: false; rayOrigin: mouse;"
@@ -489,29 +489,40 @@
     }
 
     // AR-specific functions
-    function playARVideo(videoId) {
-      const displayVideo = document.querySelector("#displayVideo");
-      const arBackBtn = document.querySelector("#arBackBtn");
-      const buttons = [
-        document.querySelector('#btn1'),
-        document.querySelector('#btn2'),
-        document.querySelector('#btn3'),
-        document.querySelector('#btn4'),
-        document.querySelector('#btn5')
-      ];
+   function playARVideo(videoId) {
+  const displayVideo = document.querySelector("#displayVideo");
+  const arBackBtn = document.querySelector("#arBackBtn");
+  const buttons = [
+    document.querySelector('#btn1'),
+    document.querySelector('#btn2'),
+    document.querySelector('#btn3'),
+    document.querySelector('#btn4'),
+    document.querySelector('#btn5')
+  ];
 
-      // Hide buttons, show video and back button
-      buttons.forEach(btn => btn.setAttribute('visible', 'false'));
-     displayVideo.setAttribute("src", `#${videoId}`);
-displayVideo.setAttribute("visible", "true");
-displayVideo.play();
+  const videoEl = document.querySelector(`#${videoId}`);
 
-setTimeout(() => {
-  displayVideo.components.material.material.map = null;
-}, 100); // slight delay
+  // Ensure the video is loaded
+  videoEl.load();
 
-      arBackBtn.setAttribute("visible", "true");
-    }
+  // Start video playback
+  videoEl.play().then(() => {
+    // Wait a little before setting as texture
+    displayVideo.setAttribute("src", `#${videoId}`);
+    displayVideo.setAttribute("visible", "true");
+
+    // Force refresh material after delay to bind texture properly
+    setTimeout(() => {
+      displayVideo.components.material.material.map = null;
+    }, 100);
+
+    arBackBtn.setAttribute("visible", "true");
+    buttons.forEach(btn => btn.setAttribute("visible", "false"));
+  }).catch(e => {
+    console.error("Video failed to play:", e);
+  });
+}
+
 
     function backToARButtons() {
       const displayVideo = document.querySelector("#displayVideo");
