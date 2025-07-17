@@ -579,6 +579,7 @@ function toggleARVideoPlayPause() {
 
       mainVideoEl.onloadeddata = () => {
         mainVideoEl.play().then(() => {
+          playPauseText.setAttribute("value", "Pause");
           displayVideo.setAttribute("visible", "true");
 
           setTimeout(() => {
@@ -637,6 +638,7 @@ document.querySelector("#arPlayPauseBtn").setAttribute("visible", "true");
         buttons.forEach(btn => btn.setAttribute('visible', 'true'));
         displayVideo.setAttribute('visible', 'false');
         arBackBtn.setAttribute('visible', 'false');
+        document.querySelector("#arPlayPauseBtn").setAttribute("visible", "false");
       });
 
       target.addEventListener('targetLost', () => {
@@ -644,6 +646,7 @@ document.querySelector("#arPlayPauseBtn").setAttribute("visible", "true");
         displayVideo.setAttribute('visible', 'false');
         displayVideo.pause();
         arBackBtn.setAttribute('visible', 'false');
+        document.querySelector("#arPlayPauseBtn").setAttribute("visible", "false");
       });
     });
 
