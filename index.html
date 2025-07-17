@@ -617,18 +617,30 @@ let targetDetected = false;     // whether image target is currently visible
       video.play();
       checkOrientation();
     }
-    function toggleARVideoPlayPause() {
-      const mainVideoEl = document.querySelector("#mainVideo");
-      const playPauseText = document.querySelector("#playPauseText");
+  function toggleARVideoPlayPause() {
+  const mainVideoEl = document.querySelector("#mainVideo");
+  const playPauseText = document.querySelector("#playPauseText");
 
-      if (mainVideoEl.paused) {
-        mainVideoEl.play();
-        playPauseText.setAttribute("value", "Pause");
-      } else {
-        mainVideoEl.pause();
-        playPauseText.setAttribute("value", "Play");
-      }
+  // Find the currently playing audio (only one should be playing)
+  let activeAudio = null;
+  for (let i = 1; i <= 5; i++) {
+    const audio = document.getElementById(`audio${i}`);
+    if (!audio.paused && !audio.ended) {
+      activeAudio = audio;
+      break;
     }
+  }
+
+  if (mainVideoEl.paused) {
+    mainVideoEl.play();
+    playPauseText.setAttribute("value", "Pause");
+    if (activeAudio) activeAudio.play(); // Resume audio if it was paused
+  } else {
+    mainVideoEl.pause();
+    playPauseText.setAttribute("value", "Play");
+    if (activeAudio) activeAudio.pause(); // Pause currently playing audio
+  }
+}
 
     function backToVideoScreen() {
       const video = document.getElementById("fullScreenVideo");
@@ -838,7 +850,7 @@ document.querySelector(".bottom-text").style.display = "none";
         document.querySelector('#btn4'),
         document.querySelector('#btn5')
       ];
-
+stopAllAudio();
       // Hide video and back button, show buttons
       displayVideo.setAttribute("visible", "false");
       displayVideo.pause();
