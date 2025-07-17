@@ -166,8 +166,23 @@ function goToAnimation() {
     changeVideoSource("assets/video/Test-01.mp4");
     init();
 
+    // Switch to portrait for 1 second, then revert to landscape
+    if (screen.orientation && screen.orientation.lock) {
+        screen.orientation.lock('portrait').then(() => {
+            setTimeout(() => {
+                screen.orientation.lock('landscape').catch(err => {
+                    console.error('Failed to lock landscape:', err);
+                });
+            }, 1000); // Revert to landscape after 1 second
+        }).catch(err => {
+            console.error('Failed to lock portrait:', err);
+        });
+    } else {
+        console.warn('Screen orientation lock not supported');
+    }
+
     // Ensure resize after initialization
-    setTimeout(forceResize, 100);
+    setTimeout(forceRendererResize, 100);
     sessionStorage.setItem("cameraActive", "true");
 }
 
