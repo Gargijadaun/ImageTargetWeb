@@ -349,16 +349,26 @@
         <a-image src="./assets/images/02.png" width="0.533" height="0.0603" position="0 -0.5 0"
           visible="true"></a-image> -->
         <!-- Interactive 3D buttons -->
-      <a-sphere id="btn1" class="clickable" radius="0.05" position="-0.56 -0.2 0" color="#018fbf" visible="false"
-  onclick="playARVideo('video1')"></a-sphere>
-<a-sphere id="btn2" class="clickable" radius="0.05" position="-0.28 -0.2 0" color="#018fbf" visible="false"
-  onclick="playARVideo('video2')"></a-sphere>
-<a-sphere id="btn3" class="clickable" radius="0.05" position="0 -0.2 0" color="#018fbf" visible="false"
-  onclick="playARVideo('video3')"></a-sphere>
-<a-sphere id="btn4" class="clickable" radius="0.05" position="0.28 -0.2 0" color="#018fbf" visible="false"
-  onclick="playARVideo('video4')"></a-sphere>
-<a-sphere id="btn5" class="clickable" radius="0.05" position="0.56 -0.2 0" color="#018fbf" visible="false"
-  onclick="playARVideo('video5')"></a-sphere>
+   <a-circle id="btn1" class="clickable" radius="0.07" position="-0.56 -0.2 0.01" color="#00ff00"
+  material="side: double; metalness: 0.2; roughness: 0.4" visible="false"
+  onclick="playARVideo('video1')"></a-circle>
+
+<a-circle id="btn2" class="clickable" radius="0.07" position="-0.28 -0.2 0.01" color="#00ff00"
+  material="side: double; metalness: 0.2; roughness: 0.4" visible="false"
+  onclick="playARVideo('video2')"></a-circle>
+
+<a-circle id="btn3" class="clickable" radius="0.07" position="0 -0.2 0.01" color="#00ff00"
+  material="side: double; metalness: 0.2; roughness: 0.4" visible="false"
+  onclick="playARVideo('video3')"></a-circle>
+
+<a-circle id="btn4" class="clickable" radius="0.07" position="0.28 -0.2 0.01" color="#00ff00"
+  material="side: double; metalness: 0.2; roughness: 0.4" visible="false"
+  onclick="playARVideo('video4')"></a-circle>
+
+<a-circle id="btn5" class="clickable" radius="0.07" position="0.56 -0.2 0.01" color="#00ff00"
+  material="side: double; metalness: 0.2; roughness: 0.4" visible="false"
+  onclick="playARVideo('video5')"></a-circle>
+
 
         <!-- AR Back Button -->
         <a-plane id="arBackBtn" class="clickable" width="0.2" height="0.1" position="0 -0.55 0.1"
