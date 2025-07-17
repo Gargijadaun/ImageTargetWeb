@@ -629,7 +629,7 @@
     }
 
     // AR-specific functions
-    function playARVideo(videoId) {
+  function playARVideo(videoId) {
   const displayVideo = document.querySelector("#displayVideo");
   const arBackBtn = document.querySelector("#arBackBtn");
   const buttons = [
@@ -647,44 +647,54 @@
     return;
   }
 
-  // Hide buttons, show video and back button
-  buttons.forEach(btn => btn.setAttribute('visible', 'false'));
+  // Pause any currently playing video
+  const allVideos = document.querySelectorAll('video');
+  allVideos.forEach(v => v.pause());
+
+  // Ensure video starts from beginning
+  videoElement.currentTime = 0;
+
+  // Set and show the video on a-video entity
   displayVideo.setAttribute("src", `#${videoId}`);
   displayVideo.setAttribute("visible", "true");
 
-  // Force material update
-  displayVideo.components.material.material.map = videoElement;
-  displayVideo.components.material.material.needsUpdate = true;
-
-  // Ensure video is loaded and play
-  videoElement.load();
+  // Start video playback
   videoElement.play().then(() => {
-    console.log(`Playing video: ${videoId}`);
+    console.log(`Playing AR video: ${videoId}`);
   }).catch(error => {
-    console.error(`Error playing video ${videoId}:`, error);
+    console.error(`Error playing AR video ${videoId}:`, error);
   });
-}
-    function backToARButtons() {
-      const displayVideo = document.querySelector("#displayVideo");
-      const arBackBtn = document.querySelector("#arBackBtn");
-      const buttons = [
-        document.querySelector('#btn1'),
-        document.querySelector('#btn2'),
-        document.querySelector('#btn3'),
-        document.querySelector('#btn4'),
-        document.querySelector('#btn5')
-      ];
 
-      // Hide video and back button, show buttons
-      displayVideo.setAttribute("visible", "false");
-      const currentVideo = document.querySelector(displayVideo.getAttribute("src"));
-      if (currentVideo) {
-        currentVideo.pause();
-        console.log("Video paused");
-      }
-      arBackBtn.setAttribute("visible", "false");
-      buttons.forEach(btn => btn.setAttribute('visible', 'true'));
-    }
+  // Show back button and hide other buttons
+  arBackBtn.setAttribute("visible", "true");
+  buttons.forEach(btn => btn.setAttribute('visible', 'false'));
+}
+
+   function backToARButtons() {
+  const displayVideo = document.querySelector("#displayVideo");
+  const arBackBtn = document.querySelector("#arBackBtn");
+  const buttons = [
+    document.querySelector('#btn1'),
+    document.querySelector('#btn2'),
+    document.querySelector('#btn3'),
+    document.querySelector('#btn4'),
+    document.querySelector('#btn5')
+  ];
+
+  // Hide video and back button, show buttons
+  displayVideo.setAttribute("visible", "false");
+  
+  const currentSrc = displayVideo.getAttribute("src").replace('#', '');
+  const currentVideo = document.getElementById(currentSrc);
+  if (currentVideo) {
+    currentVideo.pause();
+    currentVideo.currentTime = 0;
+  }
+
+  arBackBtn.setAttribute("visible", "false");
+  buttons.forEach(btn => btn.setAttribute('visible', 'true'));
+}
+
 AFRAME.registerComponent('click-handler', {
   init: function () {
     this.el.addEventListener('click', () => {

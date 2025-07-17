@@ -184,10 +184,6 @@ document.addEventListener("DOMContentLoaded", () => {
     sceneEl.addEventListener("loaded", () => {
         arSystem = sceneEl.systems["mindar-image-system"];
         document.querySelector('#mainScreen .btn-container').classList.add('show');
-        if (!AR_READY) {
-            arSystem.start();
-            AR_READY = true;
-        }
     });
 });
 // function continueWithoutAR() {
