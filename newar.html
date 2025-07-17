@@ -511,124 +511,94 @@
 
     // AR-specific functions
     function playARVideo(videoId) {
-    const displayVideo = document.querySelector("#displayVideo");
-    const arBackBtn = document.querySelector("#arBackBtn");
-    const videoElement = document.getElementById(videoId);
+  const displayVideo = document.querySelector("#displayVideo");
+  const arBackBtn = document.querySelector("#arBackBtn");
+  const buttons = [
+    document.querySelector('#btn1'),
+    document.querySelector('#btn2'),
+    document.querySelector('#btn3'),
+    document.querySelector('#btn4'),
+    document.querySelector('#btn5')
+  ];
 
-    const buttons = [
-      document.querySelector('#btn1'),
-      document.querySelector('#btn2'),
-      document.querySelector('#btn3'),
-      document.querySelector('#btn4'),
-      document.querySelector('#btn5')
-    ];
-
-    if (!videoElement) {
-      console.error(`Video element with ID ${videoId} not found`);
-      return;
-    }
-
-    // Hide all buttons
-    buttons.forEach(btn => btn.setAttribute('visible', 'false'));
-
-    // Set video source and make it visible
-    displayVideo.setAttribute("src", `#${videoId}`);
-    displayVideo.setAttribute("visible", "true");
-
-    // Update material (optional fix)
-    if (displayVideo.components.material) {
-      displayVideo.components.material.update();
-    }
-
-    // Show back button
-    arBackBtn.setAttribute("visible", "true");
-
-    // Play the video
-    videoElement.load();
-    videoElement.play().then(() => {
-      console.log(`Playing video: ${videoId}`);
-    }).catch(error => {
-      console.error(`Error playing video ${videoId}:`, error);
-    });
+  const videoElement = document.getElementById(videoId);
+  if (!videoElement) {
+    console.error(`Video element with ID ${videoId} not found`);
+    return;
   }
 
-  // ✅ Show buttons again and stop video
-  function backToARButtons() {
-    const displayVideo = document.querySelector("#displayVideo");
-    const arBackBtn = document.querySelector("#arBackBtn");
+  // Hide buttons, show video and back button
+  buttons.forEach(btn => btn.setAttribute('visible', 'false'));
+  displayVideo.setAttribute("src", `#${videoId}`);
+  displayVideo.setAttribute("visible", "true");
 
-    const buttons = [
-      document.querySelector('#btn1'),
-      document.querySelector('#btn2'),
-      document.querySelector('#btn3'),
-      document.querySelector('#btn4'),
-      document.querySelector('#btn5')
-    ];
+  // Force A-Frame to update the video component
+  displayVideo.components.material.update(); // Update material to reflect new video
+  arBackBtn.setAttribute("visible", "true");
 
-    displayVideo.setAttribute("visible", "false");
-    arBackBtn.setAttribute("visible", "false");
-
-    // Pause current video
-    const currentVideo = document.querySelector(displayVideo.getAttribute("src"));
-    if (currentVideo) {
-      currentVideo.pause();
-    }
-
-    // Show all buttons
-    buttons.forEach(btn => btn.setAttribute('visible', 'true'));
-  }
-
-  // ✅ Wait for DOM and MindAR scene
-  document.addEventListener("DOMContentLoaded", () => {
-    const target = document.querySelector('#targetImage');
-    const arBackBtn = document.getElementById('arBackBtn');
-
-    const buttonMap = {
-      btn1: "video1",
-      btn2: "video2",
-      btn3: "video3",
-      btn4: "video4",
-      btn5: "video5"
-    };
-
-    // Attach click listeners for each AR button
-    Object.entries(buttonMap).forEach(([btnId, videoId]) => {
-      const button = document.getElementById(btnId);
-      if (button) {
-        button.addEventListener('click', () => playARVideo(videoId));
-      }
-    });
-
-    // Attach click listener for AR back button
-    if (arBackBtn) {
-      arBackBtn.addEventListener('click', backToARButtons);
-    }
-
-    // ✅ Show buttons when target is found
-    target.addEventListener('targetFound', () => {
-      console.log("Target found");
-      Object.keys(buttonMap).forEach(id => {
-        const btn = document.getElementById(id);
-        if (btn) btn.setAttribute('visible', 'true');
-      });
-      document.querySelector('#displayVideo').setAttribute('visible', 'false');
-      arBackBtn.setAttribute('visible', 'false');
-    });
-
-    // ❌ Hide everything when target is lost
-    target.addEventListener('targetLost', () => {
-      console.log("Target lost");
-      Object.keys(buttonMap).forEach(id => {
-        const btn = document.getElementById(id);
-        if (btn) btn.setAttribute('visible', 'false');
-      });
-      const displayVideo = document.querySelector('#displayVideo');
-      const currentVideo = document.querySelector(displayVideo.getAttribute("src"));
-      if (currentVideo) currentVideo.pause();
-      displayVideo.setAttribute('visible', 'false');
-      arBackBtn.setAttribute('visible', 'false');
-    });
+  // Play the video
+  videoElement.load();
+  videoElement.play().then(() => {
+    console.log(`Playing video: ${videoId}`);
+  }).catch(error => {
+    console.error(`Error playing video ${videoId}:`, error);
   });
+}
+
+    function backToARButtons() {
+      const displayVideo = document.querySelector("#displayVideo");
+      const arBackBtn = document.querySelector("#arBackBtn");
+      const buttons = [
+        document.querySelector('#btn1'),
+        document.querySelector('#btn2'),
+        document.querySelector('#btn3'),
+        document.querySelector('#btn4'),
+        document.querySelector('#btn5')
+      ];
+
+      // Hide video and back button, show buttons
+      displayVideo.setAttribute("visible", "false");
+      const currentVideo = document.querySelector(displayVideo.getAttribute("src"));
+      if (currentVideo) {
+        currentVideo.pause();
+        console.log("Video paused");
+      }
+      arBackBtn.setAttribute("visible", "false");
+      buttons.forEach(btn => btn.setAttribute('visible', 'true'));
+    }
+
+    // Handle AR target detection
+    document.addEventListener('DOMContentLoaded', () => {
+      const target = document.querySelector('#targetImage');
+      const buttons = [
+        document.querySelector('#btn1'),
+        document.querySelector('#btn2'),
+        document.querySelector('#btn3'),
+        document.querySelector('#btn4'),
+        document.querySelector('#btn5')
+      ];
+      const displayVideo = document.querySelector('#displayVideo');
+      const arBackBtn = document.querySelector('#arBackBtn');
+
+      target.addEventListener('targetFound', () => {
+        console.log("Target found");
+        buttons.forEach(btn => btn.setAttribute('visible', 'true'));
+        displayVideo.setAttribute('visible', 'false');
+        arBackBtn.setAttribute('visible', 'false');
+      });
+
+      target.addEventListener('targetLost', () => {
+        console.log("Target lost");
+        buttons.forEach(btn => btn.setAttribute('visible', 'false'));
+        displayVideo.setAttribute('visible', 'false');
+        const currentVideo = document.querySelector(displayVideo.getAttribute("src"));
+        if (currentVideo) {
+          currentVideo.pause();
+        }
+        arBackBtn.setAttribute('visible', 'false');
+      });
+    });
+
     window.addEventListener("load", () => {
       document.getElementById("fullscreen-button").style.display = "block";
       document.getElementById("mainScreen").classList.add("active");
