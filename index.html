@@ -2,108 +2,103 @@
 <html>
   <head>
     <meta charset="utf-8">
-    <title>Start AR Video</title>
+    <title>WebXR Plane + Video</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <script src="https://aframe.io/releases/1.4.2/aframe.min.js"></script>
+    <script type="module">
+      let xrSession, gl, video, videoTexture;
+
+      async function initXR() {
+        if (!navigator.xr) {
+          alert("WebXR not supported");
+          return;
+        }
+
+        const supported = await navigator.xr.isSessionSupported("immersive-ar");
+        if (!supported) {
+          alert("Immersive AR not supported");
+          return;
+        }
+
+        const canvas = document.createElement("canvas");
+        document.body.appendChild(canvas);
+        gl = canvas.getContext("webgl", { xrCompatible: true });
+
+        xrSession = await navigator.xr.requestSession("immersive-ar", {
+          requiredFeatures: ["hit-test", "dom-overlay"],
+          domOverlay: { root: document.body },
+        });
+
+        const xrRefSpace = await xrSession.requestReferenceSpace("local");
+        const viewerSpace = await xrSession.requestReferenceSpace("viewer");
+        const hitTestSource = await xrSession.requestHitTestSource({ space: viewerSpace });
+
+        const xrLayer = new XRWebGLLayer(xrSession, gl);
+        xrSession.updateRenderState({ baseLayer: xrLayer });
+
+        video = document.createElement("video");
+        video.src = "video.mp4"; // must be in same folder or from secure HTTPS server
+        video.autoplay = true;
+        video.loop = true;
+        video.muted = true;
+        video.playsInline = true;
+        await video.play();
+
+        const renderLoop = (time, frame) => {
+          const pose = frame.getViewerPose(xrRefSpace);
+          const glLayer = xrSession.renderState.baseLayer;
+
+          gl.bindFramebuffer(gl.FRAMEBUFFER, glLayer.framebuffer);
+          gl.clearColor(0, 0, 0, 0);
+          gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
+
+          const hitTestResults = frame.getHitTestResults(hitTestSource);
+          if (hitTestResults.length > 0 && !videoTexture) {
+            const hit = hitTestResults[0];
+            const pose = hit.getPose(xrRefSpace);
+            const mat = pose.transform.matrix;
+
+            // Create plane + video texture here using WebGL (simplified)
+            const videoPlane = document.createElement("div");
+            videoPlane.style.width = "300px";
+            videoPlane.style.height = "200px";
+            videoPlane.style.position = "absolute";
+            videoPlane.style.top = "50%";
+            videoPlane.style.left = "50%";
+            videoPlane.style.transform = "translate(-50%, -50%)";
+            videoPlane.appendChild(video);
+            document.body.appendChild(videoPlane);
+
+            videoTexture = true; // only place once
+          }
+
+          xrSession.requestAnimationFrame(renderLoop);
+        };
+
+        xrSession.requestAnimationFrame(renderLoop);
+      }
+
+      window.onload = () => {
+        const btn = document.getElementById("startAR");
+        btn.addEventListener("click", initXR);
+      };
+    </script>
     <style>
-      body, html {
+      body {
         margin: 0;
-        padding: 0;
-        width: 100%;
-        height: 100%;
         overflow: hidden;
-        font-family: sans-serif;
       }
-
-      #start-screen {
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        align-items: center;
-        background: #000;
-        color: #fff;
-        width: 100%;
-        height: 100%;
+      #startAR {
         position: absolute;
-        top: 0;
-        left: 0;
-        z-index: 10;
-      }
-
-      #start-button {
-        padding: 15px 25px;
-        font-size: 18px;
-        background: #00d1b2;
-        border: none;
-        border-radius: 8px;
-        cursor: pointer;
-      }
-
-      #ar-scene {
-        display: none;
-        width: 100%;
-        height: 100%;
-      }
-
-      video {
-        display: none;
+        z-index: 2;
+        bottom: 20px;
+        left: 50%;
+        transform: translateX(-50%);
+        padding: 12px 20px;
+        font-size: 16px;
       }
     </style>
   </head>
-
   <body>
-    <!-- Start screen -->
-    <div id="start-screen">
-      <h1>Welcome to AR Video</h1>
-      <button id="start-button">Start AR</button>
-    </div>
-
-    <!-- AR Scene -->
-    <a-scene
-      id="ar-scene"
-      embedded
-      vr-mode-ui="enabled: false"
-      webxr="optionalFeatures: hit-test; requiredFeatures: hit-test;"
-      renderer="colorManagement: true;"
-      xr-mode="immersive-ar"
-      xr-session-init='{"optionalFeatures": ["dom-overlay"], "domOverlay": {"root": document.body}}'>
-      
-      <a-assets>
-        <video id="video" src="./assets/video/Video1.mp4" autoplay loop muted playsinline crossorigin="anonymous"></video>
-      </a-assets>
-
-      <a-camera position="0 1.6 0"></a-camera>
-
-      <a-plane
-        id="video-plane"
-        position="0 0 -2"
-        rotation="0 0 0"
-        width="1.5"
-        height="0.85"
-        src="#video"
-        material="shader: flat">
-      </a-plane>
-
-    </a-scene>
-
-    <script>
-      const startButton = document.getElementById("start-button");
-      const startScreen = document.getElementById("start-screen");
-      const arScene = document.getElementById("ar-scene");
-      const video = document.getElementById("video");
-
-      startButton.addEventListener("click", () => {
-        // Hide start screen
-        startScreen.style.display = "none";
-
-        // Show AR scene
-        arScene.style.display = "block";
-
-        // Play the video (required for autoplay on iOS)
-        video.play().catch((e) => {
-          console.warn("Autoplay blocked, waiting for user interaction.");
-        });
-      });
-    </script>
+    <button id="startAR">Start AR</button>
   </body>
 </html>
