@@ -7,11 +7,14 @@
     <script src="https://aframe.io/releases/1.4.2/aframe.min.js"></script>
     <style>
       body, html {
-        margin: 0; padding: 0;
-        width: 100%; height: 100%;
+        margin: 0;
+        padding: 0;
+        width: 100%;
+        height: 100%;
         overflow: hidden;
         font-family: sans-serif;
       }
+
       #start-screen {
         display: flex;
         flex-direction: column;
@@ -26,6 +29,7 @@
         left: 0;
         z-index: 10;
       }
+
       #start-button {
         padding: 15px 25px;
         font-size: 18px;
@@ -34,11 +38,13 @@
         border-radius: 8px;
         cursor: pointer;
       }
+
       #ar-scene {
         display: none;
         width: 100%;
         height: 100%;
       }
+
       video {
         display: none;
       }
@@ -57,19 +63,21 @@
       id="ar-scene"
       embedded
       vr-mode-ui="enabled: false"
-      webxr="optionalFeatures: hit-test;"
-      xrweb="mode: ar; overlayElement: false;">
+      webxr="optionalFeatures: hit-test; requiredFeatures: hit-test;"
+      renderer="colorManagement: true;"
+      xr-mode="immersive-ar"
+      xr-session-init='{"optionalFeatures": ["dom-overlay"], "domOverlay": {"root": document.body}}'>
       
       <a-assets>
-        <video id="video" src="./assets/video/Video1.mp4" autoplay loop muted crossorigin="anonymous"></video>
+        <video id="video" src="./assets/video/Video1.mp4" autoplay loop muted playsinline crossorigin="anonymous"></video>
       </a-assets>
 
-      <a-entity camera></a-entity>
+      <a-camera position="0 1.6 0"></a-camera>
 
       <a-plane
         id="video-plane"
         position="0 0 -2"
-        rotation="-90 0 0"
+        rotation="0 0 0"
         width="1.5"
         height="0.85"
         src="#video"
