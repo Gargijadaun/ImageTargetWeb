@@ -2,19 +2,69 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <title>WebXR AR Video Plane</title>
+    <title>WebXR AR Video Switcher</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <style>
       body {
         margin: 0;
         overflow: hidden;
+        font-family: sans-serif;
       }
-      video {
+      #menu {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        background: #000;
+        color: white;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        z-index: 10;
+      }
+      #menu button {
+        margin: 10px;
+        padding: 15px 30px;
+        font-size: 18px;
+        cursor: pointer;
+      }
+      #videoControls {
+        position: absolute;
+        bottom: 20px;
+        left: 50%;
+        transform: translateX(-50%);
+        display: flex;
+        gap: 10px;
+        z-index: 10;
         display: none;
+      }
+      #videoControls button {
+        padding: 10px 15px;
+        font-size: 16px;
+        cursor: pointer;
+        background-color: rgba(255, 255, 255, 0.7);
+        border: none;
+        border-radius: 5px;
       }
     </style>
   </head>
   <body>
+    <!-- Main Menu -->
+    <div id="menu">
+      <h1>Choose Mode</h1>
+      <button id="startAR">Start AR</button>
+      <button onclick="location.href='video.html'">Non AR</button>
+    </div>
+
+    <!-- Video Controls for AR -->
+    <div id="videoControls">
+      <button data-src="./assets/video/Video1.mp4">Video 1</button>
+      <button data-src="./assets/video/Video2.mp4">Video 2</button>
+      <button data-src="./assets/video/Video3.mp4">Video 3</button>
+      <button data-src="./assets/video/Video4.mp4">Video 4</button>
+      <button data-src="./assets/video/Video5.mp4">Video 5</button>
+    </div>
+
     <script type="module">
       import * as THREE from 'https://cdn.jsdelivr.net/npm/three@0.147.0/build/three.module.js';
       import { ARButton } from 'https://cdn.jsdelivr.net/npm/three@0.147.0/examples/jsm/webxr/ARButton.js';
@@ -22,12 +72,19 @@
       let camera, scene, renderer;
       let controller, reticle, hitTestSource = null, hitTestSourceRequested = false;
       let videoTexture, videoPlane;
-      const video = document.createElement('video');
+      let currentVideo = document.createElement('video');
+      currentVideo.loop = true;
+      currentVideo.muted = true;
+      currentVideo.playsInline = true;
+      currentVideo.crossOrigin = 'anonymous';
 
-      init();
+      document.getElementById('startAR').addEventListener('click', () => {
+        document.getElementById('menu').style.display = 'none';
+        document.getElementById('videoControls').style.display = 'flex';
+        initAR();
+      });
 
-      function init() {
-        // Create scene
+      function initAR() {
         scene = new THREE.Scene();
 
         camera = new THREE.PerspectiveCamera(70, window.innerWidth / window.innerHeight, 0.01, 20);
@@ -41,37 +98,38 @@
           requiredFeatures: ['hit-test']
         }));
 
-        // Setup video
-        video.src = 'assets/video/Video1.mp4'; // Replace with your path
-        video.loop = true;
-        video.muted = true;
-        video.playsInline = true;
-        video.crossOrigin = 'anonymous';
+        // Initial video
+        currentVideo.src = 'assets/video/Video1.mp4';
+        videoTexture = new THREE.VideoTexture(currentVideo);
 
-        // Setup texture from video
-        videoTexture = new THREE.VideoTexture(video);
-
-        // Setup plane but don't add until hit
-        const geometry = new THREE.PlaneGeometry(1, 0.56); // 16:9 aspect ratio
+        const geometry = new THREE.PlaneGeometry(1, 0.56);
         const material = new THREE.MeshBasicMaterial({ map: videoTexture });
         videoPlane = new THREE.Mesh(geometry, material);
         videoPlane.visible = false;
         scene.add(videoPlane);
 
-        // Reticle (hit-test target)
         const ringGeo = new THREE.RingGeometry(0.05, 0.06, 32).rotateX(-Math.PI / 2);
         const ringMat = new THREE.MeshBasicMaterial({ color: 0x00ff00 });
         reticle = new THREE.Mesh(ringGeo, ringMat);
         reticle.visible = false;
         scene.add(reticle);
 
-        // Setup controller
         controller = renderer.xr.getController(0);
         controller.addEventListener('select', onSelect);
         scene.add(controller);
 
-        // Start render loop
         renderer.setAnimationLoop(render);
+
+        // Setup video switching
+        document.querySelectorAll('#videoControls button').forEach(button => {
+          button.addEventListener('click', () => {
+            const newSrc = button.dataset.src;
+            currentVideo.pause();
+            currentVideo.src = newSrc;
+            videoTexture.needsUpdate = true;
+            currentVideo.play();
+          });
+        });
       }
 
       function onSelect() {
@@ -79,7 +137,7 @@
           videoPlane.position.setFromMatrixPosition(reticle.matrix);
           videoPlane.quaternion.setFromRotationMatrix(reticle.matrix);
           videoPlane.visible = true;
-          video.play();
+          currentVideo.play();
         }
       }
 
