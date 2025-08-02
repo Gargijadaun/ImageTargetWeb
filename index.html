@@ -102,7 +102,8 @@
         currentVideo.src = 'assets/video/Video1.mp4';
         videoTexture = new THREE.VideoTexture(currentVideo);
 
-        const geometry = new THREE.PlaneGeometry(1, 0.56);
+const geometry = new THREE.PlaneGeometry(0.6, 0.3375);
+
         const material = new THREE.MeshBasicMaterial({ map: videoTexture });
         videoPlane = new THREE.Mesh(geometry, material);
         videoPlane.visible = false;
