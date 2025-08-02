@@ -1,43 +1,123 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
   <head>
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>WebXR Plane with Video</title>
-    <script src="https://aframe.io/releases/1.4.2/aframe.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/aframe-ar-hit-test@1.1.1/dist/aframe-ar-hit-test.min.js"></script>
+    <meta charset="UTF-8" />
+    <title>WebXR AR Video Plane</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <style>
+      body {
+        margin: 0;
+        overflow: hidden;
+      }
+      video {
+        display: none;
+      }
+    </style>
   </head>
-  <body style="margin: 0; overflow: hidden;">
-    <a-scene
-      webxr="optionalFeatures: hit-test;"
-      vr-mode-ui="enabled: false"
-      embedded
-      ar-hit-test="target: #video-plane"
-      renderer="colorManagement: true; physicallyCorrectLights: true;"
-    >
-      <a-assets>
-        <video id="video-asset" src="./assets/video/Video1.mp4" autoplay loop muted playsinline crossorigin="anonymous"></video>
-      </a-assets>
+  <body>
+    <script type="module">
+      import * as THREE from 'https://cdn.jsdelivr.net/npm/three@0.147.0/build/three.module.js';
+      import { ARButton } from 'https://cdn.jsdelivr.net/npm/three@0.147.0/examples/jsm/webxr/ARButton.js';
 
-      <a-camera position="0 0 0" look-controls="enabled: false"></a-camera>
+      let camera, scene, renderer;
+      let controller, reticle, hitTestSource = null, hitTestSourceRequested = false;
+      let videoTexture, videoPlane;
+      const video = document.createElement('video');
 
-      <a-video
-        id="video-plane"
-        src="#video-asset"
-        width="1"
-        height="0.56"
-        rotation="-90 0 0"
-        visible="false"
-      ></a-video>
-    </a-scene>
+      init();
 
-    <script>
-      const videoPlane = document.getElementById('video-plane');
-      const videoAsset = document.getElementById('video-asset');
+      function init() {
+        // Create scene
+        scene = new THREE.Scene();
 
-      document.querySelector('a-scene').addEventListener('ar-hit-test-select', () => {
-        videoPlane.setAttribute('visible', true);
-        videoAsset.play();
-      });
+        camera = new THREE.PerspectiveCamera(70, window.innerWidth / window.innerHeight, 0.01, 20);
+
+        renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+        renderer.setSize(window.innerWidth, window.innerHeight);
+        renderer.xr.enabled = true;
+        document.body.appendChild(renderer.domElement);
+
+        document.body.appendChild(ARButton.createButton(renderer, {
+          requiredFeatures: ['hit-test']
+        }));
+
+        // Setup video
+        video.src = 'assets/video/Video1.mp4'; // Replace with your path
+        video.loop = true;
+        video.muted = true;
+        video.playsInline = true;
+        video.crossOrigin = 'anonymous';
+
+        // Setup texture from video
+        videoTexture = new THREE.VideoTexture(video);
+
+        // Setup plane but don't add until hit
+        const geometry = new THREE.PlaneGeometry(1, 0.56); // 16:9 aspect ratio
+        const material = new THREE.MeshBasicMaterial({ map: videoTexture });
+        videoPlane = new THREE.Mesh(geometry, material);
+        videoPlane.visible = false;
+        scene.add(videoPlane);
+
+        // Reticle (hit-test target)
+        const ringGeo = new THREE.RingGeometry(0.05, 0.06, 32).rotateX(-Math.PI / 2);
+        const ringMat = new THREE.MeshBasicMaterial({ color: 0x00ff00 });
+        reticle = new THREE.Mesh(ringGeo, ringMat);
+        reticle.visible = false;
+        scene.add(reticle);
+
+        // Setup controller
+        controller = renderer.xr.getController(0);
+        controller.addEventListener('select', onSelect);
+        scene.add(controller);
+
+        // Start render loop
+        renderer.setAnimationLoop(render);
+      }
+
+      function onSelect() {
+        if (reticle.visible && !videoPlane.visible) {
+          videoPlane.position.setFromMatrixPosition(reticle.matrix);
+          videoPlane.quaternion.setFromRotationMatrix(reticle.matrix);
+          videoPlane.visible = true;
+          video.play();
+        }
+      }
+
+      function render(timestamp, frame) {
+        if (frame) {
+          const referenceSpace = renderer.xr.getReferenceSpace();
+          const session = renderer.xr.getSession();
+
+          if (!hitTestSourceRequested) {
+            session.requestReferenceSpace('viewer').then(space => {
+              session.requestHitTestSource({ space }).then(source => {
+                hitTestSource = source;
+              });
+            });
+
+            session.addEventListener('end', () => {
+              hitTestSourceRequested = false;
+              hitTestSource = null;
+            });
+
+            hitTestSourceRequested = true;
+          }
+
+          if (hitTestSource) {
+            const hitTestResults = frame.getHitTestResults(hitTestSource);
+            if (hitTestResults.length > 0) {
+              const hit = hitTestResults[0];
+              const pose = hit.getPose(referenceSpace);
+              reticle.visible = true;
+              reticle.matrix.fromArray(pose.transform.matrix);
+            } else {
+              reticle.visible = false;
+            }
+          }
+        }
+
+        renderer.render(scene, camera);
+      }
     </script>
   </body>
 </html>
